@@ -5,299 +5,380 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ScopeX · La République aux Rayons X</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy:       #0d1b3e;
-    --navy-mid:   #162040;
-    --navy-light: #1e2f5a;
-    --gold:       #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim:   rgba(201,168,76,0.18);
-    --crimson:    #8b1a2e;
-    --cream:      #f0e8d0;
-    --text:       #e4dcc8;
-    --text-muted: rgba(228,220,200,0.6);
-    --border:     rgba(201,168,76,0.18);
+    --white:      #ffffff;
+    --off:        #f7f7f5;
+    --ink:        #111111;
+    --ink-mid:    #444444;
+    --ink-light:  #888888;
+    --border:     #e0e0e0;
+
+    /* Domain colours — flat, no gradient */
+    --c-edu:      #2563EB;   /* blue */
+    --c-sav:      #C2185B;   /* rose */
+    --c-lec:      #00897B;   /* teal */
+    --c-pat:      #E65100;   /* amber */
+    --c-art:      #D32F2F;   /* red */
+    --c-pop:      #5E35B1;   /* violet */
+    --c-sci:      #388E3C;   /* green */
+    --c-aud:      #F57C00;   /* orange */
+    --c-dro:      #00695C;   /* dark teal */
   }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Source Serif 4', Georgia, serif;
-    background: linear-gradient(160deg, #0d1b3e 0%, #121c3a 50%, #1a0a14 100%);
+    font-family: 'DM Sans', sans-serif;
+    background: var(--white);
+    color: var(--ink);
     min-height: 100vh;
-    color: var(--text);
     overflow-x: hidden;
-  }
-
-  /* STARFIELD */
-  .stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 45% 8%, rgba(255,255,255,0.35) 0%, transparent 100%),
-      radial-gradient(1px 1px at 62% 30%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 78% 12%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 33% 70%, rgba(255,255,255,0.15) 0%, transparent 100%),
-      radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 92% 85%, rgba(255,255,255,0.25) 0%, transparent 100%),
-      radial-gradient(1px 1px at 18% 90%, rgba(255,255,255,0.15) 0%, transparent 100%);
   }
 
   /* ── HEADER ── */
   header {
-    position: relative;
-    z-index: 10;
+    background: var(--ink);
+    color: var(--white);
+    padding: 2rem 3rem;
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.8rem 3rem;
-    border-bottom: 1px solid var(--border);
-    background: rgba(13,27,62,0.6);
-    backdrop-filter: blur(8px);
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
-  .logo-seal {
-    width: 58px; height: 58px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #e8c97a, #c9a84c 55%, #7a5a1a);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-    flex-shrink: 0;
-    box-shadow: 0 0 28px rgba(201,168,76,0.25), inset 0 1px 2px rgba(255,255,255,0.2);
-    border: 1.5px solid rgba(201,168,76,0.5);
+  .header-left h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
   }
 
-  .header-text h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.55rem;
-    font-weight: 700;
-    color: var(--cream);
-    letter-spacing: 0.03em;
+  .header-left h1 span {
+    color: #aaaaaa;
+    font-style: italic;
   }
 
-  .header-text .sub {
+  .header-left .sub {
+    margin-top: 0.5rem;
     font-size: 0.78rem;
-    color: rgba(201,168,76,0.75);
-    font-style: italic;
-    margin-top: 0.2rem;
-    letter-spacing: 0.06em;
+    color: #888888;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .header-badge {
-    margin-left: auto;
+  .header-right {
+    font-size: 0.7rem;
+    color: #666666;
+    text-align: right;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── HUGO STRIP ── */
+  .hugo-strip {
+    background: var(--off);
+    border-top: 3px solid var(--ink);
+    border-bottom: 1px solid var(--border);
+    padding: 1.4rem 3rem;
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .hugo-strip blockquote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    color: var(--ink);
+    line-height: 1.7;
+    flex: 1;
+    min-width: 260px;
+  }
+
+  .hugo-strip cite {
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
     font-size: 0.68rem;
-    color: rgba(201,168,76,0.55);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 0.3rem 0.9rem;
-    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    letter-spacing: 0.07em;
     text-transform: uppercase;
+    white-space: nowrap;
     flex-shrink: 0;
   }
 
-  /* ── HUGO BANNER ── */
-  .hugo-banner {
-    position: relative;
-    z-index: 10;
-    background: rgba(139,26,46,0.12);
-    border-left: 3px solid var(--gold);
-    padding: 1.1rem 3rem;
-    font-style: italic;
-    font-size: 0.88rem;
-    color: #d4c9a8;
-    line-height: 1.75;
-  }
-
-  .hugo-banner cite {
-    display: block;
-    margin-top: 0.4rem;
-    font-style: normal;
-    font-size: 0.7rem;
-    color: rgba(201,168,76,0.6);
-    letter-spacing: 0.07em;
-  }
-
-  /* ── MAIN GRID ── */
-  main {
-    position: relative;
-    z-index: 10;
+  /* ── GRID ── */
+  .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: rgba(201,168,76,0.08);
+    border-left: 1px solid var(--border);
   }
 
-  /* ── DOMAIN CARDS ── */
+  /* ── CARD ── */
   .card {
-    background: rgba(13,27,62,0.65);
-    padding: 1.6rem 1.5rem;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 1.8rem 1.6rem;
     cursor: pointer;
-    transition: background 0.22s;
+    transition: background 0.18s;
     position: relative;
-    overflow: hidden;
   }
 
-  .card::after {
-    content: '';
+  .card:hover { background: var(--off); }
+
+  .card-color-bar {
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 3px;
-    transition: opacity 0.3s;
+    height: 4px;
   }
 
-  .card:hover { background: rgba(22,40,80,0.85); }
+  .card.edu  .card-color-bar { background: var(--c-edu); }
+  .card.sav  .card-color-bar { background: var(--c-sav); }
+  .card.lec  .card-color-bar { background: var(--c-lec); }
+  .card.pat  .card-color-bar { background: var(--c-pat); }
+  .card.art  .card-color-bar { background: var(--c-art); }
+  .card.pop  .card-color-bar { background: var(--c-pop); }
+  .card.sci  .card-color-bar { background: var(--c-sci); }
+  .card.aud  .card-color-bar { background: var(--c-aud); }
+  .card.dro  .card-color-bar { background: var(--c-dro); }
 
-  .card.education::after   { background: #378ADD; }
-  .card.savoir::after      { background: #C45080; }
-  .card.lecture::after     { background: #1D9E75; }
-  .card.patrimoine::after  { background: #C07820; }
-  .card.arts::after        { background: #D05828; }
-  .card.populaire::after   { background: #6050C0; }
-  .card.scientifique::after{ background: #5A9020; }
-  .card.audiovisuel::after { background: #C84040; }
-  .card.droits::after      { background: #208060; }
+  .card-badge {
+    display: inline-block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
 
-  .card-icon { font-size: 1.7rem; display: block; margin-bottom: 0.55rem; }
+  .card.edu  .card-badge { background: var(--c-edu); }
+  .card.sav  .card-badge { background: var(--c-sav); }
+  .card.lec  .card-badge { background: var(--c-lec); }
+  .card.pat  .card-badge { background: var(--c-pat); }
+  .card.art  .card-badge { background: var(--c-art); }
+  .card.pop  .card-badge { background: var(--c-pop); }
+  .card.sci  .card-badge { background: var(--c-sci); }
+  .card.aud  .card-badge { background: var(--c-aud); }
+  .card.dro  .card-badge { background: var(--c-dro); }
 
   .card-name {
-    font-family: 'Playfair Display', serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--cream);
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    margin-bottom: 0.3rem;
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
   }
 
   .card-sub {
-    font-size: 0.72rem;
-    color: rgba(201,168,76,0.65);
-    font-style: italic;
-    margin-bottom: 0.75rem;
-    line-height: 1.45;
+    font-size: 0.73rem;
+    color: var(--ink-light);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    line-height: 1.5;
   }
 
-  .stat-pill {
-    display: inline-block;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.22);
-    border-radius: 12px;
-    padding: 0.18rem 0.55rem;
-    font-size: 0.68rem;
-    color: var(--gold-light);
-    margin-bottom: 0.6rem;
+  .card-stat {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.2rem;
   }
 
-  .tags {
+  .card-stat-label {
+    font-size: 0.65rem;
+    color: var(--ink-light);
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+  }
+
+  .card-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
-    margin-top: 0.4rem;
+    gap: 4px;
   }
 
   .tag {
     font-size: 0.62rem;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 7px;
-    padding: 0.12rem 0.38rem;
+    color: var(--ink-mid);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.15rem 0.45rem;
+    font-weight: 400;
   }
 
-  .card-hint {
-    margin-top: 0.75rem;
+  .card-cta {
+    margin-top: 1.2rem;
     font-size: 0.68rem;
-    color: rgba(201,168,76,0.45);
-    letter-spacing: 0.03em;
+    color: var(--ink-light);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
   }
 
-  /* ── DETAIL PANEL ── */
+  /* ── PANEL ── */
   .panel {
     grid-column: 1 / -1;
     display: none;
-    background: rgba(18,28,58,0.97);
-    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    padding: 2.2rem 3rem;
-    animation: slideIn 0.28s ease;
+    animation: fadeIn 0.22s ease;
   }
 
-  .panel.open {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-  }
+  .panel.open { display: block; }
 
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(-6px); }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .panel-left h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
-    color: var(--cream);
-    margin-bottom: 0.6rem;
+  .panel-header {
+    padding: 2rem 3rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
 
-  .quote-block {
-    background: rgba(139,26,46,0.15);
-    border-left: 2px solid var(--gold);
-    padding: 0.8rem 1rem;
-    margin: 0.9rem 0;
+  .panel-header-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .edu  .panel-header-dot { background: var(--c-edu); }
+  .sav  .panel-header-dot { background: var(--c-sav); }
+  .lec  .panel-header-dot { background: var(--c-lec); }
+  .pat  .panel-header-dot { background: var(--c-pat); }
+  .art  .panel-header-dot { background: var(--c-art); }
+  .pop  .panel-header-dot { background: var(--c-pop); }
+  .sci  .panel-header-dot { background: var(--c-sci); }
+  .aud  .panel-header-dot { background: var(--c-aud); }
+  .dro  .panel-header-dot { background: var(--c-dro); }
+
+  .panel-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .panel-header .panel-close {
+    margin-left: auto;
+    font-size: 0.7rem;
+    color: var(--ink-light);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    transition: background 0.15s;
+  }
+
+  .panel-close:hover { background: var(--off); }
+
+  .panel-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .panel-left {
+    padding: 2rem 3rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .panel-right {
+    padding: 2rem 3rem;
+  }
+
+  /* Quote */
+  .quote {
+    border-left: 3px solid var(--ink);
+    padding: 0.8rem 1.2rem;
+    margin: 1.2rem 0;
+  }
+
+  .quote p {
+    font-family: 'DM Serif Display', serif;
     font-style: italic;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     line-height: 1.65;
-    color: #d4c9a8;
+    color: var(--ink);
   }
 
-  .quote-block cite {
+  .quote cite {
     display: block;
+    margin-top: 0.5rem;
+    font-family: 'DM Sans', sans-serif;
     font-style: normal;
-    font-size: 0.67rem;
-    color: rgba(201,168,76,0.58);
-    margin-top: 0.35rem;
-    letter-spacing: 0.06em;
+    font-size: 0.65rem;
+    color: var(--ink-light);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
 
   .panel-left p {
-    font-size: 0.8rem;
-    line-height: 1.72;
-    color: rgba(228,220,200,0.78);
-    margin-bottom: 0.65rem;
-  }
-
-  .scopex-note {
-    margin-top: 0.8rem;
-    background: rgba(201,168,76,0.06);
-    border: 1px solid rgba(201,168,76,0.14);
-    border-radius: 6px;
-    padding: 0.75rem 0.9rem;
-    font-size: 0.74rem;
-    color: rgba(228,220,200,0.6);
-    line-height: 1.6;
-  }
-
-  .scopex-note strong { color: var(--gold-light); font-style: italic; }
-
-  .panel-right h3 {
-    font-family: 'Playfair Display', serif;
     font-size: 0.82rem;
-    color: var(--gold-light);
-    letter-spacing: 0.08em;
+    line-height: 1.75;
+    color: var(--ink-mid);
+    margin-bottom: 0.8rem;
+    font-weight: 300;
+  }
+
+  .scopex-q {
+    background: var(--off);
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .scopex-q .label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+    color: var(--ink-light);
+    margin-bottom: 0.4rem;
+  }
+
+  .scopex-q p {
+    font-size: 0.78rem;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 300;
+  }
+
+  /* Data table */
+  .data-label-top {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 2px solid var(--ink);
   }
 
   .data-row {
@@ -305,526 +386,606 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
   }
 
   .data-row:last-child { border-bottom: none; }
 
-  .data-label {
-    font-size: 0.76rem;
-    color: var(--text-muted);
+  .d-label {
+    font-size: 0.78rem;
+    color: var(--ink-mid);
+    font-weight: 300;
     flex: 1;
     line-height: 1.4;
   }
 
-  .data-source {
+  .d-source {
     display: block;
     font-size: 0.6rem;
-    color: rgba(201,168,76,0.38);
-    margin-top: 0.1rem;
+    color: var(--ink-light);
+    margin-top: 0.15rem;
+    font-style: italic;
   }
 
-  .data-val {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.05rem;
-    color: var(--gold-light);
-    font-weight: 500;
+  .d-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--ink);
     white-space: nowrap;
   }
 
   /* ── FOOTER ── */
   footer {
-    position: relative;
-    z-index: 10;
-    padding: 1.2rem 3rem;
-    border-top: 1px solid var(--border);
+    background: var(--ink);
+    color: #666;
+    padding: 1.5rem 3rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.8rem;
-    background: rgba(13,27,62,0.5);
+    gap: 1rem;
   }
 
   footer p {
-    font-size: 0.7rem;
-    color: rgba(201,168,76,0.45);
-    font-style: italic;
+    font-size: 0.68rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
   }
 
   .founders {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
 
   .founder {
     font-size: 0.62rem;
-    color: rgba(201,168,76,0.55);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 10px;
-    padding: 0.12rem 0.45rem;
-    letter-spacing: 0.03em;
+    color: #555;
+    border: 1px solid #333;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    font-weight: 300;
+    letter-spacing: 0.04em;
   }
 
-  @media (max-width: 700px) {
-    main { grid-template-columns: 1fr 1fr; }
-    .panel.open { grid-template-columns: 1fr; }
-    header { padding: 1.2rem 1.5rem; }
-    .hugo-banner { padding: 1rem 1.5rem; }
-    footer { padding: 1rem 1.5rem; }
+  @media (max-width: 680px) {
+    .grid { grid-template-columns: 1fr 1fr; border-left: none; }
+    .panel-body { grid-template-columns: 1fr; }
+    .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+    header, .hugo-strip, .panel-left, .panel-right, footer { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .panel-header { padding-left: 1.2rem; padding-right: 1.2rem; }
   }
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
-
 <header>
-  <div class="logo-seal">⚖</div>
-  <div class="header-text">
-    <h1>ScopeX · La République aux Rayons X</h1>
+  <div class="header-left">
+    <h1>ScopeX <span>· La République aux Rayons X</span></h1>
     <div class="sub">Galaxie des réalisations républicaines — données et idéaux en dialogue</div>
   </div>
-  <div class="header-badge">Version de travail</div>
+  <div class="header-right">
+    Projet citoyen · Non monétisable<br>
+    Données sourcées · En construction
+  </div>
 </header>
 
-<div class="hugo-banner">
-  « Il faudrait multiplier les écoles, les chaires, les bibliothèques, les musées, les théâtres, les librairies ; il faudrait faire pénétrer de toutes parts la lumière dans l'esprit du peuple, car c'est par les ténèbres qu'on le perd. »
-  <cite>— Victor Hugo, Assemblée nationale, 11 novembre 1848</cite>
+<div class="hugo-strip">
+  <blockquote>
+    « Il faudrait multiplier les écoles, les chaires, les bibliothèques, les musées, les théâtres, les librairies ; il faudrait faire pénétrer de toutes parts la lumière dans l'esprit du peuple, car c'est par les ténèbres qu'on le perd. »
+  </blockquote>
+  <cite>Victor Hugo<br>Assemblée nationale, 11 nov. 1848</cite>
 </div>
 
-<main id="grid">
+<div class="grid" id="grid">
 
   <!-- ÉDUCATION -->
-  <div class="card education" onclick="toggle('education')">
-    <span class="card-icon">🎓</span>
-    <div class="card-name">Éducation</div>
-    <div class="card-sub">L'école, promesse républicaine première</div>
-    <div class="stat-pill">12 421 collèges & lycées</div>
-    <div class="tags">
+  <div class="card edu" onclick="toggle('edu')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Éducation</div>
+    <div class="card-name">L'école,<br>promesse fondatrice</div>
+    <div class="card-sub">De Jules Ferry à aujourd'hui</div>
+    <div class="card-stat">10,1 M</div>
+    <div class="card-stat-label">élèves dans le public</div>
+    <div class="card-tags">
       <span class="tag">Universités</span>
       <span class="tag">INSPE</span>
       <span class="tag">Écoles primaires</span>
       <span class="tag">Formation continue</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- SAVOIR & RECHERCHE -->
-  <div class="card savoir" onclick="toggle('savoir')">
-    <span class="card-icon">🏛</span>
-    <div class="card-name">Savoir & Recherche</div>
-    <div class="card-sub">La science au service de la Cité</div>
-    <div class="stat-pill">~260 000 chercheurs publics</div>
-    <div class="tags">
+  <div class="card sav" onclick="toggle('sav')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Savoir & Recherche</div>
+    <div class="card-name">La science<br>au service de la Cité</div>
+    <div class="card-sub">Renan et l'avenir de la raison</div>
+    <div class="card-stat">~260 000</div>
+    <div class="card-stat-label">chercheurs publics</div>
+    <div class="card-tags">
       <span class="tag">CNRS</span>
       <span class="tag">EHESS</span>
       <span class="tag">Collège de France</span>
       <span class="tag">Académies</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- LECTURE & DIFFUSION -->
-  <div class="card lecture" onclick="toggle('lecture')">
-    <span class="card-icon">📚</span>
-    <div class="card-name">Lecture & Diffusion</div>
-    <div class="card-sub">La bibliothèque, temple laïc du savoir</div>
-    <div class="stat-pill">16 500 bibliothèques publiques</div>
-    <div class="tags">
+  <div class="card lec" onclick="toggle('lec')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Lecture & Diffusion</div>
+    <div class="card-name">La bibliothèque,<br>temple laïc du savoir</div>
+    <div class="card-sub">Hugo et la lumière pour tous</div>
+    <div class="card-stat">16 500</div>
+    <div class="card-stat-label">bibliothèques publiques</div>
+    <div class="card-tags">
       <span class="tag">BnF</span>
       <span class="tag">Médiathèques</span>
       <span class="tag">Pass Culture</span>
       <span class="tag">Librairies</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- PATRIMOINE -->
-  <div class="card patrimoine" onclick="toggle('patrimoine')">
-    <span class="card-icon">🏺</span>
-    <div class="card-name">Patrimoine & Mémoire</div>
-    <div class="card-sub">La continuité du récit national</div>
-    <div class="stat-pill">43 000 monuments protégés</div>
-    <div class="tags">
+  <div class="card pat" onclick="toggle('pat')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Patrimoine & Mémoire</div>
+    <div class="card-name">La nation<br>transmise</div>
+    <div class="card-sub">Renan et l'âme collective</div>
+    <div class="card-stat">43 000</div>
+    <div class="card-stat-label">monuments protégés</div>
+    <div class="card-tags">
       <span class="tag">Musées nationaux</span>
       <span class="tag">Archives publiques</span>
       <span class="tag">Patrimoine régional</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- ARTS & SPECTACLE -->
-  <div class="card arts" onclick="toggle('arts')">
-    <span class="card-icon">🎭</span>
-    <div class="card-name">Arts & Spectacle</div>
-    <div class="card-sub">L'art, vecteur de la conscience collective</div>
-    <div class="stat-pill">240 scènes nationales & CDN</div>
-    <div class="tags">
+  <div class="card art" onclick="toggle('art')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Arts & Spectacle</div>
+    <div class="card-name">Émanciper<br>par le beau</div>
+    <div class="card-sub">Malraux, héritier républicain</div>
+    <div class="card-stat">240</div>
+    <div class="card-stat-label">scènes nationales & CDN</div>
+    <div class="card-tags">
       <span class="tag">Théâtres publics</span>
       <span class="tag">Conservatoires</span>
       <span class="tag">Festivals</span>
       <span class="tag">Maisons de la culture</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- ÉDUCATION POPULAIRE -->
-  <div class="card populaire" onclick="toggle('populaire')">
-    <span class="card-icon">🤝</span>
-    <div class="card-name">Éducation populaire</div>
-    <div class="card-sub">L'émancipation de tous, pas d'une élite</div>
-    <div class="stat-pill">~1 300 MJC en France</div>
-    <div class="tags">
+  <div class="card pop" onclick="toggle('pop')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Éducation populaire</div>
+    <div class="card-name">La République<br>du peuple entier</div>
+    <div class="card-sub">Buisson et l'émancipation de tous</div>
+    <div class="card-stat">~1 300</div>
+    <div class="card-stat-label">MJC en France</div>
+    <div class="card-tags">
       <span class="tag">Maisons de quartier</span>
       <span class="tag">Centres sociaux</span>
       <span class="tag">Associations culturelles</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- CULTURE SCIENTIFIQUE -->
-  <div class="card scientifique" onclick="toggle('scientifique')">
-    <span class="card-icon">🔬</span>
-    <div class="card-name">Culture scientifique</div>
-    <div class="card-sub">Renan : la science, fondement de la nation</div>
-    <div class="stat-pill">30 muséums d'histoire naturelle</div>
-    <div class="tags">
+  <div class="card sci" onclick="toggle('sci')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Culture scientifique</div>
+    <div class="card-name">La raison<br>partagée</div>
+    <div class="card-sub">Renan : science et démocratie</div>
+    <div class="card-stat">~200</div>
+    <div class="card-stat-label">centres de culture scientifique</div>
+    <div class="card-tags">
       <span class="tag">Planétariums</span>
       <span class="tag">Cités des sciences</span>
       <span class="tag">CCSTI</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- CINÉMA & AUDIOVISUEL -->
-  <div class="card audiovisuel" onclick="toggle('audiovisuel')">
-    <span class="card-icon">🎬</span>
-    <div class="card-name">Cinéma & Audiovisuel</div>
-    <div class="card-sub">L'exception culturelle, exception républicaine</div>
-    <div class="stat-pill">5 600 écrans en France</div>
-    <div class="tags">
+  <div class="card aud" onclick="toggle('aud')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Cinéma & Audiovisuel</div>
+    <div class="card-name">L'exception<br>comme principe</div>
+    <div class="card-sub">Le modèle français face au marché</div>
+    <div class="card-stat">5 600</div>
+    <div class="card-stat-label">écrans en France</div>
+    <div class="card-tags">
       <span class="tag">CNC</span>
       <span class="tag">Cinémathèques</span>
       <span class="tag">Art & Essai</span>
       <span class="tag">Audiovisuel public</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- DROITS & CITOYENNETÉ -->
-  <div class="card droits" onclick="toggle('droits')">
-    <span class="card-icon">📜</span>
-    <div class="card-name">Droits & Citoyenneté</div>
-    <div class="card-sub">La DDHC, boussole de la République</div>
-    <div class="stat-pill">Art. XI : liberté de communication</div>
-    <div class="tags">
+  <div class="card dro" onclick="toggle('dro')">
+    <div class="card-color-bar"></div>
+    <div class="card-badge">Droits & Citoyenneté</div>
+    <div class="card-name">La DDHC,<br>boussole permanente</div>
+    <div class="card-sub">1789 à l'épreuve des chiffres</div>
+    <div class="card-stat">Art. XI</div>
+    <div class="card-stat-label">liberté de communication — fondement de ScopeX</div>
+    <div class="card-tags">
       <span class="tag">Déclaration 1789</span>
       <span class="tag">Institutions</span>
       <span class="tag">Laïcité</span>
       <span class="tag">Participation</span>
     </div>
-    <div class="card-hint">↓ Explorer</div>
+    <div class="card-cta">Explorer →</div>
   </div>
 
   <!-- ══ PANELS ══ -->
 
-  <div class="panel" id="panel-education">
-    <div class="panel-left">
-      <h2>🎓 Éducation — la promesse fondatrice</h2>
-      <div class="quote-block">
-        « Instruire, c'est construire. »
-        <cite>— Jules Ferry, fondateur de l'école laïque, gratuite et obligatoire (1881-1882)</cite>
-      </div>
-      <p>Ferdinand Buisson, architecte de l'école républicaine et prix Nobel de la paix, voyait dans l'instruction publique le seul levier capable de transformer des sujets en citoyens libres. ScopeX mesure où en est cette promesse.</p>
-      <div class="quote-block">
-        « La libre communication des pensées et des opinions est un des droits les plus précieux de l'Homme. »
-        <cite>— DDHC, Art. XI, 1789</cite>
-      </div>
-      <p>Entre idéal et réalité, les chiffres révèlent des inégalités territoriales et sociales que la statistique publique permet de cartographier avec précision sur le temps long.</p>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> Le taux d'encadrement varie-t-il selon les académies ? Quel est le lien entre catégorie socio-professionnelle des parents et réussite au bac ? Les données de la DEPP permettent de le mesurer sur 20 ans.
-      </div>
+  <div class="panel edu" id="panel-edu">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Éducation — la promesse fondatrice</h2>
+      <div class="panel-close" onclick="close_panel('edu')">Fermer ✕</div>
     </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : DEPP / MEN</h3>
-      <div class="data-row">
-        <div class="data-label">Élèves dans le public<span class="data-source">Primaire + secondaire cumulés</span></div>
-        <div class="data-val">10,1 M</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Instruire, c'est construire. »</p>
+          <cite>Jules Ferry — fondateur de l'école laïque, gratuite et obligatoire (1881-1882)</cite>
+        </div>
+        <p>Ferdinand Buisson, architecte de l'école républicaine et prix Nobel de la paix, voyait dans l'instruction publique le seul levier capable de transformer des sujets en citoyens libres.</p>
+        <div class="quote">
+          <p>« La libre communication des pensées et des opinions est un des droits les plus précieux de l'Homme. »</p>
+          <cite>DDHC, Art. XI, 1789</cite>
+        </div>
+        <p>Entre idéal et réalité, les chiffres révèlent des inégalités territoriales et sociales que la statistique publique permet de cartographier avec précision sur le temps long.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>Le taux d'encadrement varie-t-il selon les académies ? Quel est le lien entre catégorie socio-professionnelle des parents et réussite au bac sur 20 ans ?</p>
+        </div>
       </div>
-      <div class="data-row">
-        <div class="data-label">Enseignants du public<span class="data-source">1er et 2nd degrés</span></div>
-        <div class="data-val">870 000</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Taux de réussite au bac 2023<span class="data-source">Toutes séries, France entière</span></div>
-        <div class="data-val">88,4 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Dépense éducation / PIB<span class="data-source">Moy. OCDE : 5,0 %</span></div>
-        <div class="data-val">5,5 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Écoles en zone prioritaire<span class="data-source">REP et REP+</span></div>
-        <div class="data-val">7 500</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-savoir">
-    <div class="panel-left">
-      <h2>🏛 Savoir & Recherche — la République savante</h2>
-      <div class="quote-block">
-        « La science est la patrie de l'intelligence. »
-        <cite>— Ernest Renan, L'Avenir de la science, 1890</cite>
-      </div>
-      <p>Renan voyait dans la science non un luxe d'érudits, mais le fondement même de toute société éclairée. Gambetta plaçait les « couches nouvelles » — instituteurs, médecins, ingénieurs — au cœur du projet républicain.</p>
-      <div class="quote-block">
-        « Tout citoyen peut donc parler, écrire, imprimer librement. »
-        <cite>— DDHC, Art. XI — la liberté de recherche en est le prolongement naturel</cite>
-      </div>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> La France tient-elle ses ambitions de R&D ? Comment se situe-t-elle face à l'objectif européen de 3 % du PIB consacré à la recherche ?
-      </div>
-    </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : MESRI / CNRS</h3>
-      <div class="data-row">
-        <div class="data-label">Chercheurs et enseignants-chercheurs<span class="data-source">Secteur public, équivalents temps plein</span></div>
-        <div class="data-val">~260 000</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Dépense intérieure R&D / PIB<span class="data-source">Objectif OCDE : 3 %</span></div>
-        <div class="data-val">2,2 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Unités de recherche CNRS<span class="data-source">Laboratoires mixtes et propres</span></div>
-        <div class="data-val">~1 100</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Prix Nobel français depuis 1945<span class="data-source">Sciences, littérature, paix</span></div>
-        <div class="data-val">67</div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : DEPP / MEN</div>
+        <div class="data-row">
+          <div class="d-label">Élèves dans le public<span class="d-source">Primaire + secondaire cumulés</span></div>
+          <div class="d-val">10,1 M</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Enseignants du public<span class="d-source">1er et 2nd degrés</span></div>
+          <div class="d-val">870 000</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Taux de réussite au bac 2023<span class="d-source">Toutes séries, France entière</span></div>
+          <div class="d-val">88,4 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Dépense éducation / PIB<span class="d-source">Moy. OCDE : 5,0 %</span></div>
+          <div class="d-val">5,5 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Écoles en zone prioritaire<span class="d-source">REP et REP+</span></div>
+          <div class="d-val">7 500</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="panel-lecture">
-    <div class="panel-left">
-      <h2>📚 Lecture & Diffusion — lumière pour tous</h2>
-      <div class="quote-block">
-        « Il faudrait multiplier les bibliothèques, les maisons de lecture pour les hommes. »
-        <cite>— Victor Hugo, 1848</cite>
-      </div>
-      <p>Hugo rêvait d'un pays où nul citoyen ne serait tenu à l'écart de la connaissance par l'absence de livre. La bibliothèque publique est l'incarnation la plus directe de cette utopie réalisée.</p>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> L'accès à la lecture est-il réellement universel ? Quelles fractures territoriales, sociales ou numériques persistent dans l'accès à l'écrit ?
-      </div>
+  <div class="panel sav" id="panel-sav">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Savoir & Recherche — la République savante</h2>
+      <div class="panel-close" onclick="close_panel('sav')">Fermer ✕</div>
     </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : Min. Culture / BnF</h3>
-      <div class="data-row">
-        <div class="data-label">Bibliothèques et médiathèques publiques<span class="data-source">Réseau territorial, France entière</span></div>
-        <div class="data-val">16 500</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« La science est la patrie de l'intelligence. »</p>
+          <cite>Ernest Renan — L'Avenir de la science, 1890</cite>
+        </div>
+        <p>Renan voyait dans la science non un luxe d'érudits, mais le fondement même de toute société éclairée. Gambetta plaçait les « couches nouvelles » au cœur du projet républicain.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>La France tient-elle ses ambitions de R&D ? Comment se situe-t-elle face à l'objectif européen de 3 % du PIB ?</p>
+        </div>
       </div>
-      <div class="data-row">
-        <div class="data-label">Inscrits en bibliothèque municipale<span class="data-source">% de la population — 2022</span></div>
-        <div class="data-val">17 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Titres édités par an en France<span class="data-source">Dépôt légal BnF</span></div>
-        <div class="data-val">~100 000</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Crédit Pass Culture (18 ans)<span class="data-source">Accès à la culture dès la majorité</span></div>
-        <div class="data-val">800 €</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-patrimoine">
-    <div class="panel-left">
-      <h2>🏺 Patrimoine & Mémoire — la nation transmise</h2>
-      <div class="quote-block">
-        « Les nations sont des âmes, des principes spirituels. Deux choses constituent cette âme : l'une est dans le passé, l'autre dans le présent. »
-        <cite>— Ernest Renan, Qu'est-ce qu'une nation ?, 1882</cite>
-      </div>
-      <p>Pour Renan, la mémoire collective est constitutive de l'identité nationale. Ce qu'une société choisit de conserver — et ce qu'elle laisse disparaître — révèle ses valeurs profondes.</p>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> Le patrimoine est-il accessible à tous ? Les budgets de restauration sont-ils en adéquation avec l'ampleur du legs ?
-      </div>
-    </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : Min. Culture / DRAC</h3>
-      <div class="data-row">
-        <div class="data-label">Monuments classés ou inscrits MH<span class="data-source">Inventaire général du patrimoine</span></div>
-        <div class="data-val">43 000</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Visites musées nationaux / an<span class="data-source">Tendance longue</span></div>
-        <div class="data-val">~30 M</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Budget patrimoine État<span class="data-source">Hors collectivités locales</span></div>
-        <div class="data-val">~350 M€</div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : MESRI / CNRS</div>
+        <div class="data-row">
+          <div class="d-label">Chercheurs et enseignants-chercheurs<span class="d-source">Secteur public, équivalents temps plein</span></div>
+          <div class="d-val">~260 000</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Dépense intérieure R&D / PIB<span class="d-source">Objectif OCDE : 3 %</span></div>
+          <div class="d-val">2,2 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Unités de recherche CNRS<span class="d-source">Laboratoires mixtes et propres</span></div>
+          <div class="d-val">~1 100</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Prix Nobel français depuis 1945<span class="d-source">Sciences, littérature, paix</span></div>
+          <div class="d-val">67</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="panel-arts">
-    <div class="panel-left">
-      <h2>🎭 Arts & Spectacle — émanciper par le beau</h2>
-      <div class="quote-block">
-        « Rendre accessibles les œuvres capitales de l'humanité au plus grand nombre possible de Français. »
-        <cite>— André Malraux, mission des Maisons de la Culture, 1959</cite>
-      </div>
-      <p>Héritier des bâtisseurs républicains, Malraux voyait dans la démocratisation culturelle un prolongement naturel de l'idéal d'égalité. ScopeX mesure si cette promesse est tenue sur tout le territoire.</p>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> La fréquentation des scènes nationales reflète-t-elle la diversité sociale de la population ? Quelle est la part des publics populaires dans les équipements labellisés ?
-      </div>
+  <div class="panel lec" id="panel-lec">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Lecture & Diffusion — lumière pour tous</h2>
+      <div class="panel-close" onclick="close_panel('lec')">Fermer ✕</div>
     </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : CNM / Min. Culture</h3>
-      <div class="data-row">
-        <div class="data-label">Scènes nationales et CDN<span class="data-source">Réseau de diffusion labellisé</span></div>
-        <div class="data-val">240</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Il faudrait multiplier les bibliothèques, les maisons de lecture pour les hommes. »</p>
+          <cite>Victor Hugo, 1848</cite>
+        </div>
+        <p>Hugo rêvait d'un pays où nul citoyen ne serait tenu à l'écart de la connaissance par l'absence de livre. La bibliothèque publique est l'incarnation directe de cette utopie réalisée.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>L'accès à la lecture est-il réellement universel ? Quelles fractures territoriales persistent dans l'accès à l'écrit ?</p>
+        </div>
       </div>
-      <div class="data-row">
-        <div class="data-label">Conservatoires à rayonnement régional<span class="data-source">CRR et CRD en France</span></div>
-        <div class="data-val">~400</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Festivals répertoriés<span class="data-source">Toutes disciplines — Min. Culture</span></div>
-        <div class="data-val">>7 000</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-populaire">
-    <div class="panel-left">
-      <h2>🤝 Éducation populaire — la République du peuple entier</h2>
-      <div class="quote-block">
-        « L'éducation populaire est la condition de la démocratie. Sans elle, le suffrage universel est un mensonge. »
-        <cite>— Ferdinand Buisson, fondateur de la Ligue des droits de l'Homme, 1902</cite>
-      </div>
-      <p>Buisson savait que l'école ne suffit pas. L'éducation populaire prolonge la mission républicaine hors les murs scolaires — dans les MJC, les foyers ruraux, les associations de quartier.</p>
-      <div class="quote-block">
-        « Les hommes naissent et demeurent libres et égaux en droits. »
-        <cite>— DDHC, Art. I — l'égalité comme horizon permanent à mesurer</cite>
-      </div>
-    </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : INJEP / Min. Jeunesse</h3>
-      <div class="data-row">
-        <div class="data-label">MJC en France<span class="data-source">Maisons des Jeunes et de la Culture</span></div>
-        <div class="data-val">~1 300</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Associations déclarées actives<span class="data-source">Secteur culturel, social, éducatif</span></div>
-        <div class="data-val">1,5 M</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Bénévoles dans le secteur associatif<span class="data-source">Équivalent temps plein estimé</span></div>
-        <div class="data-val">13 M</div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : Min. Culture / BnF</div>
+        <div class="data-row">
+          <div class="d-label">Bibliothèques et médiathèques publiques<span class="d-source">Réseau territorial, France entière</span></div>
+          <div class="d-val">16 500</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Inscrits en bibliothèque municipale<span class="d-source">% de la population — 2022</span></div>
+          <div class="d-val">17 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Titres édités par an en France<span class="d-source">Dépôt légal BnF</span></div>
+          <div class="d-val">~100 000</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Crédit Pass Culture (18 ans)<span class="d-source">Accès à la culture dès la majorité</span></div>
+          <div class="d-val">800 €</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="panel-scientifique">
-    <div class="panel-left">
-      <h2>🔬 Culture scientifique — la raison partagée</h2>
-      <div class="quote-block">
-        « La science est la base nécessaire de toute philosophie sérieuse et de toute politique sérieuse. »
-        <cite>— Ernest Renan, L'Avenir de la science, 1848</cite>
-      </div>
-      <p>Dans un monde où la désinformation prolifère, la culture scientifique devient un enjeu démocratique central. ScopeX voit dans sa mesure un acte politique au sens noble du terme — un rempart contre les « ténèbres » que Hugo redoutait.</p>
-      <div class="scopex-note">
-        <strong>ScopeX interroge :</strong> Le maillage des lieux de culture scientifique est-il équitable entre métropoles et territoires ruraux ?
-      </div>
+  <div class="panel pat" id="panel-pat">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Patrimoine & Mémoire — la nation transmise</h2>
+      <div class="panel-close" onclick="close_panel('pat')">Fermer ✕</div>
     </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : Universcience / SGPI</h3>
-      <div class="data-row">
-        <div class="data-label">Muséums d'histoire naturelle<span class="data-source">Réseau national et régional</span></div>
-        <div class="data-val">30</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Les nations sont des âmes, des principes spirituels. Deux choses constituent cette âme : l'une est dans le passé, l'autre dans le présent. »</p>
+          <cite>Ernest Renan — Qu'est-ce qu'une nation ?, 1882</cite>
+        </div>
+        <p>Pour Renan, la mémoire collective est constitutive de l'identité nationale. Ce qu'une société choisit de conserver — et ce qu'elle laisse disparaître — révèle ses valeurs profondes.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>Le patrimoine est-il accessible à tous ? Les budgets de restauration sont-ils en adéquation avec l'ampleur du legs ?</p>
+        </div>
       </div>
-      <div class="data-row">
-        <div class="data-label">Visiteurs Cité des Sciences / an<span class="data-source">La Villette, Paris — moyenne</span></div>
-        <div class="data-val">2,5 M</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">CCSTI — centres de culture scientifique<span class="data-source">Maillage territorial</span></div>
-        <div class="data-val">~200</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="panel" id="panel-audiovisuel">
-    <div class="panel-left">
-      <h2>🎬 Cinéma & Audiovisuel — l'exception comme principe</h2>
-      <div class="quote-block">
-        « Le cinéma est une industrie. »
-        <cite>— André Malraux — et une industrie républicaine, protégée et soutenue par l'État</cite>
-      </div>
-      <p>Le modèle français de soutien public au cinéma, incarné par le CNC, est une exception mondiale héritée de la volonté républicaine de préserver la diversité culturelle face au marché. ScopeX en mesure la vitalité réelle et les fragilités.</p>
-    </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : CNC</h3>
-      <div class="data-row">
-        <div class="data-label">Écrans de cinéma en France<span class="data-source">Salles commerciales et associatives</span></div>
-        <div class="data-val">5 600</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Films français produits / an<span class="data-source">Agréments CNC — tendance</span></div>
-        <div class="data-val">~300</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Part de marché cinéma français<span class="data-source">Entrées en salles — 2023</span></div>
-        <div class="data-val">34 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Salles classées Art & Essai<span class="data-source">Label qualité CNC</span></div>
-        <div class="data-val">1 200</div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : Min. Culture / DRAC</div>
+        <div class="data-row">
+          <div class="d-label">Monuments classés ou inscrits MH<span class="d-source">Inventaire général du patrimoine</span></div>
+          <div class="d-val">43 000</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Visites musées nationaux / an<span class="d-source">Tendance longue</span></div>
+          <div class="d-val">~30 M</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Budget patrimoine État<span class="d-source">Hors collectivités locales</span></div>
+          <div class="d-val">~350 M€</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="panel-droits">
-    <div class="panel-left">
-      <h2>📜 Droits & Citoyenneté — la DDHC, boussole permanente</h2>
-      <div class="quote-block">
-        « Le but de toute association politique est la conservation des droits naturels et imprescriptibles de l'Homme. »
-        <cite>— DDHC, Art. II, 26 août 1789</cite>
-      </div>
-      <p>ScopeX ne se contente pas de décrire : il mesure l'écart entre les principes proclamés en 1789 et la réalité vécue. La confiance dans les institutions, la participation électorale, l'accès aux droits sont autant de thermomètres démocratiques.</p>
-      <div class="quote-block">
-        « La République, c'est la vérité. »
-        <cite>— Léon Gambetta, 1877 — ScopeX est son instrument de mesure</cite>
-      </div>
+  <div class="panel art" id="panel-art">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Arts & Spectacle — émanciper par le beau</h2>
+      <div class="panel-close" onclick="close_panel('art')">Fermer ✕</div>
     </div>
-    <div class="panel-right">
-      <h3>Données clés · Source : INSEE / CEVIPOF</h3>
-      <div class="data-row">
-        <div class="data-label">Participation présidentielle 2022 (1er tour)<span class="data-source">Recul historique à surveiller</span></div>
-        <div class="data-val">73,7 %</div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Rendre accessibles les œuvres capitales de l'humanité au plus grand nombre possible de Français. »</p>
+          <cite>André Malraux — mission des Maisons de la Culture, 1959</cite>
+        </div>
+        <p>Héritier des bâtisseurs républicains, Malraux voyait dans la démocratisation culturelle un prolongement naturel de l'idéal d'égalité.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>La fréquentation des scènes nationales reflète-t-elle la diversité sociale ? Quelle est la part des publics populaires dans les équipements labellisés ?</p>
+        </div>
       </div>
-      <div class="data-row">
-        <div class="data-label">Confiance dans le Parlement<span class="data-source">Baromètre CEVIPOF 2024</span></div>
-        <div class="data-val">22 %</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Loi de séparation Église-État — Combes<span class="data-source">Fondatrice de la laïcité républicaine</span></div>
-        <div class="data-val">1905</div>
-      </div>
-      <div class="data-row">
-        <div class="data-label">Nouvelles associations déclarées / an<span class="data-source">Vitalité du tissu civique</span></div>
-        <div class="data-val">~70 000</div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : CNM / Min. Culture</div>
+        <div class="data-row">
+          <div class="d-label">Scènes nationales et CDN<span class="d-source">Réseau de diffusion labellisé</span></div>
+          <div class="d-val">240</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Conservatoires à rayonnement régional<span class="d-source">CRR et CRD en France</span></div>
+          <div class="d-val">~400</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Festivals répertoriés<span class="d-source">Toutes disciplines — Min. Culture</span></div>
+          <div class="d-val">>7 000</div>
+        </div>
       </div>
     </div>
   </div>
 
-</main>
+  <div class="panel pop" id="panel-pop">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Éducation populaire — la République du peuple entier</h2>
+      <div class="panel-close" onclick="close_panel('pop')">Fermer ✕</div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« L'éducation populaire est la condition de la démocratie. Sans elle, le suffrage universel est un mensonge. »</p>
+          <cite>Ferdinand Buisson — fondateur de la Ligue des droits de l'Homme, 1902</cite>
+        </div>
+        <p>Buisson savait que l'école ne suffit pas. L'éducation populaire prolonge la mission républicaine hors les murs scolaires — dans les MJC, les foyers ruraux, les associations de quartier.</p>
+        <div class="quote">
+          <p>« Les hommes naissent et demeurent libres et égaux en droits. »</p>
+          <cite>DDHC, Art. I — l'égalité comme horizon permanent à mesurer</cite>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : INJEP / Min. Jeunesse</div>
+        <div class="data-row">
+          <div class="d-label">MJC en France<span class="d-source">Maisons des Jeunes et de la Culture</span></div>
+          <div class="d-val">~1 300</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Associations déclarées actives<span class="d-source">Secteur culturel, social, éducatif</span></div>
+          <div class="d-val">1,5 M</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Bénévoles dans le secteur associatif<span class="d-source">Équivalent temps plein estimé</span></div>
+          <div class="d-val">13 M</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel sci" id="panel-sci">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Culture scientifique — la raison partagée</h2>
+      <div class="panel-close" onclick="close_panel('sci')">Fermer ✕</div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« La science est la base nécessaire de toute philosophie sérieuse et de toute politique sérieuse. »</p>
+          <cite>Ernest Renan — L'Avenir de la science, 1848</cite>
+        </div>
+        <p>Dans un monde où la désinformation prolifère, la culture scientifique devient un enjeu démocratique central. ScopeX voit dans sa mesure un acte politique au sens noble du terme.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>Le maillage des lieux de culture scientifique est-il équitable entre métropoles et territoires ruraux ?</p>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : Universcience / SGPI</div>
+        <div class="data-row">
+          <div class="d-label">Muséums d'histoire naturelle<span class="d-source">Réseau national et régional</span></div>
+          <div class="d-val">30</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Visiteurs Cité des Sciences / an<span class="d-source">La Villette, Paris — moyenne</span></div>
+          <div class="d-val">2,5 M</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">CCSTI — centres de culture scientifique<span class="d-source">Maillage territorial</span></div>
+          <div class="d-val">~200</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel aud" id="panel-aud">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Cinéma & Audiovisuel — l'exception comme principe</h2>
+      <div class="panel-close" onclick="close_panel('aud')">Fermer ✕</div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Le cinéma est une industrie. »</p>
+          <cite>André Malraux — et une industrie républicaine, protégée par l'État</cite>
+        </div>
+        <p>Le modèle français de soutien public au cinéma, incarné par le CNC, est une exception mondiale héritée de la volonté républicaine de préserver la diversité culturelle face au marché.</p>
+        <div class="scopex-q">
+          <div class="label">ScopeX interroge</div>
+          <p>Le cinéma français maintient-il sa part de marché ? L'audiovisuel public remplit-il encore sa mission d'éducation et d'information ?</p>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : CNC</div>
+        <div class="data-row">
+          <div class="d-label">Écrans de cinéma en France<span class="d-source">Salles commerciales et associatives</span></div>
+          <div class="d-val">5 600</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Films français produits / an<span class="d-source">Agréments CNC — tendance</span></div>
+          <div class="d-val">~300</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Part de marché cinéma français<span class="d-source">Entrées en salles — 2023</span></div>
+          <div class="d-val">34 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Salles classées Art & Essai<span class="d-source">Label qualité CNC</span></div>
+          <div class="d-val">1 200</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel dro" id="panel-dro">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Droits & Citoyenneté — la DDHC, boussole permanente</h2>
+      <div class="panel-close" onclick="close_panel('dro')">Fermer ✕</div>
+    </div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <div class="quote">
+          <p>« Le but de toute association politique est la conservation des droits naturels et imprescriptibles de l'Homme. »</p>
+          <cite>DDHC, Art. II, 26 août 1789</cite>
+        </div>
+        <p>ScopeX mesure l'écart entre les principes proclamés en 1789 et la réalité vécue. La confiance dans les institutions, la participation électorale, l'accès aux droits sont autant de thermomètres démocratiques.</p>
+        <div class="quote">
+          <p>« La République, c'est la vérité. »</p>
+          <cite>Léon Gambetta, 1877 — ScopeX est son instrument de mesure</cite>
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="data-label-top">Données clés · Source : INSEE / CEVIPOF</div>
+        <div class="data-row">
+          <div class="d-label">Participation présidentielle 2022 (1er tour)<span class="d-source">Recul historique à surveiller</span></div>
+          <div class="d-val">73,7 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Confiance dans le Parlement<span class="d-source">Baromètre CEVIPOF 2024</span></div>
+          <div class="d-val">22 %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Loi de séparation Église-État<span class="d-source">Combes — fondatrice de la laïcité</span></div>
+          <div class="d-val">1905</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Nouvelles associations / an<span class="d-source">Vitalité du tissu civique</span></div>
+          <div class="d-val">~70 000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /grid -->
 
 <footer>
   <p>Projet citoyen · Non monétisable · Données sourcées · En construction permanente</p>
@@ -842,26 +1003,21 @@
   let current = null;
 
   function toggle(id) {
+    if (current === id) {
+      close_panel(id);
+      return;
+    }
+    if (current) close_panel(current, false);
+
     const panel = document.getElementById('panel-' + id);
     const cards = Array.from(document.querySelectorAll('.card'));
     const card  = document.querySelector('.card.' + id);
     const grid  = document.getElementById('grid');
 
-    if (current === id) {
-      panel.classList.remove('open');
-      current = null;
-      return;
-    }
-
-    // Close all panels
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('open'));
-
-    // Find card index and place panel after its row
     const idx    = cards.indexOf(card);
     const rowEnd = Math.ceil((idx + 1) / 3) * 3;
     const anchor = cards[Math.min(rowEnd - 1, cards.length - 1)];
 
-    // If the next sibling is already a panel, insert after it; otherwise after anchor
     let insertAfter = anchor;
     if (anchor.nextElementSibling && anchor.nextElementSibling.classList.contains('panel')) {
       insertAfter = anchor.nextElementSibling;
@@ -870,8 +1026,13 @@
 
     panel.classList.add('open');
     current = id;
-
     setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+  }
+
+  function close_panel(id, reset = true) {
+    const panel = document.getElementById('panel-' + id);
+    panel.classList.remove('open');
+    if (reset) current = null;
   }
 </script>
 </body>

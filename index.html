@@ -17,16 +17,15 @@
     --ink-light:  #888888;
     --border:     #e0e0e0;
 
-    /* Domain colours — flat, no gradient */
-    --c-edu:      #2563EB;   /* blue */
-    --c-sav:      #C2185B;   /* rose */
-    --c-lec:      #00897B;   /* teal */
-    --c-pat:      #E65100;   /* amber */
-    --c-art:      #D32F2F;   /* red */
-    --c-pop:      #5E35B1;   /* violet */
-    --c-sci:      #388E3C;   /* green */
-    --c-aud:      #F57C00;   /* orange */
-    --c-dro:      #00695C;   /* dark teal */
+    --c-edu:      #2563EB;
+    --c-sav:      #C2185B;
+    --c-lec:      #00897B;
+    --c-pat:      #E65100;
+    --c-art:      #D32F2F;
+    --c-pop:      #5E35B1;
+    --c-sci:      #388E3C;
+    --c-aud:      #F57C00;
+    --c-dro:      #00695C;
   }
 
   html { scroll-behavior: smooth; }
@@ -37,6 +36,41 @@
     color: var(--ink);
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  /* ── BETA BANNER ── */
+  .beta-banner {
+    background: #111;
+    color: #fff;
+    text-align: center;
+    padding: 0.6rem 2rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .beta-pill {
+    background: #fff;
+    color: #111;
+    border-radius: 2px;
+    padding: 0.2rem 0.7rem;
+    font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+  }
+
+  .beta-banner span {
+    color: #aaa;
+    font-weight: 300;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: none;
   }
 
   /* ── HEADER ── */
@@ -114,6 +148,23 @@
     flex-shrink: 0;
   }
 
+  /* ── DONNÉES NOTE ── */
+  .data-note {
+    background: #fffbeb;
+    border-bottom: 1px solid #f0e0a0;
+    padding: 0.8rem 3rem;
+    font-size: 0.73rem;
+    color: #7a6000;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 400;
+  }
+
+  .data-note strong {
+    font-weight: 700;
+  }
+
   /* ── GRID ── */
   .grid {
     display: grid;
@@ -189,12 +240,13 @@
   }
 
   .card-stat {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     font-weight: 700;
-    color: var(--ink);
+    color: #bbb;
     letter-spacing: -0.02em;
     line-height: 1;
     margin-bottom: 0.2rem;
+    font-style: italic;
   }
 
   .card-stat-label {
@@ -228,9 +280,6 @@
     font-weight: 500;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
   }
 
   /* ── PANEL ── */
@@ -280,7 +329,7 @@
     letter-spacing: -0.01em;
   }
 
-  .panel-header .panel-close {
+  .panel-close {
     margin-left: auto;
     font-size: 0.7rem;
     color: var(--ink-light);
@@ -299,7 +348,6 @@
   .panel-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0;
   }
 
   .panel-left {
@@ -311,7 +359,6 @@
     padding: 2rem 3rem;
   }
 
-  /* Quote */
   .quote {
     border-left: 3px solid var(--ink);
     padding: 0.8rem 1.2rem;
@@ -369,7 +416,6 @@
     font-weight: 300;
   }
 
-  /* Data table */
   .data-label-top {
     font-size: 0.6rem;
     font-weight: 700;
@@ -379,6 +425,18 @@
     margin-bottom: 1.5rem;
     padding-bottom: 0.6rem;
     border-bottom: 2px solid var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .data-label-top .pending {
+    font-size: 0.58rem;
+    color: #c09000;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
   }
 
   .data-row {
@@ -411,8 +469,9 @@
   .d-val {
     font-family: 'DM Serif Display', serif;
     font-size: 1.3rem;
-    color: var(--ink);
+    color: #bbb;
     white-space: nowrap;
+    font-style: italic;
   }
 
   /* ── FOOTER ── */
@@ -453,12 +512,18 @@
     .grid { grid-template-columns: 1fr 1fr; border-left: none; }
     .panel-body { grid-template-columns: 1fr; }
     .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
-    header, .hugo-strip, .panel-left, .panel-right, footer { padding-left: 1.2rem; padding-right: 1.2rem; }
+    header, .hugo-strip, .data-note, .panel-left, .panel-right, footer { padding-left: 1.2rem; padding-right: 1.2rem; }
     .panel-header { padding-left: 1.2rem; padding-right: 1.2rem; }
   }
 </style>
 </head>
 <body>
+
+<!-- BETA BANNER -->
+<div class="beta-banner">
+  <div class="beta-pill">Version bêta</div>
+  <span>Les données chiffrées sont en cours de vérification — elles ne constituent pas encore des références fiables</span>
+</div>
 
 <header>
   <div class="header-left">
@@ -478,6 +543,10 @@
   <cite>Victor Hugo<br>Assemblée nationale, 11 nov. 1848</cite>
 </div>
 
+<div class="data-note">
+  ⚠ <strong>Données provisoires.</strong> Les valeurs marquées X sont en attente de vérification sur les sources primaires (INSEE, DEPP, Min. Culture, CNC…). Elles seront remplacées au fur et à mesure de la validation.
+</div>
+
 <div class="grid" id="grid">
 
   <!-- ÉDUCATION -->
@@ -486,8 +555,8 @@
     <div class="card-badge">Éducation</div>
     <div class="card-name">L'école,<br>promesse fondatrice</div>
     <div class="card-sub">De Jules Ferry à aujourd'hui</div>
-    <div class="card-stat">10,1 M</div>
-    <div class="card-stat-label">élèves dans le public</div>
+    <div class="card-stat">X millions</div>
+    <div class="card-stat-label">élèves dans le public — source DEPP à vérifier</div>
     <div class="card-tags">
       <span class="tag">Universités</span>
       <span class="tag">INSPE</span>
@@ -503,8 +572,8 @@
     <div class="card-badge">Savoir & Recherche</div>
     <div class="card-name">La science<br>au service de la Cité</div>
     <div class="card-sub">Renan et l'avenir de la raison</div>
-    <div class="card-stat">~260 000</div>
-    <div class="card-stat-label">chercheurs publics</div>
+    <div class="card-stat">X 000</div>
+    <div class="card-stat-label">chercheurs publics — source MESRI à vérifier</div>
     <div class="card-tags">
       <span class="tag">CNRS</span>
       <span class="tag">EHESS</span>
@@ -520,8 +589,8 @@
     <div class="card-badge">Lecture & Diffusion</div>
     <div class="card-name">La bibliothèque,<br>temple laïc du savoir</div>
     <div class="card-sub">Hugo et la lumière pour tous</div>
-    <div class="card-stat">16 500</div>
-    <div class="card-stat-label">bibliothèques publiques</div>
+    <div class="card-stat">X 000</div>
+    <div class="card-stat-label">bibliothèques publiques — source Min. Culture à vérifier</div>
     <div class="card-tags">
       <span class="tag">BnF</span>
       <span class="tag">Médiathèques</span>
@@ -537,8 +606,8 @@
     <div class="card-badge">Patrimoine & Mémoire</div>
     <div class="card-name">La nation<br>transmise</div>
     <div class="card-sub">Renan et l'âme collective</div>
-    <div class="card-stat">43 000</div>
-    <div class="card-stat-label">monuments protégés</div>
+    <div class="card-stat">X 000</div>
+    <div class="card-stat-label">monuments protégés — source DRAC à vérifier</div>
     <div class="card-tags">
       <span class="tag">Musées nationaux</span>
       <span class="tag">Archives publiques</span>
@@ -553,8 +622,8 @@
     <div class="card-badge">Arts & Spectacle</div>
     <div class="card-name">Émanciper<br>par le beau</div>
     <div class="card-sub">Malraux, héritier républicain</div>
-    <div class="card-stat">240</div>
-    <div class="card-stat-label">scènes nationales & CDN</div>
+    <div class="card-stat">X</div>
+    <div class="card-stat-label">scènes nationales & CDN — source CNM à vérifier</div>
     <div class="card-tags">
       <span class="tag">Théâtres publics</span>
       <span class="tag">Conservatoires</span>
@@ -570,8 +639,8 @@
     <div class="card-badge">Éducation populaire</div>
     <div class="card-name">La République<br>du peuple entier</div>
     <div class="card-sub">Buisson et l'émancipation de tous</div>
-    <div class="card-stat">~1 300</div>
-    <div class="card-stat-label">MJC en France</div>
+    <div class="card-stat">X 000</div>
+    <div class="card-stat-label">MJC en France — source INJEP à vérifier</div>
     <div class="card-tags">
       <span class="tag">Maisons de quartier</span>
       <span class="tag">Centres sociaux</span>
@@ -586,8 +655,8 @@
     <div class="card-badge">Culture scientifique</div>
     <div class="card-name">La raison<br>partagée</div>
     <div class="card-sub">Renan : science et démocratie</div>
-    <div class="card-stat">~200</div>
-    <div class="card-stat-label">centres de culture scientifique</div>
+    <div class="card-stat">X</div>
+    <div class="card-stat-label">centres de culture scientifique — source Universcience à vérifier</div>
     <div class="card-tags">
       <span class="tag">Planétariums</span>
       <span class="tag">Cités des sciences</span>
@@ -602,8 +671,8 @@
     <div class="card-badge">Cinéma & Audiovisuel</div>
     <div class="card-name">L'exception<br>comme principe</div>
     <div class="card-sub">Le modèle français face au marché</div>
-    <div class="card-stat">5 600</div>
-    <div class="card-stat-label">écrans en France</div>
+    <div class="card-stat">X 000</div>
+    <div class="card-stat-label">écrans en France — source CNC à vérifier</div>
     <div class="card-tags">
       <span class="tag">CNC</span>
       <span class="tag">Cinémathèques</span>
@@ -649,33 +718,35 @@
           <p>« La libre communication des pensées et des opinions est un des droits les plus précieux de l'Homme. »</p>
           <cite>DDHC, Art. XI, 1789</cite>
         </div>
-        <p>Entre idéal et réalité, les chiffres révèlent des inégalités territoriales et sociales que la statistique publique permet de cartographier avec précision sur le temps long.</p>
         <div class="scopex-q">
           <div class="label">ScopeX interroge</div>
           <p>Le taux d'encadrement varie-t-il selon les académies ? Quel est le lien entre catégorie socio-professionnelle des parents et réussite au bac sur 20 ans ?</p>
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : DEPP / MEN</div>
+        <div class="data-label-top">
+          Données · Source : DEPP / MEN
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">Élèves dans le public<span class="d-source">Primaire + secondaire cumulés</span></div>
-          <div class="d-val">10,1 M</div>
+          <div class="d-val">X M</div>
         </div>
         <div class="data-row">
           <div class="d-label">Enseignants du public<span class="d-source">1er et 2nd degrés</span></div>
-          <div class="d-val">870 000</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
-          <div class="d-label">Taux de réussite au bac 2023<span class="d-source">Toutes séries, France entière</span></div>
-          <div class="d-val">88,4 %</div>
+          <div class="d-label">Taux de réussite au bac<span class="d-source">Toutes séries, France entière</span></div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
-          <div class="d-label">Dépense éducation / PIB<span class="d-source">Moy. OCDE : 5,0 %</span></div>
-          <div class="d-val">5,5 %</div>
+          <div class="d-label">Dépense éducation / PIB<span class="d-source">Comparaison OCDE</span></div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
           <div class="d-label">Écoles en zone prioritaire<span class="d-source">REP et REP+</span></div>
-          <div class="d-val">7 500</div>
+          <div class="d-val">X 000</div>
         </div>
       </div>
     </div>
@@ -700,22 +771,25 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : MESRI / CNRS</div>
+        <div class="data-label-top">
+          Données · Source : MESRI / CNRS
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">Chercheurs et enseignants-chercheurs<span class="d-source">Secteur public, équivalents temps plein</span></div>
-          <div class="d-val">~260 000</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
           <div class="d-label">Dépense intérieure R&D / PIB<span class="d-source">Objectif OCDE : 3 %</span></div>
-          <div class="d-val">2,2 %</div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
           <div class="d-label">Unités de recherche CNRS<span class="d-source">Laboratoires mixtes et propres</span></div>
-          <div class="d-val">~1 100</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
           <div class="d-label">Prix Nobel français depuis 1945<span class="d-source">Sciences, littérature, paix</span></div>
-          <div class="d-val">67</div>
+          <div class="d-val">X</div>
         </div>
       </div>
     </div>
@@ -740,22 +814,25 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : Min. Culture / BnF</div>
-        <div class="data-row">
-          <div class="d-label">Bibliothèques et médiathèques publiques<span class="d-source">Réseau territorial, France entière</span></div>
-          <div class="d-val">16 500</div>
+        <div class="data-label-top">
+          Données · Source : Min. Culture / BnF
+          <span class="pending">⏳ Vérification en cours</span>
         </div>
         <div class="data-row">
-          <div class="d-label">Inscrits en bibliothèque municipale<span class="d-source">% de la population — 2022</span></div>
-          <div class="d-val">17 %</div>
+          <div class="d-label">Bibliothèques et médiathèques publiques<span class="d-source">Réseau territorial, France entière</span></div>
+          <div class="d-val">X 000</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Inscrits en bibliothèque municipale<span class="d-source">% de la population</span></div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
           <div class="d-label">Titres édités par an en France<span class="d-source">Dépôt légal BnF</span></div>
-          <div class="d-val">~100 000</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
           <div class="d-label">Crédit Pass Culture (18 ans)<span class="d-source">Accès à la culture dès la majorité</span></div>
-          <div class="d-val">800 €</div>
+          <div class="d-val">X €</div>
         </div>
       </div>
     </div>
@@ -780,18 +857,21 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : Min. Culture / DRAC</div>
+        <div class="data-label-top">
+          Données · Source : Min. Culture / DRAC
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">Monuments classés ou inscrits MH<span class="d-source">Inventaire général du patrimoine</span></div>
-          <div class="d-val">43 000</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
           <div class="d-label">Visites musées nationaux / an<span class="d-source">Tendance longue</span></div>
-          <div class="d-val">~30 M</div>
+          <div class="d-val">X M</div>
         </div>
         <div class="data-row">
           <div class="d-label">Budget patrimoine État<span class="d-source">Hors collectivités locales</span></div>
-          <div class="d-val">~350 M€</div>
+          <div class="d-val">X M€</div>
         </div>
       </div>
     </div>
@@ -816,18 +896,21 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : CNM / Min. Culture</div>
+        <div class="data-label-top">
+          Données · Source : CNM / Min. Culture
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">Scènes nationales et CDN<span class="d-source">Réseau de diffusion labellisé</span></div>
-          <div class="d-val">240</div>
+          <div class="d-val">X</div>
         </div>
         <div class="data-row">
           <div class="d-label">Conservatoires à rayonnement régional<span class="d-source">CRR et CRD en France</span></div>
-          <div class="d-val">~400</div>
+          <div class="d-val">X</div>
         </div>
         <div class="data-row">
-          <div class="d-label">Festivals répertoriés<span class="d-source">Toutes disciplines — Min. Culture</span></div>
-          <div class="d-val">>7 000</div>
+          <div class="d-label">Festivals répertoriés<span class="d-source">Toutes disciplines</span></div>
+          <div class="d-val">X 000</div>
         </div>
       </div>
     </div>
@@ -852,18 +935,21 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : INJEP / Min. Jeunesse</div>
+        <div class="data-label-top">
+          Données · Source : INJEP / Min. Jeunesse
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">MJC en France<span class="d-source">Maisons des Jeunes et de la Culture</span></div>
-          <div class="d-val">~1 300</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
           <div class="d-label">Associations déclarées actives<span class="d-source">Secteur culturel, social, éducatif</span></div>
-          <div class="d-val">1,5 M</div>
+          <div class="d-val">X M</div>
         </div>
         <div class="data-row">
           <div class="d-label">Bénévoles dans le secteur associatif<span class="d-source">Équivalent temps plein estimé</span></div>
-          <div class="d-val">13 M</div>
+          <div class="d-val">X M</div>
         </div>
       </div>
     </div>
@@ -888,18 +974,21 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : Universcience / SGPI</div>
-        <div class="data-row">
-          <div class="d-label">Muséums d'histoire naturelle<span class="d-source">Réseau national et régional</span></div>
-          <div class="d-val">30</div>
+        <div class="data-label-top">
+          Données · Source : Universcience / SGPI
+          <span class="pending">⏳ Vérification en cours</span>
         </div>
         <div class="data-row">
-          <div class="d-label">Visiteurs Cité des Sciences / an<span class="d-source">La Villette, Paris — moyenne</span></div>
-          <div class="d-val">2,5 M</div>
+          <div class="d-label">Muséums d'histoire naturelle<span class="d-source">Réseau national et régional</span></div>
+          <div class="d-val">X</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Visiteurs Cité des Sciences / an<span class="d-source">La Villette, Paris</span></div>
+          <div class="d-val">X M</div>
         </div>
         <div class="data-row">
           <div class="d-label">CCSTI — centres de culture scientifique<span class="d-source">Maillage territorial</span></div>
-          <div class="d-val">~200</div>
+          <div class="d-val">X</div>
         </div>
       </div>
     </div>
@@ -920,26 +1009,29 @@
         <p>Le modèle français de soutien public au cinéma, incarné par le CNC, est une exception mondiale héritée de la volonté républicaine de préserver la diversité culturelle face au marché.</p>
         <div class="scopex-q">
           <div class="label">ScopeX interroge</div>
-          <p>Le cinéma français maintient-il sa part de marché ? L'audiovisuel public remplit-il encore sa mission d'éducation et d'information ?</p>
+          <p>Le cinéma français maintient-il sa part de marché ? L'audiovisuel public remplit-il encore sa mission d'information et d'éducation ?</p>
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : CNC</div>
+        <div class="data-label-top">
+          Données · Source : CNC
+          <span class="pending">⏳ Vérification en cours</span>
+        </div>
         <div class="data-row">
           <div class="d-label">Écrans de cinéma en France<span class="d-source">Salles commerciales et associatives</span></div>
-          <div class="d-val">5 600</div>
+          <div class="d-val">X 000</div>
         </div>
         <div class="data-row">
-          <div class="d-label">Films français produits / an<span class="d-source">Agréments CNC — tendance</span></div>
-          <div class="d-val">~300</div>
+          <div class="d-label">Films français produits / an<span class="d-source">Agréments CNC</span></div>
+          <div class="d-val">X</div>
         </div>
         <div class="data-row">
-          <div class="d-label">Part de marché cinéma français<span class="d-source">Entrées en salles — 2023</span></div>
-          <div class="d-val">34 %</div>
+          <div class="d-label">Part de marché cinéma français<span class="d-source">Entrées en salles</span></div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
           <div class="d-label">Salles classées Art & Essai<span class="d-source">Label qualité CNC</span></div>
-          <div class="d-val">1 200</div>
+          <div class="d-val">X 000</div>
         </div>
       </div>
     </div>
@@ -964,14 +1056,17 @@
         </div>
       </div>
       <div class="panel-right">
-        <div class="data-label-top">Données clés · Source : INSEE / CEVIPOF</div>
-        <div class="data-row">
-          <div class="d-label">Participation présidentielle 2022 (1er tour)<span class="d-source">Recul historique à surveiller</span></div>
-          <div class="d-val">73,7 %</div>
+        <div class="data-label-top">
+          Données · Source : INSEE / CEVIPOF
+          <span class="pending">⏳ Vérification en cours</span>
         </div>
         <div class="data-row">
-          <div class="d-label">Confiance dans le Parlement<span class="d-source">Baromètre CEVIPOF 2024</span></div>
-          <div class="d-val">22 %</div>
+          <div class="d-label">Participation présidentielle (1er tour)<span class="d-source">Dernière élection</span></div>
+          <div class="d-val">X %</div>
+        </div>
+        <div class="data-row">
+          <div class="d-label">Confiance dans le Parlement<span class="d-source">Baromètre CEVIPOF</span></div>
+          <div class="d-val">X %</div>
         </div>
         <div class="data-row">
           <div class="d-label">Loi de séparation Église-État<span class="d-source">Combes — fondatrice de la laïcité</span></div>
@@ -979,7 +1074,7 @@
         </div>
         <div class="data-row">
           <div class="d-label">Nouvelles associations / an<span class="d-source">Vitalité du tissu civique</span></div>
-          <div class="d-val">~70 000</div>
+          <div class="d-val">X 000</div>
         </div>
       </div>
     </div>
@@ -988,7 +1083,7 @@
 </div><!-- /grid -->
 
 <footer>
-  <p>Projet citoyen · Non monétisable · Données sourcées · En construction permanente</p>
+  <p>Projet citoyen · Non monétisable · Données en cours de vérification · Version bêta</p>
   <div class="founders">
     <span class="founder">Victor Hugo</span>
     <span class="founder">Léon Gambetta</span>
@@ -1003,16 +1098,12 @@
   let current = null;
 
   function toggle(id) {
-    if (current === id) {
-      close_panel(id);
-      return;
-    }
+    if (current === id) { close_panel(id); return; }
     if (current) close_panel(current, false);
 
     const panel = document.getElementById('panel-' + id);
     const cards = Array.from(document.querySelectorAll('.card'));
     const card  = document.querySelector('.card.' + id);
-    const grid  = document.getElementById('grid');
 
     const idx    = cards.indexOf(card);
     const rowEnd = Math.ceil((idx + 1) / 3) * 3;
@@ -1030,8 +1121,7 @@
   }
 
   function close_panel(id, reset = true) {
-    const panel = document.getElementById('panel-' + id);
-    panel.classList.remove('open');
+    document.getElementById('panel-' + id).classList.remove('open');
     if (reset) current = null;
   }
 </script>

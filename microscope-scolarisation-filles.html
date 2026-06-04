@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro Scope · L'école pour toutes les filles !</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu:    #1a3a6b;
+    --jaune:   #f5c518;
+    --rose:    #e8456a;
+    --vert:    #2ecc71;
+    --creme:   #fff8ee;
+    --orange:  #f07d2a;
+    --violet:  #7c4dff;
+    --blanc:   #ffffff;
+    --gris:    #555;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    color: #2a2a2a;
+    overflow-x: hidden;
+  }
+
+  /* ── ÉTOILES DE FOND ── */
+  body::before {
+    content: '★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★ ✦ ★';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    font-size: 1.2rem;
+    color: rgba(245,197,24,0.12);
+    letter-spacing: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    padding: 0.5rem;
+  }
+
+  /* ── BANDEAU ── */
+  .bandeau {
+    background: var(--bleu);
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+  }
+  .bandeau-logo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--jaune);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .bandeau-logo span { color: #fff; }
+  .bandeau-badge {
+    background: var(--rose);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--bleu);
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 60px;
+    background: var(--creme);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  /* Étoiles animées dans le hero */
+  .etoile {
+    position: absolute;
+    font-size: 1.4rem;
+    animation: flottement 3s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  .etoile:nth-child(1) { top: 15%; left: 8%;  animation-delay: 0s; }
+  .etoile:nth-child(2) { top: 25%; right: 10%; animation-delay: 0.7s; }
+  .etoile:nth-child(3) { top: 60%; left: 5%;  animation-delay: 1.2s; }
+  .etoile:nth-child(4) { top: 55%; right: 6%; animation-delay: 0.4s; }
+  .etoile:nth-child(5) { top: 10%; left: 45%; animation-delay: 1.8s; }
+
+  @keyframes flottement {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%       { transform: translateY(-10px) rotate(8deg); }
+  }
+
+  .hero-surtitre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--jaune);
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero h1 .accent { color: var(--jaune); }
+  .hero-sous {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.78);
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  /* Grandes stat hero */
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(245,197,24,0.4);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(4px);
+    animation: popIn 0.5s ease both;
+  }
+  .hero-stat:nth-child(2) { animation-delay: 0.15s; }
+  .hero-stat:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .hero-stat-chiffre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--jaune);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    margin-top: 0.25rem;
+    font-weight: 600;
+  }
+
+  /* ── CONTENU ── */
+  .contenu {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── TITRE DE SECTION ── */
+  .section-titre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--bleu);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-titre .emoji { font-size: 1.6rem; }
+
+  /* ── TEXTE PRINCIPAL ── */
+  .texte-principal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+    border-left: 5px solid var(--jaune);
+  }
+  .texte-principal p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #333;
+    margin-bottom: 0.9rem;
+  }
+  .texte-principal p:last-child { margin-bottom: 0; }
+  .texte-principal strong { color: var(--bleu); }
+
+  /* ── FRISE ILLUSTRÉE ── */
+  .frise-section { margin-bottom: 2.5rem; }
+
+  .frise-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .frise-items::before {
+    content: '';
+    position: absolute;
+    left: 2.2rem;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--jaune), var(--rose), var(--vert));
+    border-radius: 3px;
+  }
+
+  .frise-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+  }
+  .frise-item:nth-child(1) { animation-delay: 0.05s; }
+  .frise-item:nth-child(2) { animation-delay: 0.12s; }
+  .frise-item:nth-child(3) { animation-delay: 0.19s; }
+  .frise-item:nth-child(4) { animation-delay: 0.26s; }
+  .frise-item:nth-child(5) { animation-delay: 0.33s; }
+  .frise-item:nth-child(6) { animation-delay: 0.40s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .frise-icone {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .frise-icone.jalon { background: var(--jaune); box-shadow: 0 0 0 4px rgba(245,197,24,0.25); }
+  .frise-icone.normal { background: #fff; border: 2px solid var(--gris); opacity: 0.7; }
+
+  .frise-contenu { flex: 1; padding-top: 0.25rem; }
+  .frise-annee {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--bleu);
+  }
+  .frise-item.gris .frise-annee { color: var(--gris); }
+  .frise-titre {
+    font-weight: 700;
+    font-size: 0.97rem;
+    color: #222;
+    margin-bottom: 0.15rem;
+  }
+  .frise-desc {
+    font-size: 0.85rem;
+    color: var(--gris);
+    line-height: 1.5;
+  }
+
+  /* ── CITATION ── */
+  .citation-section { margin-bottom: 2.5rem; }
+  .citation-card {
+    background: var(--bleu);
+    border-radius: 20px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .citation-card::before {
+    content: '❝';
+    position: absolute;
+    top: -0.5rem; left: 1rem;
+    font-size: 6rem;
+    color: rgba(245,197,24,0.15);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .citation-texte {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  .citation-auteur {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .citation-portrait {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--jaune);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .citation-nom {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--jaune);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .citation-date {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ── GRAPHIQUE ANIMÉ ── */
+  .graphique-section { margin-bottom: 2.5rem; }
+  .graphique-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+  }
+  .graph-intro {
+    font-size: 0.88rem;
+    color: var(--gris);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .graph-lignes { display: flex; flex-direction: column; gap: 0.85rem; }
+  .graph-ligne {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 3.2rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .graph-annee {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--bleu);
+    text-align: right;
+  }
+  .graph-fond {
+    height: 28px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .graph-fill {
+    height: 100%;
+    border-radius: 20px;
+    position: relative;
+    transform-origin: left;
+    animation: barreGrow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes barreGrow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  .graph-ligne:nth-child(1) .graph-fill { background: #cce0ff; animation-delay: 0.1s; }
+  .graph-ligne:nth-child(2) .graph-fill { background: #99c2ff; animation-delay: 0.2s; }
+  .graph-ligne:nth-child(3) .graph-fill { background: #66a3ff; animation-delay: 0.3s; }
+  .graph-ligne:nth-child(4) .graph-fill { background: #3385ff; animation-delay: 0.4s; }
+  .graph-ligne:nth-child(5) .graph-fill { background: #0066ff; animation-delay: 0.5s; }
+  .graph-ligne:nth-child(6) .graph-fill { background: #0052cc; animation-delay: 0.6s; }
+  .graph-ligne:nth-child(7) .graph-fill { background: var(--rose); animation-delay: 0.7s; }
+  .graph-ligne:nth-child(7) .graph-annee { color: var(--rose); }
+  .graph-pct {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--bleu);
+    text-align: right;
+  }
+  .graph-ligne:nth-child(7) .graph-pct { color: var(--rose); }
+
+  /* Emoji animé sur la barre 2023 */
+  .graph-fill.finale::after {
+    content: '🎉';
+    position: absolute;
+    right: 6px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    animation: apparition 0.3s 1.8s ease both;
+    opacity: 0;
+  }
+  @keyframes apparition {
+    to { opacity: 1; }
+  }
+
+  /* ── QUIZ ── */
+  .quiz-section { margin-bottom: 2.5rem; }
+  .quiz-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+  }
+  .quiz-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--bleu);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  .quiz-numero {
+    display: inline-block;
+    background: var(--jaune);
+    color: var(--bleu);
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .quiz-choix {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .quiz-btn {
+    background: var(--creme);
+    border: 2px solid #e0d8cc;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .quiz-btn:hover { background: #fff3cc; border-color: var(--jaune); transform: translateX(4px); }
+  .quiz-btn.correct { background: #d4f5e2; border-color: var(--vert); color: #1a5c35; }
+  .quiz-btn.incorrect { background: #fde8ec; border-color: var(--rose); color: #8b1a2e; }
+  .quiz-btn.correct::after { content: ' ✓'; font-weight: 800; }
+  .quiz-btn.incorrect::after { content: ' ✗'; font-weight: 800; }
+
+  .quiz-feedback {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.visible { display: block; }
+  .quiz-feedback.bien { background: #d4f5e2; color: #1a5c35; }
+  .quiz-feedback.faux { background: #fde8ec; color: #8b1a2e; }
+
+  .quiz-separateur {
+    height: 1px;
+    background: #eee;
+    margin: 1.5rem 0;
+  }
+
+  /* Score final */
+  .quiz-score {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bleu);
+    border-radius: 16px;
+    display: none;
+  }
+  .quiz-score.visible { display: block; }
+  .quiz-score-chiffre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--jaune);
+  }
+  .quiz-score-texte {
+    color: #fff;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+
+  /* ── LE SAVAIS-TU ── */
+  .savais-tu {
+    background: linear-gradient(135deg, var(--violet), #5533cc);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .savais-tu-icone { font-size: 2.2rem; flex-shrink: 0; }
+  .savais-tu-texte h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--jaune);
+    margin-bottom: 0.4rem;
+  }
+  .savais-tu-texte p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.6;
+  }
+
+  /* ── PIED ── */
+  .pied {
+    background: var(--bleu);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.78rem;
+  }
+  .pied strong { color: rgba(255,255,255,0.85); }
+  .pied a { color: var(--jaune); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 500px) {
+    .hero-stats { flex-direction: column; align-items: center; }
+    .hero-stat { width: 100%; max-width: 260px; }
+    .graph-ligne { grid-template-columns: 3rem 1fr 2.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BANDEAU -->
+<div class="bandeau">
+  <a class="bandeau-logo" href="index.html">Micro<span>Scope</span></a>
+  <span class="bandeau-badge">Version bêta</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="etoile" style="color:#f5c518">★</span>
+  <span class="etoile" style="color:#e8456a">✦</span>
+  <span class="etoile" style="color:#2ecc71">★</span>
+  <span class="etoile" style="color:#f5c518">✦</span>
+  <span class="etoile" style="color:#fff">★</span>
+
+  <p class="hero-surtitre">Micro Scope · L'école en France</p>
+  <h1>Toutes les filles<br>à <span class="accent">l'école</span> !</h1>
+  <p class="hero-sous">Aujourd'hui, toutes les filles de France vont à l'école. Mais sais-tu que ce n'a pas toujours été le cas ? Voici l'histoire d'une grande victoire.</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">100%</div>
+      <div class="hero-stat-label">des filles vont à l'école</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">1882</div>
+      <div class="hero-stat-label">l'année où c'est devenu obligatoire</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">93%</div>
+      <div class="hero-stat-label">de réussite au bac (2023)</div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENU -->
+<div class="contenu">
+
+  <!-- TEXTE -->
+  <div class="texte-principal">
+    <p>Il y a deux cent ans, aller à l'école n'était <strong>pas un droit pour les filles</strong>. Dans beaucoup de familles, les garçons apprenaient à lire et à compter, mais les filles restaient à la maison.</p>
+    <p>Un homme s'appelait <strong>Condorcet</strong>. C'était un savant et un philosophe, qui vivait au moment de la Révolution française. En 1791, il a écrit quelque chose de très courageux pour l'époque : <em>« Il est nécessaire que les femmes partagent l'instruction donnée aux hommes. »</em> Presque personne ne pensait comme lui !</p>
+    <p>Il a fallu attendre encore <strong>91 ans</strong> pour que la loi l'oblige vraiment. En 1882, Jules Ferry a rendu l'école <strong>gratuite, obligatoire et laïque</strong> — pour les filles et pour les garçons. Et aujourd'hui ? Les filles réussissent même <strong>mieux</strong> que les garçons au baccalauréat !</p>
+  </div>
+
+  <!-- FRISE -->
+  <div class="frise-section">
+    <div class="section-titre"><span class="emoji">📅</span> Le voyage dans le temps</div>
+    <div class="frise-items">
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">💭</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1791</div>
+          <div class="frise-titre">Condorcet a une grande idée</div>
+          <div class="frise-desc">Il écrit que les filles doivent avoir le droit d'apprendre comme les garçons. Mais personne ne l'écoute encore.</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">📖</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1833</div>
+          <div class="frise-titre">La loi Guizot</div>
+          <div class="frise-desc">Chaque village doit avoir une école… mais seulement pour les garçons. Les filles attendent encore.</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">🏫</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1867</div>
+          <div class="frise-titre">Premières écoles pour les filles</div>
+          <div class="frise-desc">Les grandes villes doivent enfin ouvrir des écoles pour les filles. C'est un premier pas !</div>
+        </div>
+      </div>
+
+      <div class="frise-item">
+        <div class="frise-icone jalon">⭐</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1882</div>
+          <div class="frise-titre">La grande loi Ferry !</div>
+          <div class="frise-desc">L'école devient obligatoire pour <strong>tous les enfants</strong>, filles et garçons, de 6 à 13 ans. La promesse de Condorcet est tenue — 91 ans après !</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">🎓</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1924</div>
+          <div class="frise-titre">Même baccalauréat pour toutes</div>
+          <div class="frise-desc">Les filles passent enfin le même bac que les garçons. Plus de programme différent !</div>
+        </div>
+      </div>
+
+      <div class="frise-item">
+        <div class="frise-icone jalon">🎉</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">2024</div>
+          <div class="frise-titre">Mission accomplie… presque !</div>
+          <div class="frise-desc">100% des filles vont à l'école. Elles réussissent mieux au bac que les garçons. Mais il reste encore des inégalités à corriger dans les études supérieures.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GRAPHIQUE -->
+  <div class="graphique-section">
+    <div class="section-titre"><span class="emoji">📊</span> L'école pour les filles en chiffres</div>
+    <div class="graphique-card">
+      <div class="graph-intro">Combien de filles allaient à l'école ? (sur 100)</div>
+      <div class="graph-lignes">
+        <div class="graph-ligne">
+          <span class="graph-annee">1833</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:18%"></div></div>
+          <span class="graph-pct">18</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1850</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:35%"></div></div>
+          <span class="graph-pct">35</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1867</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:52%"></div></div>
+          <span class="graph-pct">52</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1882</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:72%"></div></div>
+          <span class="graph-pct">72</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1890</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:87%"></div></div>
+          <span class="graph-pct">87</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1900</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:92%"></div></div>
+          <span class="graph-pct">92</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">2023</span>
+          <div class="graph-fond"><div class="graph-fill finale" style="width:100%"></div></div>
+          <span class="graph-pct">100 !</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITATION -->
+  <div class="citation-section">
+    <div class="section-titre"><span class="emoji">💬</span> Ce qu'ils ont dit</div>
+    <div class="citation-card">
+      <p class="citation-texte">« Il est nécessaire que les femmes partagent l'instruction donnée aux hommes. »</p>
+      <div class="citation-auteur">
+        <div class="citation-portrait">🧠</div>
+        <div>
+          <div class="citation-nom">Nicolas de Condorcet</div>
+          <div class="citation-date">Cinq mémoires sur l'instruction publique · 1791</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LE SAVAIS-TU -->
+  <div class="savais-tu">
+    <div class="savais-tu-icone">💡</div>
+    <div class="savais-tu-texte">
+      <h3>Le savais-tu ?</h3>
+      <p>En 2023, les filles ont réussi le baccalauréat à <strong style="color:var(--jaune)">93,1%</strong> contre 88,4% pour les garçons. Elles sont aussi plus nombreuses à l'université : <strong style="color:var(--jaune)">57 étudiants sur 100 sont des femmes</strong> ! L'école de la République a bien tenu sa promesse.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <div class="section-titre"><span class="emoji">🧩</span> À toi de jouer !</div>
+    <div class="quiz-card">
+
+      <!-- Q1 -->
+      <div id="q1" class="quiz-bloc">
+        <div class="quiz-numero">Question 1 / 3</div>
+        <div class="quiz-question">En quelle année l'école est-elle devenue obligatoire pour les filles en France ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q1', this, false)">1789 — pendant la Révolution française</button>
+          <button class="quiz-btn" onclick="repondre('q1', this, true)">1882 — grâce à la loi Ferry</button>
+          <button class="quiz-btn" onclick="repondre('q1', this, false)">1945 — après la Seconde Guerre mondiale</button>
+        </div>
+        <div class="quiz-feedback bien" id="q1-bien">🎉 Bravo ! C'est bien en 1882, avec la loi Ferry, que l'école est devenue obligatoire pour les filles et les garçons.</div>
+        <div class="quiz-feedback faux" id="q1-faux">Pas tout à fait ! C'est en <strong>1882</strong>, grâce à Jules Ferry, que l'école est devenue obligatoire pour toutes les filles.</div>
+      </div>
+
+      <div class="quiz-separateur"></div>
+
+      <!-- Q2 -->
+      <div id="q2" class="quiz-bloc">
+        <div class="quiz-numero">Question 2 / 3</div>
+        <div class="quiz-question">Qui a dit en 1791 que les femmes devaient avoir le droit d'aller à l'école ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q2', this, false)">Victor Hugo</button>
+          <button class="quiz-btn" onclick="repondre('q2', this, false)">Jules Ferry</button>
+          <button class="quiz-btn" onclick="repondre('q2', this, true)">Condorcet</button>
+        </div>
+        <div class="quiz-feedback bien" id="q2-bien">🎉 Exact ! Condorcet était un savant et philosophe qui a défendu l'égalité à l'école bien avant tout le monde.</div>
+        <div class="quiz-feedback faux" id="q2-faux">Ce n'est pas ça ! C'est <strong>Condorcet</strong>, un philosophe de la Révolution, qui a eu cette idée courageuse en 1791.</div>
+      </div>
+
+      <div class="quiz-separateur"></div>
+
+      <!-- Q3 -->
+      <div id="q3" class="quiz-bloc">
+        <div class="quiz-numero">Question 3 / 3</div>
+        <div class="quiz-question">Aujourd'hui, quel pourcentage des filles de 6 à 16 ans va à l'école en France ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q3', this, false)">85%</button>
+          <button class="quiz-btn" onclick="repondre('q3', this, false)">97%</button>
+          <button class="quiz-btn" onclick="repondre('q3', this, true)">100%</button>
+        </div>
+        <div class="quiz-feedback bien" id="q3-bien">🎉 Parfait ! 100% des filles vont à l'école. La promesse de Condorcet est enfin accomplie !</div>
+        <div class="quiz-feedback faux" id="q3-faux">Presque ! C'est <strong>100%</strong> — toutes les filles de France vont à l'école. Une victoire totale !</div>
+      </div>
+
+      <!-- SCORE -->
+      <div class="quiz-score" id="quiz-score">
+        <div class="quiz-score-chiffre" id="score-chiffre">0 / 3</div>
+        <div class="quiz-score-texte" id="score-texte"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- PIED -->
+<footer class="pied">
+  <strong>Micro Scope</strong> — La République expliquée aux enfants · Une création <a href="index.html">Scope X</a> · Version bêta · Juin 2026
+</footer>
+
+<script>
+  let score = 0;
+  let reponses = 0;
+  const total = 3;
+
+  function repondre(id, btn, correct) {
+    const bloc = document.getElementById(id);
+    const boutons = bloc.querySelectorAll('.quiz-btn');
+
+    // Désactiver tous les boutons de cette question
+    boutons.forEach(b => b.disabled = true);
+
+    if (correct) {
+      btn.classList.add('correct');
+      document.getElementById(id + '-bien').classList.add('visible');
+      score++;
+    } else {
+      btn.classList.add('incorrect');
+      document.getElementById(id + '-faux').classList.add('visible');
+      // Montrer la bonne réponse
+      boutons.forEach(b => {
+        if (b.onclick.toString().includes('true')) b.classList.add('correct');
+      });
+    }
+
+    reponses++;
+
+    if (reponses === total) {
+      setTimeout(() => {
+        const scoreEl = document.getElementById('quiz-score');
+        scoreEl.classList.add('visible');
+        document.getElementById('score-chiffre').textContent = score + ' / ' + total;
+        const messages = [
+          'Continue de lire et tu vas tout savoir ! 📚',
+          'Pas mal ! Tu connais déjà beaucoup de choses. 👍',
+          'Bravo ! Tu es une experte / un expert de l\'école républicaine ! 🏆'
+        ];
+        document.getElementById('score-texte').textContent = messages[score];
+      }, 600);
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Micro Scope · Des livres pour tout le monde !</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu:    #1a3a6b;
+    --jaune:   #f5c518;
+    --rose:    #e8456a;
+    --vert:    #2ecc71;
+    --creme:   #fff8ee;
+    --orange:  #f07d2a;
+    --violet:  #7c4dff;
+    --blanc:   #ffffff;
+    --gris:    #555;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--creme);
+    font-family: 'Nunito', sans-serif;
+    font-size: 17px;
+    color: #2a2a2a;
+    overflow-x: hidden;
+  }
+
+  /* ── ÉTOILES DE FOND ── */
+  body::before {
+    content: '📖 ✦ 📚 ✦ 📖 ✦ 📚 ✦ 📖 ✦ 📚 ✦ 📖';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    font-size: 1.2rem;
+    color: rgba(245,197,24,0.12);
+    letter-spacing: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    padding: 0.5rem;
+  }
+
+  /* ── BANDEAU ── */
+  .bandeau {
+    background: var(--bleu);
+    padding: 0.6rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 10;
+  }
+  .bandeau-logo {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--jaune);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .bandeau-logo span { color: #fff; }
+  .bandeau-badge {
+    background: var(--rose);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--bleu);
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 60px;
+    background: var(--creme);
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+
+  /* Emojis animés dans le hero */
+  .etoile {
+    position: absolute;
+    font-size: 1.4rem;
+    animation: flottement 3s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  .etoile:nth-child(1) { top: 15%; left: 8%;  animation-delay: 0s; }
+  .etoile:nth-child(2) { top: 25%; right: 10%; animation-delay: 0.7s; }
+  .etoile:nth-child(3) { top: 60%; left: 5%;  animation-delay: 1.2s; }
+  .etoile:nth-child(4) { top: 55%; right: 6%; animation-delay: 0.4s; }
+  .etoile:nth-child(5) { top: 10%; left: 45%; animation-delay: 1.8s; }
+
+  @keyframes flottement {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%       { transform: translateY(-10px) rotate(8deg); }
+  }
+
+  .hero-surtitre {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--jaune);
+    margin-bottom: 0.75rem;
+  }
+  .hero h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .hero h1 .accent { color: var(--jaune); }
+  .hero-sous {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.78);
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  /* Grandes stat hero */
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-stat {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(245,197,24,0.4);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    backdrop-filter: blur(4px);
+    animation: popIn 0.5s ease both;
+  }
+  .hero-stat:nth-child(2) { animation-delay: 0.15s; }
+  .hero-stat:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .hero-stat-chiffre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--jaune);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    margin-top: 0.25rem;
+    font-weight: 600;
+  }
+
+  /* ── CONTENU ── */
+  .contenu {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── TITRE DE SECTION ── */
+  .section-titre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--bleu);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .section-titre .emoji { font-size: 1.6rem; }
+
+  /* ── TEXTE PRINCIPAL ── */
+  .texte-principal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+    border-left: 5px solid var(--jaune);
+  }
+  .texte-principal p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #333;
+    margin-bottom: 0.9rem;
+  }
+  .texte-principal p:last-child { margin-bottom: 0; }
+  .texte-principal strong { color: var(--bleu); }
+
+  /* ── FRISE ILLUSTRÉE ── */
+  .frise-section { margin-bottom: 2.5rem; }
+
+  .frise-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .frise-items::before {
+    content: '';
+    position: absolute;
+    left: 2.2rem;
+    top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--jaune), var(--rose), var(--vert));
+    border-radius: 3px;
+  }
+
+  .frise-item {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    padding: 0.75rem 0;
+    position: relative;
+    animation: fadeUp 0.5s ease both;
+  }
+  .frise-item:nth-child(1) { animation-delay: 0.05s; }
+  .frise-item:nth-child(2) { animation-delay: 0.12s; }
+  .frise-item:nth-child(3) { animation-delay: 0.19s; }
+  .frise-item:nth-child(4) { animation-delay: 0.26s; }
+  .frise-item:nth-child(5) { animation-delay: 0.33s; }
+  .frise-item:nth-child(6) { animation-delay: 0.40s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateX(-12px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .frise-icone {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .frise-icone.jalon { background: var(--jaune); box-shadow: 0 0 0 4px rgba(245,197,24,0.25); }
+  .frise-icone.normal { background: #fff; border: 2px solid var(--gris); opacity: 0.7; }
+
+  .frise-contenu { flex: 1; padding-top: 0.25rem; }
+  .frise-annee {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--bleu);
+  }
+  .frise-item.gris .frise-annee { color: var(--gris); }
+  .frise-titre {
+    font-weight: 700;
+    font-size: 0.97rem;
+    color: #222;
+    margin-bottom: 0.15rem;
+  }
+  .frise-desc {
+    font-size: 0.85rem;
+    color: var(--gris);
+    line-height: 1.5;
+  }
+
+  /* ── CITATION ── */
+  .citation-section { margin-bottom: 2.5rem; }
+  .citation-card {
+    background: var(--bleu);
+    border-radius: 20px;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .citation-card::before {
+    content: '❝';
+    position: absolute;
+    top: -0.5rem; left: 1rem;
+    font-size: 6rem;
+    color: rgba(245,197,24,0.15);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .citation-texte {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+  .citation-auteur {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .citation-portrait {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--jaune);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+  .citation-nom {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--jaune);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .citation-date {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+  }
+
+  /* ── GRAPHIQUE ANIMÉ ── */
+  .graphique-section { margin-bottom: 2.5rem; }
+  .graphique-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+  }
+  .graph-intro {
+    font-size: 0.88rem;
+    color: var(--gris);
+    margin-bottom: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .graph-lignes { display: flex; flex-direction: column; gap: 0.85rem; }
+  .graph-ligne {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr 4.2rem;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .graph-annee {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--bleu);
+    text-align: right;
+  }
+  .graph-fond {
+    height: 28px;
+    background: #f0f0f0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .graph-fill {
+    height: 100%;
+    border-radius: 20px;
+    position: relative;
+    transform-origin: left;
+    animation: barreGrow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  @keyframes barreGrow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+  .graph-ligne:nth-child(1) .graph-fill { background: #cce0ff; animation-delay: 0.1s; }
+  .graph-ligne:nth-child(2) .graph-fill { background: #99c2ff; animation-delay: 0.2s; }
+  .graph-ligne:nth-child(3) .graph-fill { background: #66a3ff; animation-delay: 0.3s; }
+  .graph-ligne:nth-child(4) .graph-fill { background: #3385ff; animation-delay: 0.4s; }
+  .graph-ligne:nth-child(5) .graph-fill { background: var(--rose); animation-delay: 0.5s; }
+  .graph-ligne:nth-child(5) .graph-annee { color: var(--rose); }
+  .graph-pct {
+    font-family: 'Baloo 2', cursive;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: var(--bleu);
+    text-align: right;
+  }
+  .graph-ligne:nth-child(5) .graph-pct { color: var(--rose); }
+
+  /* Emoji animé sur la barre finale */
+  .graph-fill.finale::after {
+    content: '🎉';
+    position: absolute;
+    right: 6px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    animation: apparition 0.3s 1.8s ease both;
+    opacity: 0;
+  }
+  @keyframes apparition {
+    to { opacity: 1; }
+  }
+
+  /* ── QUIZ ── */
+  .quiz-section { margin-bottom: 2.5rem; }
+  .quiz-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.75rem;
+    box-shadow: 0 4px 20px rgba(26,58,107,0.08);
+  }
+  .quiz-question {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--bleu);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  .quiz-numero {
+    display: inline-block;
+    background: var(--jaune);
+    color: var(--bleu);
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+  }
+  .quiz-choix {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .quiz-btn {
+    background: var(--creme);
+    border: 2px solid #e0d8cc;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s;
+  }
+  .quiz-btn:hover { background: #fff3cc; border-color: var(--jaune); transform: translateX(4px); }
+  .quiz-btn.correct { background: #d4f5e2; border-color: var(--vert); color: #1a5c35; }
+  .quiz-btn.incorrect { background: #fde8ec; border-color: var(--rose); color: #8b1a2e; }
+  .quiz-btn.correct::after { content: ' ✓'; font-weight: 800; }
+  .quiz-btn.incorrect::after { content: ' ✗'; font-weight: 800; }
+
+  .quiz-feedback {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: none;
+  }
+  .quiz-feedback.visible { display: block; }
+  .quiz-feedback.bien { background: #d4f5e2; color: #1a5c35; }
+  .quiz-feedback.faux { background: #fde8ec; color: #8b1a2e; }
+
+  .quiz-separateur {
+    height: 1px;
+    background: #eee;
+    margin: 1.5rem 0;
+  }
+
+  /* Score final */
+  .quiz-score {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--bleu);
+    border-radius: 16px;
+    display: none;
+  }
+  .quiz-score.visible { display: block; }
+  .quiz-score-chiffre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--jaune);
+  }
+  .quiz-score-texte {
+    color: #fff;
+    font-weight: 600;
+    margin-top: 0.25rem;
+  }
+
+  /* ── QUESTION BONUS ── */
+  .bonus-section { margin-bottom: 2.5rem; }
+  .bonus-card {
+    background: linear-gradient(135deg, var(--orange), #e05a10);
+    border-radius: 20px;
+    padding: 1.75rem;
+    text-align: center;
+  }
+  .bonus-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .bonus-titre {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .bonus-texte {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.6;
+  }
+
+  /* ── LE SAVAIS-TU ── */
+  .savais-tu {
+    background: linear-gradient(135deg, var(--violet), #5533cc);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .savais-tu-icone { font-size: 2.2rem; flex-shrink: 0; }
+  .savais-tu-texte h3 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--jaune);
+    margin-bottom: 0.4rem;
+  }
+  .savais-tu-texte p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.6;
+  }
+
+  /* ── PIED ── */
+  .pied {
+    background: var(--bleu);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.78rem;
+  }
+  .pied strong { color: rgba(255,255,255,0.85); }
+  .pied a { color: var(--jaune); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 500px) {
+    .hero-stats { flex-direction: column; align-items: center; }
+    .hero-stat { width: 100%; max-width: 260px; }
+    .graph-ligne { grid-template-columns: 3rem 1fr 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BANDEAU -->
+<div class="bandeau">
+  <a class="bandeau-logo" href="index.html">Micro<span>Scope</span></a>
+  <span class="bandeau-badge">Version bêta</span>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="etoile" style="color:#f5c518">📖</span>
+  <span class="etoile" style="color:#e8456a">✦</span>
+  <span class="etoile" style="color:#2ecc71">📚</span>
+  <span class="etoile" style="color:#f5c518">✦</span>
+  <span class="etoile" style="color:#fff">📖</span>
+
+  <p class="hero-surtitre">Micro Scope · Les bibliothèques en France</p>
+  <h1>Des livres pour<br><span class="accent">tout le monde</span> !</h1>
+  <p class="hero-sous">Savais-tu qu'il y a des bibliothèques partout en France, et que tu peux y entrer gratuitement ? Voici l'histoire de cette grande idée républicaine.</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">15 500</div>
+      <div class="hero-stat-label">bibliothèques en France</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">1803</div>
+      <div class="hero-stat-label">l'année de naissance</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-chiffre">×17</div>
+      <div class="hero-stat-label">fois plus qu'en 1960</div>
+    </div>
+  </div>
+</header>
+
+<!-- CONTENU -->
+<div class="contenu">
+
+  <!-- TEXTE -->
+  <div class="texte-principal">
+    <p>Il y a très longtemps, les livres étaient <strong>rares et précieux</strong>. Ils étaient enfermés dans les monastères et les châteaux. Seuls les moines, les nobles et les très riches pouvaient les lire. Les autres ? Ils n'y avaient pas accès.</p>
+    <p>Pendant la <strong>Révolution française</strong>, la République a pris une grande décision : ces livres appartiennent à tout le monde ! Elle les a récupérés et les a mis dans des <strong>bibliothèques ouvertes à tous</strong>. C'est comme ça que sont nées les premières bibliothèques municipales, en 1803.</p>
+    <p>Mais le plus incroyable, c'est la suite. Aucune loi n'a jamais <strong>obligé</strong> les villes à construire des bibliothèques. Et pourtant, les Français en ont construit <strong>15 500</strong> ! C'est un choix, pas une obligation. La France a <em>choisi</em> de donner à lire.</p>
+  </div>
+
+  <!-- FRISE -->
+  <div class="frise-section">
+    <div class="section-titre"><span class="emoji">📅</span> Le voyage dans le temps</div>
+    <div class="frise-items">
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">⛪</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">Avant 1789</div>
+          <div class="frise-titre">Les livres sont enfermés</div>
+          <div class="frise-desc">Les bibliothèques appartiennent aux monastères et aux nobles. Le peuple n'y a pas accès.</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">🔑</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1789</div>
+          <div class="frise-titre">La Révolution libère les livres !</div>
+          <div class="frise-desc">Les bibliothèques des monastères et des châteaux deviennent des « biens nationaux ». Les livres appartiennent désormais à tout le monde.</div>
+        </div>
+      </div>
+
+      <div class="frise-item">
+        <div class="frise-icone jalon">⭐</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1803</div>
+          <div class="frise-titre">Les bibliothèques municipales sont nées !</div>
+          <div class="frise-desc">Un décret officiel confie les livres aux villes. C'est l'acte de naissance des bibliothèques publiques en France.</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">🚌</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1945</div>
+          <div class="frise-titre">Le bibliobus part sur les routes</div>
+          <div class="frise-desc">Comme les petits villages n'ont pas de bibliothèque, la République envoie un camion rempli de livres : le bibliobus ! C'est la République qui vient vers les gens.</div>
+        </div>
+      </div>
+
+      <div class="frise-item gris">
+        <div class="frise-icone normal">🏗️</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">1960–2000</div>
+          <div class="frise-titre">Les villes construisent, construisent…</div>
+          <div class="frise-desc">Sans y être obligées par la loi, les communes de France construisent des milliers de bibliothèques et de médiathèques. On passe de 900 à plus de 10 000 !</div>
+        </div>
+      </div>
+
+      <div class="frise-item">
+        <div class="frise-icone jalon">🎉</div>
+        <div class="frise-contenu">
+          <div class="frise-annee">2024</div>
+          <div class="frise-titre">15 500 bibliothèques !</div>
+          <div class="frise-desc">La France compte aujourd'hui 15 500 bibliothèques. C'est le premier lieu culturel du pays. Et la consultation y est <strong>gratuite</strong>.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- GRAPHIQUE -->
+  <div class="graphique-section">
+    <div class="section-titre"><span class="emoji">📊</span> De plus en plus de bibliothèques !</div>
+    <div class="graphique-card">
+      <div class="graph-intro">Combien de bibliothèques en France ?</div>
+      <div class="graph-lignes">
+        <div class="graph-ligne">
+          <span class="graph-annee">1960</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:6%"></div></div>
+          <span class="graph-pct">900</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1975</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:16%"></div></div>
+          <span class="graph-pct">2 500</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">1990</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:42%"></div></div>
+          <span class="graph-pct">6 500</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">2000</span>
+          <div class="graph-fond"><div class="graph-fill" style="width:64%"></div></div>
+          <span class="graph-pct">9 900</span>
+        </div>
+        <div class="graph-ligne">
+          <span class="graph-annee">2024</span>
+          <div class="graph-fond"><div class="graph-fill finale" style="width:100%"></div></div>
+          <span class="graph-pct">15 500 !</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CITATION -->
+  <div class="citation-section">
+    <div class="section-titre"><span class="emoji">💬</span> Ce qu'il a dit</div>
+    <div class="citation-card">
+      <p class="citation-texte">« Il faudrait multiplier les bibliothèques, les maisons de lecture pour les hommes… il faudrait faire pénétrer de toutes parts la lumière dans l'esprit du peuple, car c'est par les ténèbres qu'on le perd. »</p>
+      <div class="citation-auteur">
+        <div class="citation-portrait">✒️</div>
+        <div>
+          <div class="citation-nom">Victor Hugo</div>
+          <div class="citation-date">Discours à l'Assemblée nationale · 1848</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LE SAVAIS-TU -->
+  <div class="savais-tu">
+    <div class="savais-tu-icone">💡</div>
+    <div class="savais-tu-texte">
+      <h3>Le savais-tu ?</h3>
+      <p>En 1945, beaucoup de petits villages n'avaient pas de bibliothèque. Alors la République a inventé le <strong style="color:var(--jaune)">bibliobus</strong> : un camion rempli de livres qui allait de village en village ! Il s'arrêtait sur la place et les habitants venaient choisir leurs livres. Aujourd'hui encore, il existe des bibliobus dans certains départements.</p>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <div class="section-titre"><span class="emoji">🧩</span> À toi de jouer !</div>
+    <div class="quiz-card">
+
+      <!-- Q1 -->
+      <div id="q1" class="quiz-bloc">
+        <div class="quiz-numero">Question 1 / 3</div>
+        <div class="quiz-question">En quelle année la République a-t-elle créé les premières bibliothèques municipales ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q1', this, false)">1789 — pendant la Révolution</button>
+          <button class="quiz-btn" onclick="repondre('q1', this, true)">1803 — par un décret officiel</button>
+          <button class="quiz-btn" onclick="repondre('q1', this, false)">1882 — en même temps que l'école obligatoire</button>
+        </div>
+        <div class="quiz-feedback bien" id="q1-bien">🎉 Bravo ! C'est en 1803 que les livres confisqués pendant la Révolution ont été officiellement confiés aux villes.</div>
+        <div class="quiz-feedback faux" id="q1-faux">Pas tout à fait ! C'est en <strong>1803</strong>, par un décret officiel, que les bibliothèques municipales sont nées. La Révolution avait récupéré les livres, mais il a fallu une loi pour les confier aux villes.</div>
+      </div>
+
+      <div class="quiz-separateur"></div>
+
+      <!-- Q2 -->
+      <div id="q2" class="quiz-bloc">
+        <div class="quiz-numero">Question 2 / 3</div>
+        <div class="quiz-question">Qu'est-ce qu'un bibliobus ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q2', this, false)">Un bus qui emmène les enfants à la bibliothèque</button>
+          <button class="quiz-btn" onclick="repondre('q2', this, true)">Un camion rempli de livres qui va dans les villages</button>
+          <button class="quiz-btn" onclick="repondre('q2', this, false)">Une bibliothèque ouverte seulement le dimanche</button>
+        </div>
+        <div class="quiz-feedback bien" id="q2-bien">🎉 Exact ! Le bibliobus apporte les livres là où il n'y a pas de bibliothèque. C'est la République qui vient vers les gens !</div>
+        <div class="quiz-feedback faux" id="q2-faux">Ce n'est pas ça ! Un bibliobus, c'est un <strong>camion rempli de livres</strong> qui va de village en village. Il a été inventé en 1945 pour que tout le monde puisse lire, même dans les petits villages.</div>
+      </div>
+
+      <div class="quiz-separateur"></div>
+
+      <!-- Q3 -->
+      <div id="q3" class="quiz-bloc">
+        <div class="quiz-numero">Question 3 / 3</div>
+        <div class="quiz-question">Combien y a-t-il de bibliothèques publiques en France aujourd'hui ?</div>
+        <div class="quiz-choix">
+          <button class="quiz-btn" onclick="repondre('q3', this, false)">3 000</button>
+          <button class="quiz-btn" onclick="repondre('q3', this, false)">8 000</button>
+          <button class="quiz-btn" onclick="repondre('q3', this, true)">15 500</button>
+        </div>
+        <div class="quiz-feedback bien" id="q3-bien">🎉 Parfait ! 15 500 bibliothèques, c'est le premier lieu culturel de France. Et la consultation y est gratuite !</div>
+        <div class="quiz-feedback faux" id="q3-faux">Eh non, c'est encore plus ! Il y a <strong>15 500</strong> bibliothèques en France. C'est 17 fois plus qu'en 1960 !</div>
+      </div>
+
+      <!-- SCORE -->
+      <div class="quiz-score" id="quiz-score">
+        <div class="quiz-score-chiffre" id="score-chiffre">0 / 3</div>
+        <div class="quiz-score-texte" id="score-texte"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUESTION BONUS -->
+  <div class="bonus-section">
+    <div class="section-titre"><span class="emoji">🌟</span> Question bonus !</div>
+    <div class="bonus-card">
+      <div class="bonus-emoji">🏛️</div>
+      <div class="bonus-titre">Et toi, sais-tu où se trouve la bibliothèque dans ta ville ?</div>
+      <div class="bonus-texte">Demande à tes parents ou à ta maîtresse. Tu pourrais y faire un tour ce week-end — c'est gratuit, et il y a des livres pour tous les goûts !</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PIED -->
+<footer class="pied">
+  <strong>Micro Scope</strong> — La République expliquée aux enfants · Une création <a href="index.html">Scope X</a> · Version bêta · Juin 2026
+</footer>
+
+<script>
+  let score = 0;
+  let reponses = 0;
+  const total = 3;
+
+  function repondre(id, btn, correct) {
+    const bloc = document.getElementById(id);
+    const boutons = bloc.querySelectorAll('.quiz-btn');
+
+    // Désactiver tous les boutons de cette question
+    boutons.forEach(b => b.disabled = true);
+
+    if (correct) {
+      btn.classList.add('correct');
+      document.getElementById(id + '-bien').classList.add('visible');
+      score++;
+    } else {
+      btn.classList.add('incorrect');
+      document.getElementById(id + '-faux').classList.add('visible');
+      // Montrer la bonne réponse
+      boutons.forEach(b => {
+        if (b.onclick.toString().includes('true')) b.classList.add('correct');
+      });
+    }
+
+    reponses++;
+
+    if (reponses === total) {
+      setTimeout(() => {
+        const scoreEl = document.getElementById('quiz-score');
+        scoreEl.classList.add('visible');
+        document.getElementById('score-chiffre').textContent = score + ' / ' + total;
+        const messages = [
+          'Continue de lire et tu vas tout savoir ! 📚',
+          'Pas mal ! Tu connais déjà beaucoup de choses. 👍',
+          'Bravo ! Tu es incollable sur les bibliothèques ! 🏆'
+        ];
+        document.getElementById('score-texte').textContent = messages[score];
+      }, 600);
+    }
+  }
+</script>
+
+</body>
+</html>

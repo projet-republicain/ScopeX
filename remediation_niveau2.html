@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Remédiation — Comparer les décimaux</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bleu:     #1a2744;
+      --bleu-mid: #2d4278;
+      --or:       #c9a84c;
+      --rouge:    #b5292a;
+      --blanc:    #f5f5ef;
+      --gris:     #e4e4dc;
+      --gris-mid: #c8c8bc;
+      --texte:    #1c1c1c;
+      --vert:     #2e7d5e;
+      --violet:   #6b4fa0;
+      --radius:   12px;
+      --shadow:   0 4px 24px rgba(26,39,68,.10);
+      /* couleurs spécifiques remédiation */
+      --col-u:    #1a2744;   /* unités — bleu foncé */
+      --col-d:    #2e7d5e;   /* dixièmes — vert */
+      --col-c:    #c9a84c;   /* centièmes — or */
+    }
+
+    body {
+      background: var(--blanc);
+      color: var(--texte);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 60px;
+    }
+
+    /* EN-TETE */
+    header {
+      width: 100%;
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+    .header-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .drapeau { display: flex; gap: 4px; padding-top: 4px; flex-shrink: 0; }
+    .drapeau span { display: block; width: 8px; height: 36px; border-radius: 2px; }
+    .drapeau .bl { background: var(--bleu); }
+    .drapeau .wh { background: #fff; border: 1px solid #ddd; }
+    .drapeau .rd { background: var(--rouge); }
+
+    .header-texte .sous-titre {
+      font-size: 0.72rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--or); margin-bottom: 4px;
+    }
+    .header-texte h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.4rem; font-weight: 600;
+      color: var(--bleu); line-height: 1.25;
+    }
+
+    .bandeau-remediation {
+      background: #fff8ed;
+      border: 1.5px solid var(--or);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.82rem;
+      color: #7a5c10;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    /* NAVIGATION DES ÉTAPES */
+    .nav-etapes {
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .etape-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border: 2px solid var(--gris);
+      border-radius: 8px;
+      background: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gris-mid);
+      cursor: pointer;
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: all .2s;
+      line-height: 1.3;
+    }
+    .etape-btn.active {
+      border-color: var(--bleu);
+      background: var(--bleu);
+      color: #fff;
+    }
+    .etape-btn.done {
+      border-color: var(--vert);
+      color: var(--vert);
+    }
+    .etape-btn:disabled { cursor: default; }
+
+    /* CARTE */
+    .card {
+      width: 100%;
+      max-width: 720px;
+      background: #fff;
+      border-radius: var(--radius);
+      border: 1px solid var(--gris);
+      box-shadow: var(--shadow);
+      padding: 32px 36px 28px;
+    }
+
+    .card-titre {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.1rem;
+      color: var(--bleu);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .card-intro {
+      font-size: 0.88rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* =============================================
+       ÉTAPE 1 — TABLEAU DE VALEUR POSITIONNEL
+       ============================================= */
+    .tableau-section { display: none; flex-direction: column; gap: 24px; }
+    .tableau-section.visible { display: flex; }
+
+    .legende-cols {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 4px;
+    }
+    .leg-spacer { width: 80px; flex-shrink: 0; }
+    .leg-col {
+      width: 80px;
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 0;
+      border-radius: 6px 6px 0 0;
+    }
+    .leg-col.u { color: #fff; background: var(--col-u); }
+    .leg-col.d { color: #fff; background: var(--col-d); }
+    .leg-col.virgule { width: 32px; flex-shrink: 0; background: transparent; color: transparent; }
+    .leg-col.c { color: #fff; background: var(--col-c); }
+
+    .nombre-ligne {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      justify-content: center;
+    }
+    .nombre-label {
+      width: 80px;
+      flex-shrink: 0;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--bleu);
+      text-align: right;
+      padding-right: 12px;
+    }
+    .cellule-valeur {
+      width: 80px;
+      height: 72px;
+      border: 2px solid var(--gris);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: border-color .2s;
+    }
+    .cellule-valeur.u { border-color: var(--col-u); background: rgba(26,39,68,.04); }
+    .cellule-valeur.d { border-color: var(--col-d); background: rgba(46,125,94,.04); }
+    .cellule-valeur.c { border-color: var(--col-c); background: rgba(201,168,76,.07); }
+
+    .virgule-sep {
+      width: 32px;
+      flex-shrink: 0;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--bleu);
+      line-height: 1;
+    }
+
+    .chiffre-case {
+      font-family: 'Source Serif 4', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1;
+    }
+    .chiffre-case.u { color: var(--col-u); }
+    .chiffre-case.d { color: var(--col-d); }
+    .chiffre-case.c { color: var(--col-c); }
+
+    .sous-label-case {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.55;
+      margin-top: 2px;
+    }
+
+    .separateur-ligne {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 2px 0;
+    }
+    .sep-spacer { width: 80px; flex-shrink: 0; }
+    .signe-comparaison {
+      width: 272px;  /* 80+32+80+80 */
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--bleu);
+      padding: 6px 0;
+      transition: color .3s;
+    }
+    .signe-comparaison.vert { color: var(--vert); }
+
+    /* Slider interactif */
+    .slider-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 8px;
+    }
+    .slider-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .slider-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--bleu);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slider-valeur {
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #fff;
+      min-width: 36px;
+      text-align: center;
+    }
+    .slider-valeur.u { background: var(--col-u); }
+    .slider-valeur.d { background: var(--col-d); }
+    .slider-valeur.c { background: var(--col-c); }
+
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input[type=range].range-u { background: var(--col-u); }
+    input[type=range].range-d { background: var(--col-d); }
+    input[type=range].range-c { background: var(--col-c); }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid currentColor;
+      cursor: pointer;
+    }
+    input[type=range].range-u::-webkit-slider-thumb { border-color: var(--col-u); }
+    input[type=range].range-d::-webkit-slider-thumb { border-color: var(--col-d); }
+    input[type=range].range-c::-webkit-slider-thumb { border-color: var(--col-c); }
+
+    .tableau-lecon {
+      background: #f4f7ff;
+      border-left: 4px solid var(--bleu-mid);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      font-size: 0.87rem;
+      line-height: 1.65;
+      color: var(--bleu);
+    }
+    .tableau-lecon strong { color: var(--rouge); }
+
+    /* =============================================
+       ÉTAPE 2 — DROITE GRADUÉE
+       ============================================= */
+    .droite-section { display: none; flex-direction: column; gap: 20px; }
+    .droite-section.visible { display: flex; }
+
+    .droite-wrap {
+      overflow-x: auto;
+      padding: 12px 0 8px;
+    }
+
+    #canevas-droite {
+      display: block;
+      touch-action: none;
+    }
+
+    .droite-controles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 4px;
+    }
+    .droite-pair {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .droite-pair label {
+      font-size: 0.82rem;
+      font-weight: 800;
+      width: 52px;
+      flex-shrink: 0;
+    }
+    .droite-pair label.a { color: var(--rouge); }
+    .droite-pair label.b { color: var(--bleu-mid); }
+
+    .nombre-input {
+      width: 90px;
+      padding: 8px 10px;
+      border: 2px solid var(--gris);
+      border-radius: 8px;
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-align: center;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .nombre-input.a:focus { border-color: var(--rouge); }
+    .nombre-input.b:focus { border-color: var(--bleu-mid); }
+
+    .droite-resultat {
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: var(--gris);
+      color: var(--bleu);
+      text-align: center;
+      transition: background .3s, color .3s;
+      min-width: 180px;
+    }
+    .droite-resultat.ok {
+      background: #edf7f2;
+      color: var(--vert);
+      border: 1.5px solid var(--vert);
+    }
+
+    /* =============================================
+       ÉTAPE 3 — MINI-EXERCICES DE REMÉDIATION
+       ============================================= */
+    .exo-section { display: none; flex-direction: column; gap: 20px; }
+    .exo-section.visible { display: flex; }
+
+    .exo-compteur {
+      display: flex;
+      gap: 6px;
+    }
+    .exo-dot {
+      height: 5px; border-radius: 99px; flex: 1;
+      background: var(--gris);
+      transition: background .3s;
+    }
+    .exo-dot.actif { background: var(--or); }
+    .exo-dot.ok    { background: var(--vert); }
+    .exo-dot.nok   { background: var(--rouge); }
+
+    .enonce-exo {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--bleu);
+    }
+    .enonce-exo strong { color: var(--rouge); }
+
+    .aide-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: 1.5px solid var(--or);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #7a5c10;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .aide-btn:hover { background: #fff8ed; }
+    .aide-encart {
+      display: none;
+      background: #fff8ed;
+      border: 1.5px dashed var(--or);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: #7a5c10;
+    }
+    .aide-encart.visible { display: block; }
+
+    .options-exo {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .opt-exo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid var(--gris);
+      border-radius: 8px;
+      background: #fff;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-size: 0.93rem;
+      font-weight: 600;
+      font-family: 'Nunito', sans-serif;
+      color: var(--texte);
+      text-align: left;
+      transition: border-color .15s, background .15s;
+      width: 100%;
+    }
+    .opt-exo:hover:not(:disabled) { border-color: var(--bleu); background: #f0f3fa; }
+    .opt-exo:disabled { cursor: default; }
+    .opt-exo .lettre {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--gris);
+      color: var(--bleu);
+      font-weight: 800;
+      font-size: 0.78rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .15s, color .15s;
+    }
+    .opt-exo.selectionne { border-color: var(--bleu); background: #eef1fa; }
+    .opt-exo.selectionne .lettre { background: var(--bleu); color: #fff; }
+    .opt-exo.correct { border-color: var(--vert); background: #edf7f2; }
+    .opt-exo.correct .lettre { background: var(--vert); color: #fff; }
+    .opt-exo.faux { border-color: var(--rouge); background: #fdf0f0; }
+    .opt-exo.faux .lettre { background: var(--rouge); color: #fff; }
+
+    .feedback-exo {
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      line-height: 1.5;
+      display: none;
+    }
+    .feedback-exo.ok  { background: #edf7f2; border-left: 4px solid var(--vert); color: #1a5c3c; }
+    .feedback-exo.nok { background: #fdf0f0; border-left: 4px solid var(--rouge); color: #7a1515; }
+
+    /* Visualisation tableau dans le feedback */
+    .mini-tableau {
+      display: inline-flex;
+      gap: 0;
+      margin: 8px 0 4px;
+      align-items: flex-end;
+    }
+    .mini-cell {
+      width: 44px; height: 44px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 800;
+      font-family: 'Source Serif 4', serif;
+      border: 2px solid;
+    }
+    .mini-cell.u { color: var(--col-u); border-color: var(--col-u); background: rgba(26,39,68,.05); }
+    .mini-cell.d { color: var(--col-d); border-color: var(--col-d); background: rgba(46,125,94,.05); }
+    .mini-cell.c { color: var(--col-c); border-color: var(--col-c); background: rgba(201,168,76,.08); }
+    .mini-cell .sous { font-size: 0.5rem; text-transform: uppercase; opacity: .6; }
+    .mini-virgule { font-size: 1.4rem; font-weight: 800; color: var(--bleu); padding: 0 2px; align-self: center; }
+
+    /* BOUTONS */
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+    .btn {
+      padding: 11px 24px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer;
+      border: none;
+      letter-spacing: 0.02em;
+      transition: opacity .15s, transform .1s;
+    }
+    .btn:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); }
+    .btn:active:not(:disabled) { transform: translateY(0); }
+    .btn:disabled { opacity: .38; cursor: default; }
+    .btn-valider { background: var(--bleu); color: #fff; }
+    .btn-suite   { background: var(--or);   color: #fff; }
+    .btn-retour  { background: var(--vert); color: #fff; }
+
+    /* ÉCRAN BILAN FINAL */
+    .ecran-bilan-final {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      padding: 24px 0 8px;
+    }
+    .ecran-bilan-final.visible { display: flex; }
+    .bilan-icone-grand { font-size: 3rem; }
+    .bilan-titre-final {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.2rem;
+      color: var(--bleu);
+    }
+    .bilan-texte-final { font-size: 0.9rem; color: #555; line-height: 1.6; max-width: 420px; }
+    .score-pills { display: flex; gap: 8px; justify-content: center; }
+    .score-pill {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 0.85rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff;
+    }
+    .score-pill.ok  { background: var(--vert); }
+    .score-pill.nok { background: var(--rouge); }
+
+    @media (max-width: 520px) {
+      .card { padding: 20px 16px 18px; }
+      .cellule-valeur { width: 60px; height: 60px; }
+      .leg-col { width: 60px; }
+      .chiffre-case { font-size: 1.6rem; }
+      .virgule-sep { width: 24px; font-size: 1.4rem; }
+      .signe-comparaison { width: 204px; }
+      .nombre-label { width: 60px; }
+      .leg-spacer { width: 60px; }
+      .sep-spacer { width: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="drapeau" aria-hidden="true">
+      <span class="bl"></span><span class="wh"></span><span class="rd"></span>
+    </div>
+    <div class="header-texte">
+      <div class="sous-titre">Mathématiques — CM2 · Remédiation</div>
+      <h1>Comparer les nombres décimaux</h1>
+    </div>
+  </div>
+  <div class="bandeau-remediation">
+    💡 Cette activité t'aide à mieux comprendre avant de retourner au niveau 2.
+    Pas de panique — on prend juste un autre chemin !
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<div class="nav-etapes" role="tablist">
+  <button class="etape-btn active" id="btn-etape1" onclick="allerEtape(1)">
+    🏛️ Tableau<br>de valeur
+  </button>
+  <button class="etape-btn" id="btn-etape2" onclick="allerEtape(2)">
+    📏 Droite<br>graduée
+  </button>
+  <button class="etape-btn" id="btn-etape3" onclick="allerEtape(3)">
+    ✏️ Mini-<br>exercices
+  </button>
+</div>
+
+<div class="card">
+
+  <!-- ================================================
+       ÉTAPE 1 — TABLEAU DE VALEUR POSITIONNEL
+       ================================================ -->
+  <div class="tableau-section visible" id="zone-etape1">
+    <div>
+      <div class="card-titre">Construis et compare deux nombres</div>
+      <p class="card-intro">
+        Chaque chiffre d'un nombre décimal a <strong>une place précise</strong> : unités, dixièmes, centièmes.
+        Utilise les curseurs pour construire deux nombres, puis observe comment ils se comparent.
+      </p>
+    </div>
+
+    <!-- Tableau de valeur -->
+    <div>
+      <!-- Légende des colonnes -->
+      <div class="legende-cols">
+        <div class="leg-spacer"></div>
+        <div class="leg-col u">Unités</div>
+        <div class="leg-col virgule"></div>
+        <div class="leg-col d">Dixièmes</div>
+        <div class="leg-col c">Centièmes</div>
+      </div>
+
+      <!-- Nombre A -->
+      <div class="nombre-ligne" id="ligne-A">
+        <div class="nombre-label">Nombre A</div>
+        <div class="cellule-valeur u">
+          <span class="chiffre-case u" id="tvA-u">2</span>
+          <span class="sous-label-case" style="color:var(--col-u)">unités</span>
+        </div>
+        <div class="virgule-sep">,</div>
+        <div class="cellule-valeur d">
+          <span class="chiffre-case d" id="tvA-d">3</span>
+          <span class="sous-label-case" style="color:var(--col-d)">dixièmes</span>
+        </div>
+        <div class="cellule-valeur c">
+          <span class="chiffre-case c" id="tvA-c">0</span>
+          <span class="sous-label-case" style="color:var(--col-c)">centièmes</span>
+        </div>
+      </div>
+
+      <!-- Signe de comparaison -->
+      <div class="separateur-ligne">
+        <div class="sep-spacer"></div>
+        <div class="signe-comparaison" id="signe-tv">?</div>
+      </div>
+
+      <!-- Nombre B -->
+      <div class="nombre-ligne" id="ligne-B">
+        <div class="nombre-label">Nombre B</div>
+        <div class="cellule-valeur u">
+          <span class="chiffre-case u" id="tvB-u">2</span>
+          <span class="sous-label-case" style="color:var(--col-u)">unités</span>
+        </div>
+        <div class="virgule-sep">,</div>
+        <div class="cellule-valeur d">
+          <span class="chiffre-case d" id="tvB-d">0</span>
+          <span class="sous-label-case" style="color:var(--col-d)">dixièmes</span>
+        </div>
+        <div class="cellule-valeur c">
+          <span class="chiffre-case c" id="tvB-c">9</span>
+          <span class="sous-label-case" style="color:var(--col-c)">centièmes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Curseurs -->
+    <div class="slider-zone">
+      <p style="font-size:0.8rem;font-weight:700;color:var(--gris-mid);text-transform:uppercase;letter-spacing:.06em">
+        ↕ Modifie les chiffres avec les curseurs
+      </p>
+
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>A — <span style="color:var(--col-u)">Unités</span></span>
+          <span class="slider-valeur u" id="sv-Au">2</span>
+        </div>
+        <input type="range" class="range-u" min="0" max="9" value="2" id="sl-Au" oninput="updateTableau()">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>A — <span style="color:var(--col-d)">Dixièmes</span></span>
+          <span class="slider-valeur d" id="sv-Ad">3</span>
+        </div>
+        <input type="range" class="range-d" min="0" max="9" value="3" id="sl-Ad" oninput="updateTableau()">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>A — <span style="color:var(--col-c)">Centièmes</span></span>
+          <span class="slider-valeur c" id="sv-Ac">0</span>
+        </div>
+        <input type="range" class="range-c" min="0" max="9" value="0" id="sl-Ac" oninput="updateTableau()">
+      </div>
+
+      <div style="height:1px;background:var(--gris);margin:4px 0;"></div>
+
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>B — <span style="color:var(--col-u)">Unités</span></span>
+          <span class="slider-valeur u" id="sv-Bu">2</span>
+        </div>
+        <input type="range" class="range-u" min="0" max="9" value="2" id="sl-Bu" oninput="updateTableau()">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>B — <span style="color:var(--col-d)">Dixièmes</span></span>
+          <span class="slider-valeur d" id="sv-Bd">0</span>
+        </div>
+        <input type="range" class="range-d" min="0" max="9" value="0" id="sl-Bd" oninput="updateTableau()">
+      </div>
+      <div class="slider-item">
+        <div class="slider-label">
+          <span>B — <span style="color:var(--col-c)">Centièmes</span></span>
+          <span class="slider-valeur c" id="sv-Bc">9</span>
+        </div>
+        <input type="range" class="range-c" min="0" max="9" value="9" id="sl-Bc" oninput="updateTableau()">
+      </div>
+    </div>
+
+    <!-- Leçon encadrée -->
+    <div class="tableau-lecon" id="lecon-tv">
+      <strong>🔑 La règle d'or :</strong> Pour comparer deux nombres décimaux, on compare <strong>colonne par colonne</strong>, de gauche à droite.
+      D'abord les <span style="color:var(--col-u);font-weight:800">unités</span>, puis les <span style="color:var(--col-d);font-weight:800">dixièmes</span>, puis les <span style="color:var(--col-c);font-weight:800">centièmes</span>.
+      Dès qu'une colonne est différente — on a le résultat !
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-suite" onclick="allerEtape(2)">Étape suivante : la droite graduée →</button>
+    </div>
+  </div>
+
+  <!-- ================================================
+       ÉTAPE 2 — DROITE GRADUÉE INTERACTIVE
+       ================================================ -->
+  <div class="droite-section" id="zone-etape2">
+    <div>
+      <div class="card-titre">Place les nombres sur la droite</div>
+      <p class="card-intro">
+        Entre deux nombres dans les cases. Ils apparaîtront sur la droite graduée.
+        <strong>Le plus grand est toujours à droite !</strong>
+      </p>
+    </div>
+
+    <div class="droite-wrap">
+      <canvas id="canevas-droite" width="640" height="140"></canvas>
+    </div>
+
+    <div class="droite-controles">
+      <div class="droite-pair">
+        <label class="a">Nombre A</label>
+        <input class="nombre-input a" type="number" id="droite-A" value="1.3" min="0" max="9.99" step="0.01"
+               oninput="dessinerDroite()">
+        <div class="droite-resultat" id="droite-res">Entrez deux nombres</div>
+      </div>
+      <div class="droite-pair">
+        <label class="b">Nombre B</label>
+        <input class="nombre-input b" type="number" id="droite-B" value="1.03" min="0" max="9.99" step="0.01"
+               oninput="dessinerDroite()">
+      </div>
+    </div>
+
+    <!-- Encart règle zéros finaux -->
+    <div class="tableau-lecon">
+      <strong>💡 Astuce :</strong> <strong>1,3</strong> et <strong>1,30</strong> sont le même nombre !
+      Un zéro ajouté à la fin de la partie décimale ne change pas la valeur.
+      Essaie d'entrer <em>1,3</em> et <em>1,30</em> pour le vérifier.
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-valider" onclick="allerEtape(1)" style="background:var(--gris-mid)">← Retour tableau</button>
+      <button class="btn btn-suite" onclick="allerEtape(3)">Passer aux exercices →</button>
+    </div>
+  </div>
+
+  <!-- ================================================
+       ÉTAPE 3 — MINI-EXERCICES GUIDÉS
+       ================================================ -->
+  <div class="exo-section" id="zone-etape3">
+    <div>
+      <div class="card-titre">Mini-exercices guidés</div>
+      <p class="card-intro">3 questions. Tu peux demander un indice si tu bloques.</p>
+    </div>
+
+    <div class="exo-compteur" id="exo-compteur">
+      <div class="exo-dot actif" id="dot-0"></div>
+      <div class="exo-dot"      id="dot-1"></div>
+      <div class="exo-dot"      id="dot-2"></div>
+    </div>
+
+    <p class="enonce-exo" id="exo-enonce"></p>
+
+    <!-- Visualisation tableau mini (injectée selon la question) -->
+    <div id="exo-visuel"></div>
+
+    <button class="aide-btn" id="btn-aide" onclick="montrerAide()">
+      💬 J'ai besoin d'un indice
+    </button>
+    <div class="aide-encart" id="aide-encart"></div>
+
+    <div class="options-exo" id="exo-options"></div>
+    <div class="feedback-exo" id="exo-feedback"></div>
+
+    <div class="actions" id="exo-actions">
+      <button class="btn btn-valider" id="exo-btn-valider" disabled onclick="validerExo()">Valider</button>
+      <button class="btn btn-suite"   id="exo-btn-suite"   style="display:none" onclick="suiteExo()">Question suivante →</button>
+    </div>
+
+    <!-- Bilan final -->
+    <div class="ecran-bilan-final" id="bilan-final">
+      <div class="bilan-icone-grand" id="bilan-icone">🌟</div>
+      <div class="score-pills" id="bilan-pills"></div>
+      <h2 class="bilan-titre-final" id="bilan-titre"></h2>
+      <p class="bilan-texte-final" id="bilan-texte"></p>
+      <div class="actions" style="justify-content:center;margin-top:4px">
+        <button class="btn btn-retour" onclick="retourNiveau2()">↩ Retourner au Niveau 2</button>
+        <button class="btn btn-valider" onclick="recommencerExos()" style="background:var(--gris-mid)">Recommencer</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+/* ================================================================
+   DONNÉES EXERCICES DE REMÉDIATION
+   ================================================================ */
+const MINI_EXOS = [
+  {
+    enonce: "Regarde le tableau ci-dessous. Quel signe convient entre <strong>2,3</strong> et <strong>2,09</strong> ?",
+    visuelA: [2, 3, 0],  // unités, dixièmes, centièmes
+    visuelB: [2, 0, 9],
+    options: ["2,3 &lt; 2,09", "2,3 = 2,09", "2,3 &gt; 2,09"],
+    correct: 2,
+    aide: "Compare la colonne des dixièmes : 3 dixièmes contre 0 dixième. Lequel est plus grand ?",
+    ok:  "✅ Exact ! Les unités sont identiques (2 = 2), donc on regarde les dixièmes : 3 > 0. Donc 2,3 > 2,09.",
+    nok: "❌ Attention ! Les unités sont les mêmes. On passe aux dixièmes : 3 contre 0. Comme 3 > 0, on a 2,3 > 2,09."
+  },
+  {
+    enonce: "Lequel de ces nombres est le <strong>plus petit</strong> : <strong>0,7</strong> ou <strong>0,70</strong> ?",
+    visuelA: [0, 7, null],  // null = pas de centièmes à afficher
+    visuelB: [0, 7, 0],
+    options: ["0,7", "0,70", "Ils sont égaux", "Impossible à dire"],
+    correct: 2,
+    aide: "Essaie d'écrire 0,7 avec un zéro : 0,70. Un zéro à la fin de la partie décimale ne change rien !",
+    ok:  "✅ Bravo ! 0,7 = 0,70. Ajouter un zéro à la fin d'un nombre décimal ne change pas sa valeur.",
+    nok: "❌ 0,7 et 0,70 sont identiques ! Un zéro ajouté à la fin de la partie décimale ne change pas la valeur."
+  },
+  {
+    enonce: "Range dans l'ordre croissant (du plus petit au plus grand) : <strong>1,3 — 1,03 — 1,30</strong>",
+    visuelA: null,
+    visuelB: null,
+    options: [
+      "1,3 &lt; 1,03 &lt; 1,30",
+      "1,03 &lt; 1,3 &lt; 1,30",
+      "1,03 &lt; 1,30 &lt; 1,3",
+      "1,03 = 1,3 = 1,30"
+    ],
+    correct: 1,
+    aide: "D'abord : 1,3 et 1,30 sont-ils égaux ? (Oui !). Ensuite compare 1,03 et 1,3 : dixièmes 0 vs 3.",
+    ok:  "✅ Parfait ! 1,3 = 1,30, donc il n'y a que deux valeurs différentes. 1,03 &lt; 1,3 = 1,30.",
+    nok: "❌ Rappelle-toi : 1,3 = 1,30 (zéro final). Donc compare 1,03 et 1,3 : dixièmes 0 &lt; 3. Ordre : 1,03 &lt; 1,3 = 1,30."
+  }
+];
+
+/* ================================================================
+   ÉTAT EXERCICES
+   ================================================================ */
+let exoState = {
+  courant: 0,
+  selectionne: null,
+  valide: false,
+  resultats: [null, null, null]
+};
+
+/* ================================================================
+   NAVIGATION ENTRE ÉTAPES
+   ================================================================ */
+function allerEtape(n) {
+  ['zone-etape1','zone-etape2','zone-etape3'].forEach(function(id, i) {
+    const el = document.getElementById(id);
+    el.classList.remove('visible');
+    if (el.tagName === 'DIV') {
+      // tableau-section, droite-section, exo-section ont chacun leur classe
+    }
+  });
+  document.getElementById('zone-etape1').classList.remove('visible');
+  document.getElementById('zone-etape2').classList.remove('visible');
+  document.getElementById('zone-etape3').classList.remove('visible');
+
+  document.getElementById('zone-etape' + n).classList.add('visible');
+
+  ['btn-etape1','btn-etape2','btn-etape3'].forEach(function(id, i) {
+    const btn = document.getElementById(id);
+    btn.classList.remove('active');
+    if (i + 1 < n) btn.classList.add('done');
+    else btn.classList.remove('done');
+  });
+  document.getElementById('btn-etape' + n).classList.add('active');
+
+  if (n === 2) dessinerDroite();
+  if (n === 3) afficherExo();
+}
+
+/* ================================================================
+   TABLEAU DE VALEUR — mise à jour
+   ================================================================ */
+function updateTableau() {
+  const Au = parseInt(document.getElementById('sl-Au').value);
+  const Ad = parseInt(document.getElementById('sl-Ad').value);
+  const Ac = parseInt(document.getElementById('sl-Ac').value);
+  const Bu = parseInt(document.getElementById('sl-Bu').value);
+  const Bd = parseInt(document.getElementById('sl-Bd').value);
+  const Bc = parseInt(document.getElementById('sl-Bc').value);
+
+  // Mettre à jour affichage chiffres
+  document.getElementById('tvA-u').textContent = Au;
+  document.getElementById('tvA-d').textContent = Ad;
+  document.getElementById('tvA-c').textContent = Ac;
+  document.getElementById('tvB-u').textContent = Bu;
+  document.getElementById('tvB-d').textContent = Bd;
+  document.getElementById('tvB-c').textContent = Bc;
+
+  // Mettre à jour valeurs curseurs
+  document.getElementById('sv-Au').textContent = Au;
+  document.getElementById('sv-Ad').textContent = Ad;
+  document.getElementById('sv-Ac').textContent = Ac;
+  document.getElementById('sv-Bu').textContent = Bu;
+  document.getElementById('sv-Bd').textContent = Bd;
+  document.getElementById('sv-Bc').textContent = Bc;
+
+  const valA = Au + Ad / 10 + Ac / 100;
+  const valB = Bu + Bd / 10 + Bc / 100;
+
+  const signe = document.getElementById('signe-tv');
+  if (valA > valB)      { signe.textContent = '>'; signe.className = 'signe-comparaison vert'; }
+  else if (valA < valB) { signe.textContent = '<'; signe.className = 'signe-comparaison vert'; }
+  else                  { signe.textContent = '='; signe.className = 'signe-comparaison vert'; }
+}
+
+/* ================================================================
+   DROITE GRADUÉE — dessin sur canvas
+   ================================================================ */
+function dessinerDroite() {
+  const canvas = document.getElementById('canevas-droite');
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+
+  const valA = parseFloat(document.getElementById('droite-A').value) || 0;
+  const valB = parseFloat(document.getElementById('droite-B').value) || 0;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Calcul plage
+  const mini  = Math.min(valA, valB, 0);
+  const maxi  = Math.max(valA, valB, 0) + 0.5;
+  const range = maxi - mini || 1;
+  const pad   = 48;
+
+  function xFor(v) { return pad + ((v - mini) / range) * (W - 2 * pad); }
+
+  // Axe
+  ctx.strokeStyle = '#1a2744';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(pad - 8, H / 2);
+  ctx.lineTo(W - pad + 8, H / 2);
+  ctx.stroke();
+
+  // Flèche droite
+  ctx.fillStyle = '#1a2744';
+  ctx.beginPath();
+  ctx.moveTo(W - pad + 8, H / 2);
+  ctx.lineTo(W - pad, H / 2 - 5);
+  ctx.lineTo(W - pad, H / 2 + 5);
+  ctx.closePath();
+  ctx.fill();
+
+  // Graduations
+  ctx.strokeStyle = '#c8c8bc';
+  ctx.lineWidth = 1;
+  ctx.fillStyle = '#1a2744';
+  ctx.font = '600 11px Nunito, sans-serif';
+  ctx.textAlign = 'center';
+
+  const entMin = Math.floor(mini);
+  const entMax = Math.ceil(maxi);
+  for (let v = entMin; v <= entMax; v += 0.5) {
+    const x = xFor(v);
+    const tall = (v === Math.round(v)) ? 10 : 6;
+    ctx.beginPath();
+    ctx.moveTo(x, H / 2 - tall);
+    ctx.lineTo(x, H / 2 + tall);
+    ctx.stroke();
+    if (v === Math.round(v)) {
+      ctx.fillText(v.toFixed(1).replace('.', ','), x, H / 2 + 24);
+    }
+  }
+
+  // Marqueur A
+  function marquer(val, couleur, lettre, yOffset) {
+    const x = xFor(val);
+    ctx.fillStyle = couleur;
+    ctx.beginPath();
+    ctx.arc(x, H / 2, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = '800 10px Nunito, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(lettre, x, H / 2 + 4);
+    ctx.fillStyle = couleur;
+    ctx.font = '700 12px Nunito, sans-serif';
+    ctx.fillText(val.toString().replace('.', ','), x, H / 2 + yOffset);
+  }
+
+  if (!isNaN(valA)) marquer(valA, '#b5292a', 'A', -18);
+  if (!isNaN(valB)) marquer(valB, '#2d4278', 'B', 38);
+
+  // Résultat textuel
+  const res = document.getElementById('droite-res');
+  if (!isNaN(valA) && !isNaN(valB)) {
+    if (valA > valB) {
+      res.textContent = valA.toString().replace('.', ',') + ' > ' + valB.toString().replace('.', ',') + '  (A est plus grand)';
+    } else if (valA < valB) {
+      res.textContent = valA.toString().replace('.', ',') + ' < ' + valB.toString().replace('.', ',') + '  (B est plus grand)';
+    } else {
+      res.textContent = valA.toString().replace('.', ',') + ' = ' + valB.toString().replace('.', ',') + '  (égaux !)';
+    }
+    res.classList.add('ok');
+  }
+}
+
+/* ================================================================
+   MINI-EXERCICES — affichage
+   ================================================================ */
+function afficherExo() {
+  const idx = exoState.courant;
+  if (idx >= MINI_EXOS.length) { afficherBilanFinal(); return; }
+
+  const q = MINI_EXOS[idx];
+
+  // Compteur
+  for (let i = 0; i < 3; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.className = 'exo-dot';
+    if (i < idx) {
+      dot.classList.add(exoState.resultats[i] ? 'ok' : 'nok');
+    } else if (i === idx) {
+      dot.classList.add('actif');
+    }
+  }
+
+  document.getElementById('exo-enonce').innerHTML = q.enonce;
+
+  // Visuel tableau si présent
+  const visuelDiv = document.getElementById('exo-visuel');
+  visuelDiv.innerHTML = '';
+  if (q.visuelA) {
+    visuelDiv.innerHTML = construireMiniTableau(q.visuelA, q.visuelB, 'A', 'B');
+  }
+
+  // Aide
+  document.getElementById('aide-encart').className = 'aide-encart';
+  document.getElementById('aide-encart').textContent = q.aide;
+  document.getElementById('btn-aide').style.display = 'inline-flex';
+
+  // Options
+  const oz = document.getElementById('exo-options');
+  oz.innerHTML = '';
+  ['A', 'B', 'C', 'D'].slice(0, q.options.length).forEach(function(lettre, i) {
+    const btn = document.createElement('button');
+    btn.className = 'opt-exo';
+    btn.innerHTML = '<span class="lettre">' + lettre + '</span><span>' + q.options[i] + '</span>';
+    btn.addEventListener('click', function() { selectionnerExo(i); });
+    oz.appendChild(btn);
+  });
+
+  // Feedback
+  const fb = document.getElementById('exo-feedback');
+  fb.style.display = 'none';
+  fb.className = 'feedback-exo';
+
+  // Boutons
+  const btnV = document.getElementById('exo-btn-valider');
+  const btnS = document.getElementById('exo-btn-suite');
+  btnV.style.display = 'inline-flex';
+  btnV.disabled = true;
+  btnS.style.display = 'none';
+  btnS.textContent = (idx === MINI_EXOS.length - 1) ? 'Voir le bilan →' : 'Question suivante →';
+
+  // Cacher bilan
+  document.getElementById('bilan-final').classList.remove('visible');
+  document.getElementById('exo-actions').style.display = 'flex';
+  document.getElementById('exo-options').style.display = 'flex';
+  document.getElementById('exo-enonce').style.display = 'block';
+  document.getElementById('exo-compteur').style.display = 'flex';
+
+  exoState.selectionne = null;
+  exoState.valide = false;
+}
+
+function construireMiniTableau(chiffresA, chiffresB, labelA, labelB) {
+  function ligne(chiffres, label, couleur) {
+    const [u, d, c] = chiffres;
+    return '<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px;">' +
+      '<span style="width:52px;font-size:0.78rem;font-weight:800;color:' + couleur + ';text-align:right;padding-right:8px">' + label + '</span>' +
+      '<div class="mini-cell u">' + u + '<span class="sous">unités</span></div>' +
+      '<span class="mini-virgule">,</span>' +
+      '<div class="mini-cell d">' + d + '<span class="sous">dixièmes</span></div>' +
+      (c !== null ? '<div class="mini-cell c">' + c + '<span class="sous">centièmes</span></div>' : '') +
+      '</div>';
+  }
+  return '<div style="margin:8px 0 12px;">' +
+    ligne(chiffresA, labelA, 'var(--rouge)') +
+    ligne(chiffresB, labelB, 'var(--bleu-mid)') +
+    '</div>';
+}
+
+function montrerAide() {
+  const enc = document.getElementById('aide-encart');
+  enc.classList.toggle('visible');
+  document.getElementById('btn-aide').textContent =
+    enc.classList.contains('visible') ? '🙈 Cacher l\'indice' : '💬 J\'ai besoin d\'un indice';
+}
+
+function selectionnerExo(idx) {
+  if (exoState.valide) return;
+  exoState.selectionne = idx;
+  document.querySelectorAll('.opt-exo').forEach(function(b, i) {
+    b.classList.toggle('selectionne', i === idx);
+  });
+  document.getElementById('exo-btn-valider').disabled = false;
+}
+
+function validerExo() {
+  if (exoState.selectionne === null || exoState.valide) return;
+  exoState.valide = true;
+  const q = MINI_EXOS[exoState.courant];
+  const reussi = exoState.selectionne === q.correct;
+  exoState.resultats[exoState.courant] = reussi;
+
+  document.querySelectorAll('.opt-exo').forEach(function(b, i) {
+    b.disabled = true;
+    if (i === q.correct)                         b.classList.add('correct');
+    else if (i === exoState.selectionne && !reussi) b.classList.add('faux');
+  });
+
+  const fb = document.getElementById('exo-feedback');
+  fb.className = 'feedback-exo ' + (reussi ? 'ok' : 'nok');
+  fb.innerHTML = (reussi ? q.ok : q.nok);
+  fb.style.display = 'block';
+
+  // Visuel dans feedback si raté
+  if (!reussi && q.visuelA) {
+    fb.innerHTML += '<div style="margin-top:8px">' + construireMiniTableau(q.visuelA, q.visuelB, 'A', 'B') + '</div>';
+  }
+
+  document.getElementById('exo-btn-valider').style.display = 'none';
+  document.getElementById('exo-btn-suite').style.display = 'inline-flex';
+
+  // Mettre à jour compteur
+  const dot = document.getElementById('dot-' + exoState.courant);
+  dot.className = 'exo-dot ' + (reussi ? 'ok' : 'nok');
+}
+
+function suiteExo() {
+  exoState.courant++;
+  if (exoState.courant >= MINI_EXOS.length) {
+    afficherBilanFinal();
+  } else {
+    afficherExo();
+  }
+}
+
+/* ================================================================
+   BILAN FINAL
+   ================================================================ */
+function afficherBilanFinal() {
+  document.getElementById('exo-actions').style.display = 'none';
+  document.getElementById('exo-options').style.display = 'none';
+  document.getElementById('exo-enonce').style.display = 'none';
+  document.getElementById('exo-visuel').innerHTML = '';
+  document.getElementById('exo-feedback').style.display = 'none';
+  document.getElementById('btn-aide').style.display = 'none';
+  document.getElementById('aide-encart').className = 'aide-encart';
+  document.getElementById('exo-compteur').style.display = 'none';
+
+  const score = exoState.resultats.filter(function(r) { return r === true; }).length;
+  const bilan = document.getElementById('bilan-final');
+  bilan.classList.add('visible');
+
+  // Pills
+  const pills = document.getElementById('bilan-pills');
+  pills.innerHTML = '';
+  exoState.resultats.forEach(function(r, i) {
+    const p = document.createElement('div');
+    p.className = 'score-pill ' + (r ? 'ok' : 'nok');
+    p.textContent = (i + 1);
+    pills.appendChild(p);
+  });
+
+  if (score === 3) {
+    document.getElementById('bilan-icone').textContent = '🌟';
+    document.getElementById('bilan-titre').textContent = 'Excellent ! Tu es prêt(e) !';
+    document.getElementById('bilan-texte').textContent =
+      'Tu as réussi les 3 exercices. Tu maîtrises maintenant les bases de la comparaison. Retourne au Niveau 2 — tu vas y arriver !';
+  } else if (score >= 1) {
+    document.getElementById('bilan-icone').textContent = '💪';
+    document.getElementById('bilan-titre').textContent = 'Bien ! Encore un peu de pratique.';
+    document.getElementById('bilan-texte').textContent =
+      'Tu as réussi ' + score + ' question' + (score > 1 ? 's' : '') + ' sur 3. Tu peux retourner au Niveau 2 ou recommencer cette remédiation pour consolider.';
+  } else {
+    document.getElementById('bilan-icone').textContent = '📚';
+    document.getElementById('bilan-titre').textContent = 'Reprends depuis le début.';
+    document.getElementById('bilan-texte').textContent =
+      'Pas d\'inquiétude — retourne à l\'étape 1, manipule encore le tableau, puis reviens tenter les exercices.';
+  }
+}
+
+function retourNiveau2() {
+  // Dans l'intégration réelle, on appellerait reinitNiveau(1) du fichier parent.
+  // En standalone, on affiche juste un message.
+  alert('Retour au Niveau 2 — Comparer et ordonner !\n(En intégration : reinitNiveau(1))');
+}
+
+function recommencerExos() {
+  exoState.courant    = 0;
+  exoState.selectionne = null;
+  exoState.valide      = false;
+  exoState.resultats   = [null, null, null];
+  afficherExo();
+}
+
+/* ================================================================
+   INIT
+   ================================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+  updateTableau();
+  dessinerDroite();
+  // Redimensionner canvas si petit écran
+  const canvas = document.getElementById('canevas-droite');
+  const parent = canvas.parentElement;
+  if (parent.clientWidth < 640) {
+    canvas.width  = parent.clientWidth - 4;
+    canvas.height = 140;
+  }
+});
+</script>
+</body>
+</html>

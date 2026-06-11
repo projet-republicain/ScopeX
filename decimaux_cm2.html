@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Les nombres décimaux — CM2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bleu:    #1a2744;
+      --blanc:   #f5f5ef;
+      --or:      #c9a84c;
+      --rouge:   #b5292a;
+      --gris:    #e2e2d8;
+      --texte:   #1c1c1c;
+      --vert-ok: #2e7d5e;
+      --rouge-nok: #b5292a;
+      --radius:  10px;
+    }
+
+    body {
+      background: var(--blanc);
+      color: var(--texte);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+    }
+
+    /* ── En-tête ─────────────────────────────────────────── */
+    header {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .tricolore {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex-shrink: 0;
+    }
+    .tricolore span {
+      display: block;
+      width: 10px;
+      height: 26px;
+      border-radius: 2px;
+    }
+    .tricolore .bl { background: var(--bleu); }
+    .tricolore .wh { background: #fff; border: 1px solid #ccc; }
+    .tricolore .rd { background: var(--rouge); }
+
+    /* on affiche le tricolore en horizontal */
+    .tricolore { flex-direction: row; }
+    .tricolore span { width: 26px; height: 10px; }
+
+    h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: var(--bleu);
+      line-height: 1.2;
+    }
+    h1 small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--or);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    /* ── Barre de progression ────────────────────────────── */
+    .progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--gris);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--bleu) 0%, var(--or) 60%, var(--rouge) 100%);
+      transition: width 0.5s ease;
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: #888;
+      margin-top: 5px;
+    }
+
+    /* ── Carte principale ────────────────────────────────── */
+    .card {
+      width: 100%;
+      max-width: 700px;
+      background: #fff;
+      border: 1px solid var(--gris);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+      box-shadow: 0 2px 16px rgba(26,39,68,.07);
+    }
+
+    .niveau-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--bleu);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 20px;
+    }
+    .niveau-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--or);
+      flex-shrink: 0;
+    }
+
+    .question-num {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #aaa;
+      margin-bottom: 8px;
+    }
+
+    .enonce {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.18rem;
+      line-height: 1.6;
+      color: var(--bleu);
+      margin-bottom: 24px;
+    }
+    .enonce strong {
+      color: var(--rouge);
+    }
+
+    /* ── Zone saisie manuscrite ──────────────────────────── */
+    .manuscrit-zone {
+      background: #fffdf3;
+      border: 1px dashed var(--or);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 22px;
+      display: none;
+    }
+    .manuscrit-zone label {
+      display: block;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--or);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .manuscrit-zone input[type="text"] {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--texte);
+      background: #fff;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .manuscrit-zone input:focus { border-color: var(--or); }
+
+    /* ── Options QCM ─────────────────────────────────────── */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border: 1.5px solid var(--gris);
+      border-radius: 8px;
+      background: #fff;
+      padding: 13px 16px;
+      cursor: pointer;
+      font-size: 0.97rem;
+      font-family: 'Inter', sans-serif;
+      color: var(--texte);
+      text-align: left;
+      transition: border-color .18s, background .18s;
+    }
+    .option-btn:hover { border-color: var(--bleu); background: #f0f3fa; }
+
+    .option-btn .lettre {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--gris);
+      color: var(--bleu);
+      font-weight: 700;
+      font-size: 0.82rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .18s, color .18s;
+    }
+
+    .option-btn.selected { border-color: var(--bleu); background: #eef1fa; }
+    .option-btn.selected .lettre { background: var(--bleu); color: #fff; }
+
+    .option-btn.correct  { border-color: var(--vert-ok); background: #edf7f2; }
+    .option-btn.correct .lettre { background: var(--vert-ok); color: #fff; }
+
+    .option-btn.wrong    { border-color: var(--rouge-nok); background: #fdf0f0; }
+    .option-btn.wrong .lettre { background: var(--rouge-nok); color: #fff; }
+
+    .option-btn:disabled { cursor: default; }
+
+    /* ── Feedback ────────────────────────────────────────── */
+    .feedback {
+      display: none;
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .feedback.ok  { background: #edf7f2; border-left: 4px solid var(--vert-ok);  color: #1a5c3c; }
+    .feedback.nok { background: #fdf0f0; border-left: 4px solid var(--rouge-nok); color: #8b1a1a; }
+
+    /* ── Boutons d'action ────────────────────────────────── */
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 11px 22px;
+      border-radius: 7px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity .18s, transform .12s;
+      letter-spacing: 0.02em;
+    }
+    .btn:hover { opacity: .88; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: .4; cursor: default; transform: none; }
+
+    .btn-valider  { background: var(--bleu); color: #fff; }
+    .btn-suivant  { background: var(--or); color: #fff; }
+    .btn-reculer  { background: transparent; color: var(--bleu); border: 1.5px solid var(--bleu); }
+
+    /* ── Navigation de niveau ────────────────────────────── */
+    .nav-niveau {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gris);
+    }
+    .nav-niveau p {
+      font-size: 0.82rem;
+      color: #888;
+      font-style: italic;
+    }
+    .nav-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    /* ── Résumé de niveau ────────────────────────────────── */
+    .resume {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+      padding: 24px 0 8px;
+    }
+    .resume .score-cercle {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 4px solid var(--or);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--bleu);
+    }
+    .resume .score-cercle span {
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: #999;
+    }
+    .resume h2 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.1rem;
+      color: var(--bleu);
+    }
+    .resume p { font-size: 0.88rem; color: #555; line-height: 1.5; }
+    .seuil-info {
+      font-size: 0.75rem;
+      color: #999;
+      background: var(--gris);
+      padding: 6px 14px;
+      border-radius: 99px;
+    }
+
+    /* ── Fin de parcours ─────────────────────────────────── */
+    .fin {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      padding: 16px 0;
+    }
+    .fin .trophee { font-size: 3rem; }
+    .fin h2 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.3rem;
+      color: var(--bleu);
+    }
+    .fin p { font-size: 0.9rem; color: #555; line-height: 1.6; max-width: 440px; }
+
+    @media (max-width: 520px) {
+      .card { padding: 22px 18px; }
+      h1 { font-size: 1.2rem; }
+      .enonce { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="tricolore" aria-hidden="true">
+      <span class="bl"></span><span class="wh"></span><span class="rd"></span>
+    </div>
+    <h1>
+      <small>Mathématiques — CM2</small>
+      Les nombres décimaux
+    </h1>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <div class="progress-label">
+    <span id="progressTexte">Niveau 1 · Base</span>
+    <span id="progressPct">0 %</span>
+  </div>
+</header>
+
+<div class="card" id="mainCard">
+
+  <!-- ░░ CONTENU EXERCICE ░░ -->
+  <div id="exerciceZone">
+    <div class="niveau-badge"><span class="dot"></span><span id="niveauLabel">Niveau 1 — Base</span></div>
+    <div class="question-num" id="questionNum">Question 1 / 3</div>
+    <p class="enonce" id="enonce"></p>
+
+    <div class="manuscrit-zone" id="manuscritZone">
+      <label>✏️ Pose ton calcul sur ta feuille, puis écris ta réponse ici</label>
+      <input type="text" id="manuscritInput" placeholder="Ex : 3,7" />
+    </div>
+
+    <div class="options" id="optionsZone"></div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="actions">
+      <button class="btn btn-valider" id="btnValider">Valider</button>
+      <button class="btn btn-suivant" id="btnSuivant" style="display:none">Question suivante &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ░░ RÉSUMÉ DE NIVEAU ░░ -->
+  <div class="resume" id="resumeZone">
+    <div class="score-cercle" id="scoreCercle">
+      <div id="scoreVal">–</div>
+      <span>/ 3</span>
+    </div>
+    <h2 id="resumeTitre">Bilan du niveau</h2>
+    <p id="resumeTexte"></p>
+    <div class="seuil-info" id="seuilInfo"></div>
+    <div class="nav-niveau" id="navNiveau" style="display:flex">
+      <p id="navConsigne"></p>
+      <div class="nav-btns" id="navBtns"></div>
+    </div>
+  </div>
+
+  <!-- ░░ FIN DE PARCOURS ░░ -->
+  <div class="fin" id="finZone">
+    <div class="trophee">🏅</div>
+    <h2 id="finTitre">Parcours terminé !</h2>
+    <p id="finTexte"></p>
+    <button class="btn btn-valider" id="btnRecommencer">Recommencer depuis le d&eacute;but</button>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+/* ═══════════════════════════════════════════════
+   DONNÉES — 4 niveaux × 3 questions QCM
+   ═══════════════════════════════════════════════ */
+const NIVEAUX = [
+  {
+    label: "Niveau 1 — Base",
+    titre: "Lire et nommer les décimaux",
+    description: "Reconnaître la valeur des chiffres d'un nombre décimal.",
+    seuil: 2,
+    questions: [
+      {
+        enonce: "Dans le nombre <strong>4,7</strong> — que représente le chiffre 7 ?",
+        options: ["7 unités", "7 dixièmes", "7 centièmes", "7 dizaines"],
+        correct: 1,
+        feedbackOk: "✅ Exact ! Après la virgule, le premier chiffre représente les <em>dixièmes</em>.",
+        feedbackNok: "❌ Après la virgule, le premier chiffre représente les <em>dixièmes</em>. Ici, 7 dixièmes."
+      },
+      {
+        enonce: "Quel nombre est compris entre <strong>2</strong> et <strong>3</strong> ?",
+        options: ["3,2", "1,9", "2,5", "4,0"],
+        correct: 2,
+        feedbackOk: "✅ Bravo ! 2,5 se situe bien entre 2 et 3.",
+        feedbackNok: "❌ La bonne réponse est 2,5, qui se place entre 2 et 3 sur la droite numérique."
+      },
+      {
+        enonce: "Comment écrit-on « cinq unités et trois dixièmes » en chiffres ?",
+        options: ["53", "5,03", "5,3", "0,53"],
+        correct: 2,
+        feedbackOk: "✅ Parfait ! Cinq unités et trois dixièmes = 5,3.",
+        feedbackNok: "❌ Cinq unités → 5 (avant la virgule), trois dixièmes → 3 (premier chiffre après). Réponse : 5,3."
+      }
+    ]
+  },
+  {
+    label: "Niveau 2 — Comparaison",
+    titre: "Comparer et ordonner",
+    description: "Utiliser < > = pour comparer des nombres décimaux.",
+    seuil: 2,
+    questions: [
+      {
+        enonce: "Quel signe convient entre <strong>3,4</strong> ☐ <strong>3,40</strong> ?",
+        options: ["<", ">", "=", "On ne peut pas comparer"],
+        correct: 2,
+        feedbackOk: "✅ Très bien ! 3,4 = 3,40 : ajouter un zéro après le dernier chiffre décimal ne change pas la valeur.",
+        feedbackNok: "❌ 3,4 = 3,40. Un zéro ajouté à la fin d'un nombre décimal ne change pas sa valeur."
+      },
+      {
+        enonce: "Parmi ces nombres, lequel est le plus grand ?",
+        options: ["2,09", "2,9", "2,90", "2,09"],
+        correct: 1,
+        feedbackOk: "✅ Exact ! 2,9 = 2,90 > 2,09 : les dixièmes sont plus « grands » que les centièmes.",
+        feedbackNok: "❌ 2,9 est le plus grand. 2,9 = 2,90, et 2,90 > 2,09 car 9 dixièmes > 0 dixième."
+      },
+      {
+        enonce: "Range ces nombres dans l'ordre croissant : <strong>1,3 — 0,9 — 1,03</strong>",
+        options: [
+          "1,3 < 0,9 < 1,03",
+          "0,9 < 1,03 < 1,3",
+          "1,03 < 0,9 < 1,3",
+          "0,9 < 1,3 < 1,03"
+        ],
+        correct: 1,
+        feedbackOk: "✅ Parfait ! 0,9 < 1,03 < 1,3 : on compare d'abord les unités, puis les dixièmes.",
+        feedbackNok: "❌ Ordre croissant : 0,9 — 1,03 — 1,3. Méthode : unités (0 < 1), puis dixièmes (0 < 3)."
+      }
+    ]
+  },
+  {
+    label: "Niveau 3 — Opérations",
+    titre: "Additionner et soustraire",
+    description: "Poser et calculer des additions et soustractions avec des décimaux.",
+    seuil: 2,
+    manuscrit: true,
+    questions: [
+      {
+        enonce: "Pose l'opération sur ta feuille : <strong>4,5 + 2,3</strong>. Quel est le résultat ?",
+        options: ["6,8", "6,53", "7,8", "6,08"],
+        correct: 0,
+        feedbackOk: "✅ Bravo ! 4,5 + 2,3 = 6,8. Les virgules sont bien alignées.",
+        feedbackNok: "❌ 4,5 + 2,3 = 6,8. Pense à aligner les virgules avant de poser l'addition."
+      },
+      {
+        enonce: "Pose l'opération sur ta feuille : <strong>7,2 − 3,8</strong>. Quel est le résultat ?",
+        options: ["4,6", "3,4", "3,6", "4,4"],
+        correct: 1,
+        feedbackOk: "✅ Exact ! 7,2 − 3,8 = 3,4. Il faut retenir une unité pour soustraire les dixièmes.",
+        feedbackNok: "❌ 7,2 − 3,8 = 3,4. Pense à la retenue : 12 − 8 = 4, puis 6 − 3 = 3."
+      },
+      {
+        enonce: "Un élève achète un livre à <strong>6,50 €</strong> et un crayon à <strong>1,75 €</strong>. Combien dépense-t-il en tout ?",
+        options: ["8,25 €", "7,25 €", "8,75 €", "8,15 €"],
+        correct: 0,
+        feedbackOk: "✅ Parfait ! 6,50 + 1,75 = 8,25 €.",
+        feedbackNok: "❌ 6,50 + 1,75 = 8,25 €. Aligne les virgules : 50 + 75 = 125 → pose 25, retiens 1."
+      }
+    ]
+  },
+  {
+    label: "Niveau 4 — Problèmes",
+    titre: "Résoudre des problèmes",
+    description: "Mobiliser les décimaux dans des situations concrètes.",
+    seuil: 2,
+    manuscrit: true,
+    questions: [
+      {
+        enonce: "Une bouteille contient <strong>1,5 L</strong> d'eau. Léa en boit <strong>0,75 L</strong>. Combien reste-t-il ?",
+        options: ["0,75 L", "0,25 L", "1,25 L", "0,5 L"],
+        correct: 0,
+        feedbackOk: "✅ Bravo ! 1,5 − 0,75 = 0,75 L. Pense à écrire 1,5 sous la forme 1,50.",
+        feedbackNok: "❌ 1,50 − 0,75 = 0,75 L. Transforme 1,5 en 1,50 pour faciliter la soustraction."
+      },
+      {
+        enonce: "Un athlète court <strong>3 fois</strong> un tour de <strong>1,4 km</strong>. Quelle distance a-t-il parcourue ?",
+        options: ["3,4 km", "4,2 km", "4,12 km", "3,12 km"],
+        correct: 1,
+        feedbackOk: "✅ Exact ! 3 × 1,4 = 4,2 km.",
+        feedbackNok: "❌ 3 × 1,4 = 4,2 km. Calcule 3 × 1 = 3 et 3 × 0,4 = 1,2, puis additionne : 3 + 1,2 = 4,2."
+      },
+      {
+        enonce: "Un ruban de <strong>10 m</strong> est coupé en morceaux de <strong>2,5 m</strong>. Combien de morceaux obtient-on ?",
+        options: ["2", "4", "5", "3"],
+        correct: 1,
+        feedbackOk: "✅ Parfait ! 10 ÷ 2,5 = 4 morceaux.",
+        feedbackNok: "❌ 10 ÷ 2,5 = 4. Tu peux aussi compter : 2,5 → 5 → 7,5 → 10 : quatre fois."
+      }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════
+   ÉTAT
+   ═══════════════════════════════════════════════ */
+let etat = {
+  niveau: 0,
+  question: 0,
+  score: 0,
+  selectedIdx: null,
+  valide: false,
+  tentatives: 0   // nb de fois qu'on reste au même niveau
+};
+
+/* ═══════════════════════════════════════════════
+   RENDU
+   ═══════════════════════════════════════════════ */
+function afficherQuestion() {
+  const n = NIVEAUX[etat.niveau];
+  const q = n.questions[etat.question];
+
+  // Zones visibles
+  document.getElementById('exerciceZone').style.display = 'block';
+  document.getElementById('resumeZone').style.display   = 'none';
+  document.getElementById('finZone').style.display      = 'none';
+
+  // Progression
+  const pct = Math.round((etat.niveau / NIVEAUX.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressTexte').textContent = n.label;
+  document.getElementById('progressPct').textContent   = pct + ' %';
+
+  // En-tête carte
+  document.getElementById('niveauLabel').textContent  = n.label;
+  document.getElementById('questionNum').textContent  = `Question ${etat.question + 1} / ${n.questions.length}`;
+  document.getElementById('enonce').innerHTML         = q.enonce;
+
+  // Zone manuscrite
+  const mz = document.getElementById('manuscritZone');
+  mz.style.display = n.manuscrit ? 'block' : 'none';
+  if (n.manuscrit) document.getElementById('manuscritInput').value = '';
+
+  // Options
+  const oz = document.getElementById('optionsZone');
+  oz.innerHTML = '';
+  const lettres = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="lettre">${lettres[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectionner(i);
+    oz.appendChild(btn);
+  });
+
+  // Reset UI
+  document.getElementById('feedback').style.display = 'none';
+  document.getElementById('btnValider').style.display = 'inline-flex';
+  document.getElementById('btnValider').disabled = true;
+  document.getElementById('btnSuivant').style.display = 'none';
+
+  etat.selectedIdx = null;
+  etat.valide = false;
+}
+
+function selectionner(idx) {
+  if (etat.valide) return;
+  etat.selectedIdx = idx;
+  document.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('btnValider').disabled = false;
+}
+
+function valider() {
+  if (etat.selectedIdx === null || etat.valide) return;
+  etat.valide = true;
+
+  const n = NIVEAUX[etat.niveau];
+  const q = n.questions[etat.question];
+  const ok = etat.selectedIdx === q.correct;
+  if (ok) etat.score++;
+
+  // Colorier les options
+  document.querySelectorAll('.option-btn').forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === etat.selectedIdx && !ok) b.classList.add('wrong');
+  });
+
+  // Feedback
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback ' + (ok ? 'ok' : 'nok');
+  fb.innerHTML = ok ? q.feedbackOk : q.feedbackNok;
+  fb.style.display = 'block';
+
+  document.getElementById('btnValider').style.display = 'none';
+  document.getElementById('btnSuivant').style.display = 'inline-flex';
+
+  // Dernière question du niveau ?
+  const derniereQ = etat.question === n.questions.length - 1;
+  document.getElementById('btnSuivant').textContent = derniereQ
+    ? 'Voir le bilan →' : 'Question suivante →';
+}
+
+function suivant() {
+  const n = NIVEAUX[etat.niveau];
+  etat.question++;
+  if (etat.question < n.questions.length) {
+    afficherQuestion();
+  } else {
+    afficherBilan();
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   BILAN DE NIVEAU
+   ═══════════════════════════════════════════════ */
+function afficherBilan() {
+  document.getElementById('exerciceZone').style.display = 'none';
+  document.getElementById('resumeZone').style.display   = 'flex';
+
+  const n = NIVEAUX[etat.niveau];
+  const reussi = etat.score >= n.seuil;
+  const dernier = etat.niveau === NIVEAUX.length - 1;
+
+  document.getElementById('scoreVal').textContent   = etat.score;
+  document.getElementById('seuilInfo').textContent  = `Seuil pour avancer : ${n.seuil} bonne(s) réponse(s) / ${n.questions.length}`;
+
+  // Progression bar
+  const pct = Math.round(((etat.niveau + (reussi ? 1 : 0)) / NIVEAUX.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent  = pct + ' %';
+
+  const btns = document.getElementById('navBtns');
+  btns.innerHTML = '';
+
+  if (reussi && dernier) {
+    // Parcours terminé
+    document.getElementById('resumeTitre').textContent = '🎉 Excellent travail !';
+    document.getElementById('resumeTexte').textContent =
+      `Tu as réussi le niveau 4 avec ${etat.score}/3. Tu maîtrises maintenant les nombres décimaux !`;
+    document.getElementById('navConsigne').textContent = '';
+    const b = creerBtn('Terminer le parcours', 'btn-suivant', finParcours);
+    btns.appendChild(b);
+
+  } else if (reussi) {
+    document.getElementById('resumeTitre').textContent = '✅ Niveau réussi !';
+    document.getElementById('resumeTexte').textContent =
+      `Tu as obtenu ${etat.score}/${n.questions.length}. Tu peux passer au niveau suivant.`;
+    document.getElementById('navConsigne').textContent = 'Que veux-tu faire ?';
+    btns.appendChild(creerBtn('Niveau suivant →', 'btn-suivant', niveauSuivant));
+    btns.appendChild(creerBtn('Refaire ce niveau', 'btn-reculer', refaireMemeNiveau));
+
+  } else {
+    document.getElementById('resumeTitre').textContent = "📝 Continue l'entraînement !";
+    document.getElementById('resumeTexte').textContent =
+      `Tu as obtenu ${etat.score}/${n.questions.length}. Il manque encore un peu de pratique pour avancer.`;
+    document.getElementById('navConsigne').textContent = 'Que veux-tu faire ?';
+    btns.appendChild(creerBtn('Réessayer ce niveau', 'btn-suivant', refaireMemeNiveau));
+    if (etat.niveau > 0) {
+      btns.appendChild(creerBtn('← Revenir au niveau précédent', 'btn-reculer', niveauPrecedent));
+    }
+  }
+}
+
+function creerBtn(texte, cls, fn) {
+  const b = document.createElement('button');
+  b.className = `btn ${cls}`;
+  b.textContent = texte;
+  b.onclick = fn;
+  return b;
+}
+
+/* ═══════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════ */
+function niveauSuivant() {
+  etat.niveau++;
+  etat.question = 0;
+  etat.score    = 0;
+  etat.tentatives = 0;
+  document.getElementById('progressTexte').textContent = NIVEAUX[etat.niveau].label;
+  afficherQuestion();
+}
+
+function niveauPrecedent() {
+  etat.niveau--;
+  etat.question = 0;
+  etat.score    = 0;
+  etat.tentatives = 0;
+  document.getElementById('progressTexte').textContent = NIVEAUX[etat.niveau].label;
+  afficherQuestion();
+}
+
+function refaireMemeNiveau() {
+  etat.question = 0;
+  etat.score    = 0;
+  etat.tentatives++;
+  afficherQuestion();
+}
+
+function finParcours() {
+  document.getElementById('exerciceZone').style.display = 'none';
+  document.getElementById('resumeZone').style.display   = 'none';
+  document.getElementById('finZone').style.display      = 'flex';
+  document.getElementById('progressFill').style.width   = '100%';
+  document.getElementById('progressPct').textContent    = '100 %';
+  document.getElementById('finTitre').textContent       = 'Parcours terminé ! 🏅';
+  document.getElementById('finTexte').textContent       =
+    'Bravo ! Tu as traversé les 4 niveaux du parcours sur les nombres décimaux. ' +
+    'Tu sais lire, comparer, additionner, soustraire et utiliser les décimaux dans des problèmes. ' +
+    "N'hesite pas a recommencer pour consolider.";
+}
+
+function recommencer() {
+  etat = { niveau: 0, question: 0, score: 0, selectedIdx: null, valide: false, tentatives: 0 };
+  document.getElementById('progressTexte').textContent = NIVEAUX[0].label;
+  afficherQuestion();
+}
+
+/* ═══════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btnValider').addEventListener('click', valider);
+  document.getElementById('btnSuivant').addEventListener('click', suivant);
+  document.getElementById('btnRecommencer').addEventListener('click', recommencer);
+  afficherQuestion();
+});
+</script>
+</body>
+</html>

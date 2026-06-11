@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>L'Aquarium des décimaux 🐠</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ocean-deep:#081b33;--ocean-mid:#0d3260;--ocean-light:#14618a;
+  --sand:#f0c850;--sand-dark:#c9a030;
+  --coral:#ff6b6b;--coral-dark:#d94444;
+  --vert:#2ecc8a;--vert-dark:#1fa06a;
+  --violet:#a78bfa;--violet-dark:#7c5ce7;
+  --bleu-ciel:#74c0ff;
+  --blanc:#f0f6ff;--radius:16px;
+  --cu:#fbbf24;--cd:#67e8f9;--cc:#f9a8d4;
+}
+html,body{min-height:100vh;background:linear-gradient(180deg,#081b33 0%,#0d3260 40%,#14618a 80%,#1a7a6a 100%);font-family:'Nunito',sans-serif;color:#e8f4ff;overflow-x:hidden}
+
+/* ═══ BULLES ═══ */
+.bulles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.b{position:absolute;border-radius:50%;background:rgba(255,255,255,.12);animation:monte linear infinite}
+@keyframes monte{0%{transform:translateY(0) scale(1);opacity:.5}50%{transform:translateY(-45vh) scale(1.1);opacity:.35}100%{transform:translateY(-105vh) scale(.8);opacity:0}}
+
+/* ═══ ALGUES ═══ */
+.algues{position:fixed;bottom:0;left:0;right:0;height:90px;z-index:0;overflow:hidden}
+.algue{position:absolute;bottom:0;width:18px;border-radius:50% 50% 0 0;animation:balancer 3s ease-in-out infinite alternate}
+@keyframes balancer{0%{transform:rotate(-8deg) scaleY(1)}100%{transform:rotate(8deg) scaleY(1.08)}}
+
+/* ═══ APP ═══ */
+.app{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;padding:20px 14px 100px;min-height:100vh}
+
+/* ═══ ENTETE ═══ */
+.entete{text-align:center;margin-bottom:16px;max-width:600px;width:100%}
+.badge{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:99px;font-size:.68rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 14px;color:var(--sand);margin-bottom:10px}
+.entete h1{font-family:'Baloo 2',cursive;font-size:clamp(1.5rem,5vw,2.3rem);font-weight:800;text-shadow:0 2px 24px rgba(33,150,243,.5)}
+.entete .sous{font-size:.85rem;opacity:.6;margin-top:4px}
+
+/* ═══ PROGRESSION ═══ */
+.prog{display:flex;align-items:center;gap:6px;margin-bottom:22px;max-width:600px;width:100%}
+.prog-pip{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.12);transition:all .5s}
+.prog-pip.on{background:var(--sand);box-shadow:0 0 10px var(--sand)}
+.prog-pip.ok{background:var(--vert);box-shadow:0 0 10px var(--vert)}
+.prog-lbl{font-size:.7rem;opacity:.5;white-space:nowrap}
+
+/* ═══ CARTE ═══ */
+.carte{max-width:620px;width:100%;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:26px 24px 22px;box-shadow:0 10px 50px rgba(0,0,0,.4)}
+.titre-a{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:800;color:var(--sand);margin-bottom:4px}
+.cons{font-size:.86rem;opacity:.75;line-height:1.55;margin-bottom:18px}
+
+/* ═══ POISSON SVG ═══ */
+.poisson-wrap{display:inline-block;position:relative;animation:nager 2s ease-in-out infinite;cursor:grab;user-select:none;touch-action:none}
+.poisson-wrap:active{cursor:grabbing}
+.poisson-wrap.dragging{opacity:.4;transform:scale(.85)}
+@keyframes nager{0%,100%{transform:translateY(0) rotate(0deg)}30%{transform:translateY(-6px) rotate(-2deg)}70%{transform:translateY(4px) rotate(1.5deg)}}
+
+/* entrée animée */
+@keyframes entree-droite{0%{transform:translateX(300px) scale(.7);opacity:0}60%{transform:translateX(-10px) scale(1.05);opacity:1}100%{transform:translateX(0) scale(1);opacity:1}}
+.poisson-entree{animation:entree-droite .7s cubic-bezier(.22,.68,.36,1.2) forwards}
+
+/* ═══ ACTE 1 — LOUPE ═══ */
+.bassin{background:rgba(0,0,0,.25);border-radius:18px;padding:20px;display:flex;align-items:center;justify-content:center;min-height:130px;position:relative;overflow:hidden;margin-bottom:16px;border:1px solid rgba(255,255,255,.08)}
+.bassin-vagues{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,.03) 40px,rgba(255,255,255,.03) 80px);animation:vagues 6s linear infinite}
+@keyframes vagues{0%{transform:translateX(0)}100%{transform:translateX(-80px)}}
+
+.decompo{display:flex;gap:8px;align-items:stretch;justify-content:center;margin-top:14px}
+.dec-cell{border-radius:14px;padding:14px 20px;display:flex;flex-direction:column;align-items:center;min-width:78px;opacity:0;transform:translateY(16px);transition:all .4s}
+.dec-cell.show{opacity:1;transform:translateY(0)}
+.dec-cell.u{background:rgba(251,191,36,.2);border:2px solid var(--cu)}
+.dec-cell.sep{background:transparent;border:none;justify-content:flex-end;min-width:20px;padding:8px 2px;opacity:1;transform:none}
+.dec-cell.d{background:rgba(103,232,249,.15);border:2px solid var(--cd)}
+.dec-cell.c{background:rgba(249,168,212,.15);border:2px solid var(--cc)}
+.dec-cell .v{font-family:'Baloo 2',cursive;font-size:2.2rem;font-weight:800;line-height:1}
+.dec-cell.u .v{color:var(--cu)}.dec-cell.d .v{color:var(--cd)}.dec-cell.c .v{color:var(--cc)}.dec-cell.sep .v{color:#fff;opacity:.4;font-size:1.8rem}
+.dec-cell .n{font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;opacity:.6}
+
+.nav-dots{display:flex;justify-content:center;gap:8px;margin:12px 0}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);cursor:pointer;transition:all .3s}
+.dot.on{background:var(--sand);transform:scale(1.3);box-shadow:0 0 8px var(--sand)}
+.dot.vu{background:var(--vert)}
+
+/* ═══ ACTE 2 — AQUARIUM ═══ */
+.source-zone{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;min-height:90px;background:rgba(0,0,0,.2);border:2px dashed rgba(255,255,255,.18);border-radius:16px;padding:14px;margin-bottom:14px}
+.ref-zone{text-align:center;margin:8px 0 12px;font-size:.78rem;opacity:.6;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.ref-val{font-family:'Baloo 2',cursive;font-size:1.8rem;font-weight:800;color:var(--sand);display:inline-block;margin-left:8px;text-shadow:0 0 20px rgba(240,200,80,.5);vertical-align:middle}
+.couloirs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.couloir{border-radius:16px;padding:16px;min-height:120px;display:flex;flex-direction:column;align-items:center;gap:8px;transition:all .25s;position:relative}
+.couloir.gt{background:rgba(46,204,138,.12);border:2.5px solid rgba(46,204,138,.35)}
+.couloir.lt{background:rgba(255,107,107,.1);border:2.5px solid rgba(255,107,107,.3)}
+.couloir .cl{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.couloir.gt .cl{color:var(--vert)}.couloir.lt .cl{color:var(--coral)}
+.couloir.survol{border-color:var(--sand)!important;background:rgba(240,200,80,.12)!important;transform:scale(1.03)}
+@keyframes tremble{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.couloir.shake{animation:tremble .45s ease}
+@keyframes lueur-ok{0%{box-shadow:0 0 0 0 rgba(46,204,138,.6)}100%{box-shadow:0 0 30px 10px rgba(46,204,138,0)}}
+.couloir.flash{animation:lueur-ok .6s ease-out}
+
+/* ═══ ACTE 3 — COURSE ═══ */
+.piste{background:rgba(0,0,0,.25);border-radius:16px;padding:16px 12px;margin-bottom:12px;position:relative;overflow:hidden}
+.piste-eau{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 50px,rgba(255,255,255,.03) 50px,rgba(255,255,255,.03) 100px);animation:vagues-v 4s linear infinite}
+@keyframes vagues-v{0%{transform:translateY(0)}100%{transform:translateY(-100px)}}
+.ligne{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid rgba(255,255,255,.06);position:relative;z-index:1}
+.ligne:last-child{border-bottom:none}
+.lane-num{font-family:'Baloo 2',cursive;font-size:.85rem;font-weight:800;color:var(--sand);min-width:32px;text-align:center;opacity:.7}
+.lane-track{flex:1;height:56px;border-radius:10px;background:rgba(255,255,255,.05);border:1.5px dashed rgba(255,255,255,.1);position:relative;display:flex;align-items:center;overflow:hidden}
+.lane-track.has-fish{border-style:solid;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.08)}
+.finish-line{position:absolute;right:0;top:0;bottom:0;width:4px;background:repeating-linear-gradient(180deg,var(--sand) 0,var(--sand) 6px,transparent 6px,transparent 12px);border-radius:0 10px 10px 0;opacity:.4}
+.lane-fish{position:absolute;left:8px;transition:left 0s;display:flex;align-items:center}
+.lane-fish.racing{transition:left var(--duree) cubic-bezier(.25,.46,.45,.94)}
+
+.lane-drop{position:absolute;inset:0;z-index:2}
+
+.prediction-zone{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.pred-slot{width:90px;min-height:86px;border:2px dashed rgba(255,255,255,.25);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transition:all .2s;position:relative}
+.pred-slot.survol{border-color:var(--sand);background:rgba(240,200,80,.1)}
+.pred-label{font-size:.62rem;font-weight:800;text-transform:uppercase;color:var(--sand);letter-spacing:.05em}
+
+/* ═══ FEEDBACK ═══ */
+.fb{border-radius:12px;padding:12px 16px;font-size:.85rem;font-weight:700;line-height:1.5;display:none;margin:8px 0}
+.fb.ok{display:block;background:rgba(46,204,138,.18);border:1px solid var(--vert);color:#a8ffd8}
+.fb.nok{display:block;background:rgba(255,107,107,.18);border:1px solid var(--coral);color:#ffcdd2}
+
+/* ═══ BOUTONS ═══ */
+.btn-go{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--sand-dark),var(--sand));color:var(--ocean-deep);border:none;border-radius:99px;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:800;padding:12px 28px;cursor:pointer;box-shadow:0 4px 20px rgba(200,168,76,.4);transition:all .2s;margin-top:6px}
+.btn-go:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,168,76,.5)}
+.btn-sec{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:99px;font-family:'Nunito',sans-serif;font-size:.84rem;font-weight:800;padding:9px 20px;cursor:pointer;transition:all .2s;margin-top:6px}
+.btn-sec:hover{background:rgba(255,255,255,.15)}
+.btns{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+
+/* ═══ FIN ═══ */
+.fin{display:none;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:20px 0}
+.fin.visible{display:flex}
+.fin-troph{font-size:4rem;animation:rebond 1.5s ease-in-out infinite}
+@keyframes rebond{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.15) rotate(6deg)}}
+.etoiles{display:flex;gap:6px;font-size:2rem}
+.etoiles span{transition:all .4s}
+.fin h2{font-family:'Baloo 2',cursive;font-size:1.4rem;color:var(--sand)}
+.fin p{font-size:.88rem;opacity:.75;max-width:380px;line-height:1.6}
+
+/* ═══ CONFETTIS ═══ */
+.confetti{position:fixed;top:-10px;width:8px;height:8px;z-index:100;pointer-events:none;border-radius:2px;animation:confetti-fall linear forwards}
+@keyframes confetti-fall{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(105vh) rotate(720deg);opacity:0}}
+
+@media(max-width:480px){.carte{padding:18px 14px}.couloirs{grid-template-columns:1fr}.dec-cell{min-width:60px;padding:10px 12px}.dec-cell .v{font-size:1.8rem}}
+</style>
+</head>
+<body>
+
+<div class="bulles" id="bulles"></div>
+<div class="algues" id="algues"></div>
+
+<div class="app">
+  <div class="entete">
+    <div class="badge">🐠 Remédiation · Niveau 2</div>
+    <h1>L'Aquarium des décimaux</h1>
+    <p class="sous">Explore, trie et fais la course !</p>
+  </div>
+
+  <div class="prog">
+    <span class="prog-lbl">🔍</span><div class="prog-pip on" id="pp1"></div>
+    <span class="prog-lbl">🐠</span><div class="prog-pip" id="pp2"></div>
+    <span class="prog-lbl">🏁</span><div class="prog-pip" id="pp3"></div>
+    <span class="prog-lbl">🌟</span>
+  </div>
+
+  <div class="carte" id="carte">
+
+    <!-- ═══════ ACTE 1 ═══════ -->
+    <div id="acte1">
+      <div class="titre-a">🔍 La loupe du plongeur</div>
+      <p class="cons">Un poisson arrive dans le bassin. Observe comment son nombre se décompose en <span style="color:var(--cu);font-weight:800">unités</span>, <span style="color:var(--cd);font-weight:800">dixièmes</span> et <span style="color:var(--cc);font-weight:800">centièmes</span>.</p>
+      <div class="bassin" id="bassin"><div class="bassin-vagues"></div></div>
+      <div class="decompo" id="decompo"></div>
+      <div class="nav-dots" id="dots1"></div>
+      <div class="btns">
+        <button class="btn-sec" id="b-prev" onclick="loupeNav(-1)" style="display:none">← Précédent</button>
+        <button class="btn-sec" id="b-next" onclick="loupeNav(1)">Poisson suivant →</button>
+        <button class="btn-go" id="b-plonger" onclick="allerActe(2)" style="display:none">Plonger dans l'aquarium 🐠</button>
+      </div>
+    </div>
+
+    <!-- ═══════ ACTE 2 ═══════ -->
+    <div id="acte2" style="display:none">
+      <div class="titre-a">🐠 Trie les poissons !</div>
+      <p class="cons" id="cons2"></p>
+      <div class="source-zone" id="src2"></div>
+      <div class="ref-zone">Nombre repère : <span class="ref-val" id="refVal">—</span></div>
+      <div class="couloirs" id="couloirs">
+        <div class="couloir gt" id="cGt"><div class="cl">▲ Plus grand</div></div>
+        <div class="couloir lt" id="cLt"><div class="cl">▼ Plus petit</div></div>
+      </div>
+      <div class="fb" id="fb2"></div>
+      <div class="btns"><button class="btn-go" id="b-course" onclick="allerActe(3)" style="display:none">La course ! 🏁</button></div>
+    </div>
+
+    <!-- ═══════ ACTE 3 ═══════ -->
+    <div id="acte3" style="display:none">
+      <div class="titre-a">🏁 La grande course</div>
+      <p class="cons">Place les poissons dans l'ordre que tu prédis : le <strong style="color:var(--vert)">plus petit arrive en premier</strong>. Puis clique sur <strong style="color:var(--sand)">Partez !</strong></p>
+      <div class="source-zone" id="src3"></div>
+      <div class="piste" id="piste"><div class="piste-eau"></div></div>
+      <div class="fb" id="fb3"></div>
+      <div class="btns">
+        <button class="btn-go" id="b-partez" onclick="lancerCourse()" style="display:none">🏁 Partez !</button>
+        <button class="btn-sec" id="b-retry3" onclick="initCourseRonde()" style="display:none">🔄 Réessayer</button>
+        <button class="btn-go" id="b-fin" onclick="allerActe(4)" style="display:none">Voir mon score 🌟</button>
+      </div>
+    </div>
+
+    <!-- ═══════ FIN ═══════ -->
+    <div id="acte4" style="display:none">
+      <div class="fin visible">
+        <div class="fin-troph" id="fTr">🏆</div>
+        <div class="etoiles" id="fEt"></div>
+        <h2 id="fTi"></h2>
+        <p id="fTx"></p>
+        <div class="btns">
+          <button class="btn-go" onclick="retourNiveau2()">↩ Retour au Niveau 2</button>
+          <button class="btn-sec" onclick="rejouer()">🔄 Rejouer</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   DONNÉES
+   ══════════════════════════════════════════ */
+var COULEURS=[
+  {corps:'#FF6B6B',ventre:'#FF9E9E',queue:'#D94444',oeil:'#fff'},
+  {corps:'#A78BFA',ventre:'#C8BBFF',queue:'#7C5CE7',oeil:'#fff'},
+  {corps:'#34D399',ventre:'#6EE7B7',queue:'#059669',oeil:'#fff'},
+  {corps:'#FBBF24',ventre:'#FDE68A',queue:'#D97706',oeil:'#fff'},
+  {corps:'#60A5FA',ventre:'#93C5FD',queue:'#2563EB',oeil:'#fff'},
+  {corps:'#F472B6',ventre:'#FBCFE8',queue:'#DB2777',oeil:'#fff'},
+];
+
+var POISSONS_LOUPE=[
+  {val:2.3,  label:'2,3'},
+  {val:2.09, label:'2,09'},
+  {val:0.7,  label:'0,7'},
+  {val:0.70, label:'0,70'},
+  {val:1.3,  label:'1,3'},
+];
+
+var RONDES=[
+  {ref:2.15,refL:'2,15',poissons:[{val:2.3,label:'2,3'},{val:2.09,label:'2,09'}]},
+  {ref:0.5, refL:'0,5', poissons:[{val:0.7,label:'0,7'},{val:0.3,label:'0,3'}]},
+  {ref:1.2, refL:'1,2', poissons:[{val:1.3,label:'1,3'},{val:1.03,label:'1,03'}]},
+];
+
+var COURSES=[
+  [{val:1.3,label:'1,3'},{val:1.03,label:'1,03'},{val:1.30,label:'1,30'}],
+  [{val:0.9,label:'0,9'},{val:0.09,label:'0,09'},{val:0.90,label:'0,90'}],
+];
+
+/* ══════════════════════════════════════════
+   SVG POISSON
+   ══════════════════════════════════════════ */
+function svgPoisson(label,ci,w){
+  w=w||120;
+  var h=Math.round(w*.62);
+  var c=COULEURS[ci%COULEURS.length];
+  return '<svg viewBox="0 0 140 86" width="'+w+'" height="'+h+'" xmlns="http://www.w3.org/2000/svg">'+
+    '<path d="M108,43 L132,22 L132,64 Z" fill="'+c.queue+'"/>'+
+    '<ellipse cx="62" cy="43" rx="50" ry="30" fill="'+c.corps+'"/>'+
+    '<ellipse cx="62" cy="52" rx="38" ry="16" fill="'+c.ventre+'" opacity=".4"/>'+
+    '<path d="M50,14 Q62,0 74,14" fill="'+c.queue+'" opacity=".7"/>'+
+    '<path d="M56,70 Q62,80 70,70" fill="'+c.queue+'" opacity=".5"/>'+
+    '<ellipse cx="38" cy="35" rx="8" ry="9" fill="white"/>'+
+    '<circle cx="36" cy="34" r="4.5" fill="#1a1a2e"/>'+
+    '<circle cx="34" cy="32" r="1.8" fill="white"/>'+
+    '<path d="M16,44 Q21,48 16,52" stroke="#0008" fill="none" stroke-width="2" stroke-linecap="round"/>'+
+    '<text x="68" y="50" text-anchor="middle" font-family="Baloo 2,cursive" font-weight="800" font-size="20" fill="white" stroke="rgba(0,0,0,.25)" stroke-width=".5">'+label+'</text>'+
+    '</svg>';
+}
+
+/* ══════════════════════════════════════════
+   DRAG & DROP UNIVERSEL (souris + tactile)
+   ══════════════════════════════════════════ */
+var dragItem=null,dragGhost=null,dragData=null;
+
+function makeDraggable(el,data){
+  el.dataset.drag=JSON.stringify(data);
+  // souris
+  el.addEventListener('mousedown',function(ev){
+    ev.preventDefault();
+    startDrag(el,data,ev.clientX,ev.clientY);
+  });
+  // tactile
+  el.addEventListener('touchstart',function(ev){
+    ev.preventDefault();
+    var t=ev.touches[0];
+    startDrag(el,data,t.clientX,t.clientY);
+  },{passive:false});
+}
+
+function startDrag(el,data,cx,cy){
+  dragItem=el; dragData=data;
+  el.classList.add('dragging');
+  // fantôme
+  dragGhost=el.cloneNode(true);
+  dragGhost.classList.remove('dragging');
+  dragGhost.style.cssText='position:fixed;pointer-events:none;z-index:9999;opacity:.85;transform:scale(1.1) rotate(-4deg);transition:none';
+  dragGhost.style.left=(cx-50)+'px';
+  dragGhost.style.top=(cy-30)+'px';
+  document.body.appendChild(dragGhost);
+  document.addEventListener('mousemove',onDragMove);
+  document.addEventListener('mouseup',onDragEnd);
+  document.addEventListener('touchmove',onDragMoveT,{passive:false});
+  document.addEventListener('touchend',onDragEndT);
+}
+function onDragMove(ev){if(dragGhost){dragGhost.style.left=(ev.clientX-50)+'px';dragGhost.style.top=(ev.clientY-30)+'px';checkSurvol(ev.clientX,ev.clientY)}}
+function onDragMoveT(ev){ev.preventDefault();var t=ev.touches[0];if(dragGhost){dragGhost.style.left=(t.clientX-50)+'px';dragGhost.style.top=(t.clientY-30)+'px';checkSurvol(t.clientX,t.clientY)}}
+function onDragEnd(ev){finishDrag(ev.clientX,ev.clientY)}
+function onDragEndT(ev){var t=ev.changedTouches[0];finishDrag(t.clientX,t.clientY)}
+
+function finishDrag(cx,cy){
+  document.removeEventListener('mousemove',onDragMove);
+  document.removeEventListener('mouseup',onDragEnd);
+  document.removeEventListener('touchmove',onDragMoveT);
+  document.removeEventListener('touchend',onDragEndT);
+  if(dragGhost){dragGhost.remove();dragGhost=null}
+  if(dragItem)dragItem.classList.remove('dragging');
+  // trouver la cible
+  var target=document.elementFromPoint(cx,cy);
+  if(target){
+    var zone=target.closest('[data-drop]');
+    if(zone && zone.dataset.drop){
+      var fn=window['drop_'+zone.dataset.drop];
+      if(fn)fn(dragData,dragItem,zone);
+    }
+  }
+  clearSurvol();
+  dragItem=null;dragData=null;
+}
+
+var survolEl=null;
+function checkSurvol(cx,cy){
+  clearSurvol();
+  var t=document.elementFromPoint(cx,cy);
+  if(t){var z=t.closest('[data-drop]');if(z){z.classList.add('survol');survolEl=z}}
+}
+function clearSurvol(){if(survolEl){survolEl.classList.remove('survol');survolEl=null}}
+
+/* ══════════════════════════════════════════
+   ÉTAT
+   ══════════════════════════════════════════ */
+var E={
+  acte:1,
+  loupe:0,loupeVus:new Set(),
+  ronde:0,scoreA2:0,totalA2:0,
+  courseIdx:0,scoreCourse:0,lanes:[null,null,null],courseRunning:false,
+  scoreTotal:0,maxTotal:0,
+};
+
+/* ══════════════════════════════════════════
+   DÉCOR
+   ══════════════════════════════════════════ */
+(function(){
+  var bul=document.getElementById('bulles');
+  for(var i=0;i<20;i++){
+    var d=document.createElement('div');d.className='b';
+    var s=3+Math.random()*12;
+    d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+Math.random()*100+'%;bottom:-'+s+'px;animation-duration:'+(7+Math.random()*14)+'s;animation-delay:'+(Math.random()*10)+'s';
+    bul.appendChild(d);
+  }
+  var alg=document.getElementById('algues');
+  for(var i=0;i<14;i++){
+    var a=document.createElement('div');a.className='algue';
+    var h=30+Math.random()*50;
+    var hue=110+Math.random()*40;
+    a.style.cssText='left:'+(i*7+Math.random()*4)+'%;height:'+h+'px;background:hsl('+hue+',50%,28%);animation-delay:'+(Math.random()*2)+'s;animation-duration:'+(2.5+Math.random()*2)+'s';
+    alg.appendChild(a);
+  }
+})();
+
+/* ══════════════════════════════════════════
+   NAVIGATION ACTES
+   ══════════════════════════════════════════ */
+function allerActe(n){
+  ['acte1','acte2','acte3','acte4'].forEach(function(id){document.getElementById(id).style.display='none'});
+  document.getElementById('acte'+n).style.display='block';
+  E.acte=n;
+  ['pp1','pp2','pp3'].forEach(function(id,i){
+    var p=document.getElementById(id);p.className='prog-pip';
+    if(i+1<n)p.classList.add('ok');else if(i+1===n)p.classList.add('on');
+  });
+  if(n===2)initAcquisition();
+  if(n===3)initCourse();
+  if(n===4)afficherFin();
+}
+
+/* ══════════════════════════════════════════
+   ACTE 1 — LOUPE
+   ══════════════════════════════════════════ */
+function initLoupe(){
+  E.loupe=0;E.loupeVus=new Set();
+  renderLoupe();
+}
+function renderLoupe(){
+  var idx=E.loupe;
+  E.loupeVus.add(idx);
+  var p=POISSONS_LOUPE[idx];
+
+  // Bassin : poisson animé qui entre
+  var bassin=document.getElementById('bassin');
+  var existing=bassin.querySelector('.poisson-wrap');
+  if(existing)existing.remove();
+  var pw=document.createElement('div');
+  pw.className='poisson-wrap poisson-entree';
+  pw.innerHTML=svgPoisson(p.label,idx,140);
+  bassin.appendChild(pw);
+
+  // Décomposition
+  var dec=document.getElementById('decompo');
+  dec.innerHTML='';
+  var parts=p.label.replace(',','.').split('.');
+  var ent=parts[0]||'0';
+  var frac=(parts[1]||'').padEnd(2,'_');
+
+  var u=ent.slice(-1);
+  var d=frac[0]==='_'?'0':frac[0];
+  var c=frac[1]==='_'?null:frac[1];
+
+  setTimeout(function(){addCell(dec,'u',u,'unités',0)},300);
+  setTimeout(function(){addCell(dec,'sep',',','',0)},300);
+  setTimeout(function(){addCell(dec,'d',d,'dixièmes',450)},300);
+  if(c!==null){
+    setTimeout(function(){addCell(dec,'c',c,'centièmes',600)},300);
+  }
+
+  // Dots
+  var dots=document.getElementById('dots1');dots.innerHTML='';
+  POISSONS_LOUPE.forEach(function(_,i){
+    var dd=document.createElement('div');
+    dd.className='dot'+(i===idx?' on':'')+(E.loupeVus.has(i)&&i!==idx?' vu':'');
+    dd.onclick=function(){E.loupe=i;renderLoupe()};
+    dots.appendChild(dd);
+  });
+
+  // Boutons
+  document.getElementById('b-prev').style.display=idx>0?'inline-flex':'none';
+  var allVus=E.loupeVus.size>=POISSONS_LOUPE.length;
+  document.getElementById('b-next').style.display=allVus?'none':'inline-flex';
+  document.getElementById('b-plonger').style.display=allVus?'inline-flex':'none';
+}
+function addCell(parent,type,val,nom,delay){
+  var d=document.createElement('div');
+  d.className='dec-cell '+type;
+  if(type!=='sep') d.innerHTML='<span class="v">'+val+'</span><span class="n">'+nom+'</span>';
+  else d.innerHTML='<span class="v">,</span>';
+  parent.appendChild(d);
+  setTimeout(function(){d.classList.add('show')},delay||50);
+}
+function loupeNav(dir){
+  E.loupe=Math.max(0,Math.min(POISSONS_LOUPE.length-1,E.loupe+dir));
+  renderLoupe();
+}
+
+/* ══════════════════════════════════════════
+   ACTE 2 — AQUARIUM
+   ══════════════════════════════════════════ */
+function initAcquisition(){
+  E.ronde=0;E.scoreA2=0;E.totalA2=0;
+  document.getElementById('b-course').style.display='none';
+  lancerRonde();
+}
+function lancerRonde(){
+  var r=RONDES[E.ronde];
+  if(!r){finAcquisition();return}
+  document.getElementById('refVal').textContent=r.refL;
+  document.getElementById('cons2').innerHTML='Glisse chaque poisson dans le bon couloir : <span style="color:var(--vert);font-weight:800">plus grand</span> ou <span style="color:var(--coral);font-weight:800">plus petit</span> que <strong style="color:var(--sand)">'+r.refL+'</strong>.';
+  // vider couloirs
+  ['cGt','cLt'].forEach(function(id){
+    var c=document.getElementById(id);
+    c.querySelectorAll('.poisson-wrap').forEach(function(e){e.remove()});
+  });
+  // créer poissons source
+  var src=document.getElementById('src2');src.innerHTML='';
+  r.poissons.forEach(function(p,i){
+    var pw=document.createElement('div');
+    pw.className='poisson-wrap poisson-entree';
+    pw.style.animationDelay=(i*0.2)+'s';
+    pw.innerHTML=svgPoisson(p.label, E.ronde*2+i, 110);
+    makeDraggable(pw,{val:p.val,label:p.label,ci:E.ronde*2+i,act:'tri'});
+    src.appendChild(pw);
+    E.totalA2++;
+  });
+  // drop zones
+  document.getElementById('cGt').dataset.drop='couloir_gt';
+  document.getElementById('cLt').dataset.drop='couloir_lt';
+  var fb=document.getElementById('fb2');fb.className='fb';fb.textContent='';
+}
+
+window.drop_couloir_gt=function(data,el){triDrop(data,el,'gt')};
+window.drop_couloir_lt=function(data,el){triDrop(data,el,'lt')};
+
+function triDrop(data,el,type){
+  if(data.act!=='tri')return;
+  var r=RONDES[E.ronde];
+  var plusGrand=data.val > r.ref + 0.001;
+  var egal=Math.abs(data.val-r.ref)<0.001;
+  var bon=(type==='gt'&&plusGrand)||(type==='lt'&&!plusGrand&&!egal)||(egal);
+  var coulId=type==='gt'?'cGt':'cLt';
+  var coulEl=document.getElementById(coulId);
+  var fb=document.getElementById('fb2');
+
+  if(bon){
+    E.scoreA2++;
+    el.remove();
+    var pw=document.createElement('div');
+    pw.className='poisson-wrap';
+    pw.style.animation='none';
+    pw.innerHTML=svgPoisson(data.label,data.ci,90);
+    coulEl.appendChild(pw);
+    coulEl.classList.add('flash');
+    setTimeout(function(){coulEl.classList.remove('flash')},700);
+    if(egal){
+      fb.className='fb ok';fb.textContent='🎉 '+data.label+' = '+r.refL+' — ils sont égaux ! On peut le mettre dans les deux.';
+    } else {
+      fb.className='fb ok';fb.textContent='✅ Bien joué ! '+data.label+(plusGrand?' > ':' < ')+r.refL;
+    }
+    // ronde finie ?
+    if(document.getElementById('src2').querySelectorAll('.poisson-wrap').length===0){
+      E.ronde++;
+      setTimeout(function(){
+        if(E.ronde<RONDES.length)lancerRonde();
+        else finAcquisition();
+      },900);
+    }
+  } else {
+    coulEl.classList.add('shake');
+    setTimeout(function(){coulEl.classList.remove('shake')},500);
+    fb.className='fb nok';
+    fb.textContent='💧 Compare les dixièmes ! '+data.label+(plusGrand?' est plus grand':' est plus petit')+' que '+r.refL+'. Essaie l\'autre couloir !';
+  }
+}
+
+function finAcquisition(){
+  var fb=document.getElementById('fb2');
+  fb.className='fb ok';fb.textContent='🌊 Bravo ! Tous les poissons sont triés. Prêt pour la course ?';
+  document.getElementById('b-course').style.display='inline-flex';
+  E.scoreTotal+=E.scoreA2;E.maxTotal+=E.totalA2;
+}
+
+/* ══════════════════════════════════════════
+   ACTE 3 — COURSE
+   ══════════════════════════════════════════ */
+function initCourse(){
+  E.courseIdx=0;E.scoreCourse=0;
+  initCourseRonde();
+}
+
+function initCourseRonde(){
+  E.courseRunning=false;
+  E.lanes=[null,null,null];
+  var grp=COURSES[E.courseIdx%COURSES.length];
+  var melange=[].concat(grp).sort(function(){return Math.random()-.5});
+
+  // source
+  var src=document.getElementById('src3');src.innerHTML='';
+  melange.forEach(function(p,i){
+    var pw=document.createElement('div');
+    pw.className='poisson-wrap poisson-entree';
+    pw.style.animationDelay=(i*.15)+'s';
+    pw.innerHTML=svgPoisson(p.label,i,100);
+    makeDraggable(pw,{val:p.val,label:p.label,ci:i,act:'course',idx:i});
+    src.appendChild(pw);
+  });
+
+  // pistes
+  var piste=document.getElementById('piste');
+  piste.innerHTML='<div class="piste-eau"></div>';
+  for(var i=0;i<3;i++){
+    var lg=document.createElement('div');lg.className='ligne';
+    var ln=document.createElement('div');ln.className='lane-num';ln.textContent=['1er','2e','3e'][i];
+    var lt=document.createElement('div');lt.className='lane-track';
+    lt.dataset.drop='lane_'+i;lt.dataset.idx=i;
+    lt.innerHTML='<div class="finish-line"></div>';
+    var dd=document.createElement('div');dd.className='lane-drop';
+    dd.dataset.drop='lane_'+i;dd.dataset.idx=i;
+    lt.appendChild(dd);
+    lg.appendChild(ln);lg.appendChild(lt);
+    piste.appendChild(lg);
+
+    // drop handler
+    (function(idx){
+      window['drop_lane_'+idx]=function(data,el,zone){
+        if(data.act!=='course'||E.courseRunning)return;
+        // si déjà occupé, remettre l'ancien
+        var track=zone.closest('.lane-track')||zone;
+        var old=track.querySelector('.lane-fish');
+        if(old){
+          old.remove();
+          E.lanes[idx]=null;
+        }
+        el.remove();
+        E.lanes[idx]={val:data.val,label:data.label,ci:data.ci};
+        var lf=document.createElement('div');
+        lf.className='lane-fish';
+        lf.innerHTML='<div class="poisson-wrap" style="animation:nager 2s ease-in-out infinite">'+svgPoisson(data.label,data.ci,80)+'</div>';
+        track.insertBefore(lf,track.firstChild);
+        // afficher partez si 3 lanes remplies
+        if(E.lanes.every(function(l){return l!==null})){
+          document.getElementById('b-partez').style.display='inline-flex';
+        }
+      };
+    })(i);
+  }
+
+  document.getElementById('fb3').className='fb';
+  document.getElementById('b-partez').style.display='none';
+  document.getElementById('b-retry3').style.display='none';
+  document.getElementById('b-fin').style.display='none';
+}
+
+function lancerCourse(){
+  if(E.courseRunning)return;
+  E.courseRunning=true;
+  document.getElementById('b-partez').style.display='none';
+
+  // déterminer l'ordre correct
+  var vals=E.lanes.map(function(l){return l.val});
+  var sorted=[].concat(vals).sort(function(a,b){return a-b});
+  var correct=true;
+  for(var i=0;i<vals.length;i++){
+    if(Math.abs(vals[i]-sorted[i])>0.001){correct=false;break}
+  }
+
+  // Animer les poissons dans les lanes
+  var tracks=document.querySelectorAll('.lane-track');
+  // normaliser les positions
+  var min=Math.min.apply(null,vals);
+  var max=Math.max.apply(null,vals);
+  var range=(max-min)||1;
+
+  tracks.forEach(function(track,i){
+    var fish=track.querySelector('.lane-fish');
+    if(!fish)return;
+    var v=E.lanes[i].val;
+    var pct=30+((v-min)/range)*55; // entre 30% et 85%
+    var duree=1.5+(v-min)/range*1.5; // 1.5s à 3s
+    fish.style.setProperty('--duree',duree+'s');
+    setTimeout(function(){
+      fish.classList.add('racing');
+      fish.style.left=pct+'%';
+    },200+i*300);
+  });
+
+  // résultat après animation
+  setTimeout(function(){
+    var fb=document.getElementById('fb3');
+    if(correct){
+      E.scoreCourse++;E.scoreTotal++;E.maxTotal++;
+      fb.className='fb ok';
+      // Vérifier si ya des égaux
+      var hasEq=false;
+      for(var i=0;i<sorted.length-1;i++){if(Math.abs(sorted[i]-sorted[i+1])<0.001)hasEq=true}
+      if(hasEq){
+        fb.textContent='🌟 Bravo ! Certains poissons sont au même endroit — ils portent des nombres égaux !';
+      } else {
+        fb.textContent='🏆 Parfait ! Les poissons sont dans le bon ordre, du plus petit au plus grand !';
+      }
+      confettis();
+      if(E.courseIdx<COURSES.length-1){
+        E.courseIdx++;
+        setTimeout(function(){initCourseRonde()},2200);
+      } else {
+        document.getElementById('b-fin').style.display='inline-flex';
+      }
+    } else {
+      E.maxTotal++;
+      fb.className='fb nok';
+      fb.textContent='💧 Les poissons ne sont pas dans le bon ordre ! Regarde où ils se sont arrêtés sur la piste. Réessaie !';
+      document.getElementById('b-retry3').style.display='inline-flex';
+    }
+  },3800);
+}
+
+/* ══════════════════════════════════════════
+   CONFETTIS
+   ══════════════════════════════════════════ */
+function confettis(){
+  var couleurs=['#ff6b6b','#fbbf24','#34d399','#a78bfa','#60a5fa','#f472b6'];
+  for(var i=0;i<30;i++){
+    var c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'%';
+    c.style.background=couleurs[Math.floor(Math.random()*couleurs.length)];
+    c.style.width=(5+Math.random()*8)+'px';
+    c.style.height=(5+Math.random()*8)+'px';
+    c.style.animationDuration=(2+Math.random()*3)+'s';
+    c.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(c);
+    setTimeout(function(){c.remove()},5500);
+  }
+}
+
+/* ══════════════════════════════════════════
+   FIN
+   ══════════════════════════════════════════ */
+function afficherFin(){
+  var pct=E.maxTotal>0?E.scoreTotal/E.maxTotal:0;
+  var nb=pct>=.9?3:pct>=.5?2:1;
+  document.getElementById('fTr').textContent=nb===3?'🏆':nb===2?'🥈':'💪';
+  document.getElementById('fTi').textContent=nb===3?'Champion(ne) des profondeurs !':nb===2?'Très bon plongeon !':'Continue à nager !';
+  document.getElementById('fTx').textContent=nb===3?
+    'Tu maîtrises la comparaison des décimaux. Retourne au Niveau 2, tu es prêt(e) !':
+    nb===2?
+    'Tu as bien progressé ! Retourne au Niveau 2 avec confiance.':
+    'C\'est un bon début. Rejoue pour consolider, puis retourne au Niveau 2.';
+  var et=document.getElementById('fEt');et.innerHTML='';
+  for(var i=0;i<3;i++){
+    var s=document.createElement('span');
+    s.textContent=i<nb?'⭐':'☆';
+    s.style.opacity=i<nb?'1':'.2';
+    s.style.transitionDelay=(i*.15)+'s';
+    et.appendChild(s);
+  }
+  confettis();
+}
+
+function retourNiveau2(){
+  alert('Retour au Niveau 2 — Comparer et ordonner !\n(Intégration : appeler reinitNiveau(1) dans decimaux_v3.html)');
+}
+function rejouer(){
+  E.scoreTotal=0;E.maxTotal=0;
+  initLoupe();allerActe(1);
+}
+
+/* ══════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded',function(){initLoupe()});
+</script>
+</body>
+</html>

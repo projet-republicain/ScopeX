@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Scope X — Parcours de filiation · L'École</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bleu:#1a2e4a; --rouge:#c0392b; --or:#b8963e; --creme:#f5f0e8; --creme2:#ede5d4;
+ --gris:#6b6560; --gris-cl:#d4cec4; --noir:#1a1714;
+ --rev:#8b1a1a; --rep:#1a2e4a; --soc:#c0392b; --nat:#b8963e; --autre:#6f5091;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:#11151c;color:var(--noir);font-family:'DM Sans',sans-serif;line-height:1.5;
+ display:flex;align-items:center;justify-content:center;min-height:100vh;padding:0}
+
+/* Cadre téléphone (sur grand écran) */
+.phone{width:100%;max-width:420px;height:100vh;max-height:900px;background:var(--creme);
+ position:relative;overflow:hidden;display:flex;flex-direction:column;
+ box-shadow:0 18px 60px rgba(0,0,0,.5)}
+@media(min-width:480px){ .phone{border-radius:30px;border:10px solid #0b0e13;height:880px} body{padding:1.2rem} }
+
+/* En-tête */
+header{background:var(--bleu);color:#fff;padding:1.1rem 1.1rem .9rem;flex:0 0 auto;position:relative}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;
+ background:repeating-linear-gradient(90deg,var(--bleu) 0 33.3%,#fff 33.3% 66.6%,var(--rouge) 66.6% 100%)}
+.kick{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--or);font-weight:700}
+header h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:1.4rem;margin:.15rem 0 0;line-height:1.1}
+.tabs{display:flex;gap:.4rem;margin-top:.8rem}
+.tab{flex:1;text-align:center;font-size:.74rem;font-weight:500;padding:.42rem .3rem;border-radius:20px;
+ border:1.5px solid rgba(255,255,255,.25);color:#cdd6e2;cursor:pointer;transition:.15s}
+.tab.on{background:var(--or);border-color:var(--or);color:var(--bleu);font-weight:700}
+.tab.soon{opacity:.55}
+.tab .s{display:block;font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;margin-top:.05rem}
+
+/* Fil des fondateurs */
+.thread{flex:0 0 auto;background:var(--creme2);padding:.7rem .6rem .5rem;border-bottom:1px solid var(--gris-cl)}
+.thread .lbl{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gris);font-weight:700;margin:0 .3rem .4rem}
+.figs{display:flex;align-items:center;justify-content:space-between;position:relative}
+.figs::before{content:"";position:absolute;left:12%;right:12%;top:23px;height:2px;
+ background:linear-gradient(90deg,var(--rep),var(--rep) 60%,var(--autre));opacity:.35}
+.fig{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.25rem;
+ cursor:pointer;flex:1;transition:.15s}
+.fig .med{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ font-family:'DM Serif Display',serif;font-size:1.05rem;color:#fff;border:2.5px solid var(--creme2);
+ box-shadow:0 2px 8px rgba(0,0,0,.18);transition:.18s}
+.fig .nm{font-size:.66rem;font-weight:600;color:var(--noir);text-align:center;line-height:1.05}
+.fig .dt{font-size:.56rem;color:var(--gris)}
+.fig.sel .med{transform:scale(1.12);border-color:var(--or);box-shadow:0 0 0 3px rgba(184,150,62,.35),0 4px 12px rgba(0,0,0,.25)}
+.fig:not(.sel){opacity:.62}
+
+/* Scène / parcours */
+.stage{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:1rem 1.1rem 1.2rem;position:relative}
+.step{display:none;animation:rise .42s cubic-bezier(.2,.8,.25,1)}
+.step.show{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.chap{display:inline-flex;align-items:center;gap:.4rem;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;
+ font-weight:700;color:#fff;background:var(--bleu);padding:.22rem .6rem;border-radius:20px}
+.chap .n{background:var(--or);color:var(--bleu);width:16px;height:16px;border-radius:50%;
+ display:inline-flex;align-items:center;justify-content:center;font-size:.62rem}
+.step h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:1.45rem;color:var(--bleu);
+ margin:.6rem 0 .15rem;line-height:1.12}
+.step .who{font-size:.74rem;color:var(--or);font-weight:700;letter-spacing:.04em;margin-bottom:.5rem}
+.step p{font-size:.92rem;color:#3a352e;margin:.5rem 0}
+.step p.q{font-style:italic;border-left:3px solid var(--or);padding-left:.7rem;color:var(--bleu)}
+.tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+ padding:.15rem .5rem;border-radius:3px;margin:.1rem .25rem .1rem 0}
+.tag.real{background:#fffdf5;border:1.5px solid var(--or);color:#7a6122}
+.tag.lim{background:#fdf0ee;border:1.5px solid var(--rouge);color:#7a1c12}
+
+/* Gros chiffre */
+.big{font-family:'DM Serif Display',serif;font-size:3.4rem;color:var(--rouge);line-height:1;margin:.5rem 0 .1rem}
+.big .u{font-size:1.4rem;color:var(--gris)}
+.cap{font-size:.76rem;color:var(--gris)}
+
+/* Graphe */
+.chartbox{background:#fff;border:1px solid var(--gris-cl);border-radius:10px;padding:.7rem .6rem .4rem;margin:.7rem 0}
+svg{width:100%;height:auto;display:block}
+.legend{font-size:.66rem;color:var(--gris);text-align:center;margin-top:.2rem}
+
+/* État des lieux : double barre */
+.duo{display:flex;gap:.6rem;margin:.6rem 0}
+.duo .c{flex:1;background:#fff;border:1px solid var(--gris-cl);border-radius:10px;padding:.6rem;text-align:center}
+.duo .c .v{font-family:'DM Serif Display',serif;font-size:1.9rem;color:var(--bleu);line-height:1}
+.duo .c .k{font-size:.66rem;color:var(--gris);margin-top:.2rem}
+
+.src{font-size:.64rem;color:var(--gris);margin-top:.5rem;border-top:1px dashed var(--gris-cl);padding-top:.4rem}
+
+/* Navigation bas */
+.nav{flex:0 0 auto;background:#fff;border-top:1px solid var(--gris-cl);padding:.6rem .9rem;
+ display:flex;align-items:center;gap:.7rem}
+.dots{display:flex;gap:.32rem;flex:1;justify-content:center}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--gris-cl);transition:.2s}
+.dot.on{background:var(--or);width:20px;border-radius:4px}
+.btn{border:none;border-radius:22px;font-family:inherit;font-weight:700;font-size:.82rem;
+ padding:.5rem .9rem;cursor:pointer;transition:.15s}
+.btn.prev{background:var(--creme2);color:var(--gris)}
+.btn.next{background:var(--bleu);color:#fff}
+.btn:disabled{opacity:.35;cursor:default}
+
+/* Voile "branche à venir" */
+.soonveil{position:absolute;inset:0;background:rgba(245,240,232,.96);z-index:9;display:none;
+ flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem}
+.soonveil.show{display:flex}
+.soonveil h3{font-family:'DM Serif Display',serif;color:var(--bleu);font-size:1.5rem;margin:.4rem 0}
+.soonveil p{font-size:.86rem;color:#3a352e;max-width:280px}
+.soonveil .x{margin-top:1rem;background:var(--or);color:var(--bleu);border:none;border-radius:22px;
+ font-weight:700;padding:.5rem 1.1rem;font-family:inherit;cursor:pointer}
+.soonveil .ch{font-size:2.2rem}
+</style>
+</head>
+<body>
+<div class="phone">
+ <header>
+   <div class="kick">Scope X · prototype</div>
+   <h1>Parcours de filiation</h1>
+   <div class="tabs">
+     <div class="tab on" data-branch="ecole">L'École<span class="s">de la République</span></div>
+     <div class="tab soon" data-branch="sciences">Les sciences<span class="s">à venir</span></div>
+   </div>
+ </header>
+
+ <div class="thread">
+   <div class="lbl">Touchez une figure fondatrice</div>
+   <div class="figs" id="figs"></div>
+ </div>
+
+ <div class="stage" id="stage"></div>
+
+ <div class="nav">
+   <button class="btn prev" id="prev">‹ Retour</button>
+   <div class="dots" id="dots"></div>
+   <button class="btn next" id="next">Suivant ›</button>
+ </div>
+
+ <div class="soonveil" id="veil">
+   <div class="ch">🔬</div>
+   <h3>Les sciences</h3>
+   <p>Condorcet n'était pas qu'un philosophe : mathématicien, il rêvait d'une société structurée par le nombre. Cette branche déroulera le même parcours — du concept aux chiffres — appliqué à l'esprit scientifique républicain.</p>
+   <button class="x" id="veilx">Revenir à l'École</button>
+ </div>
+</div>
+
+<script>
+/* ---------- Données ---------- */
+const FOUNDERS=[
+ {id:"condorcet",ini:"C",col:"var(--rep)",nom:"Condorcet",dt:"1743–1794",
+  concept:"Instruire pour émanciper",
+  q:"« Rendre la raison populaire. »",
+  txt:"Mathématicien et philosophe, Condorcet pense l'instruction publique comme la condition même de la liberté : un peuple éclairé, capable de juger par lui-même, échappe à toute tutelle. Le savoir vérifiable contre l'opinion."},
+ {id:"ferry",ini:"F",col:"var(--rep)",nom:"Jules Ferry",dt:"1832–1893",
+  concept:"L'école gratuite, obligatoire, laïque",
+  q:"« L'égalité d'éducation. »",
+  txt:"Ferry traduit le principe en institution. Les lois de 1881-1882 rendent l'école primaire gratuite, obligatoire et laïque. La loi Camille Sée (1880) ouvre l'enseignement secondaire aux filles."},
+ {id:"buisson",ini:"B",col:"var(--autre)",nom:"F. Buisson",dt:"1841–1932",
+  concept:"La laïcité & la « foi laïque »",
+  q:"« Faire des citoyens libres. »",
+  txt:"Protestant libéral, Buisson est le théoricien de la laïcité scolaire : non une neutralité tiède, mais la condition de l'autonomie de jugement. Un apport extérieur intégré à la matrice républicaine, jusqu'à la Charte de 2013."}
+];
+
+/* Étapes communes (la chaîne) — le foyer change selon la figure pour 1-2, le tronc chiffré est partagé */
+function buildSteps(f){
+ return [
+  {chap:"Personne",icon:"",render:()=>`
+     <span class="chap"><span class="n">1</span>Personne</span>
+     <h2>${f.nom}</h2><div class="who">${f.dt}</div>
+     <p class="q">${f.q}</p>
+     <p>${f.txt}</p>`},
+  {chap:"Concept",render:()=>`
+     <span class="chap"><span class="n">2</span>Concept</span>
+     <h2>${f.concept}</h2><div class="who">porté par ${f.nom}</div>
+     <p>De l'idée fondatrice découle un projet : faire de chaque enfant un esprit autonome. C'est le va-et-vient de Scope X — du principe abstrait vers sa traduction concrète.</p>`},
+  {chap:"Réalisation",render:()=>`
+     <span class="chap"><span class="n">3</span>Réalisation</span>
+     <h2>L'institution scolaire</h2>
+     <p>Le concept devient loi et bâtiment :</p>
+     <p><span class="tag real">Lois Ferry 1881-1882</span> <span class="tag real">Loi Camille Sée 1880</span> <span class="tag real">Charte de la laïcité 2013</span></p>
+     <p>Gratuité, obligation, laïcité : l'école de la République est en place, et avec elle l'instruction de masse.</p>`},
+  {chap:"Chiffres",render:()=>`
+     <span class="chap"><span class="n">4</span>Chiffres · le point de départ</span>
+     <h2>À la veille de la Révolution</h2>
+     <div class="big"><span data-count="37">0</span><span class="u"> %</span></div>
+     <div class="cap">des Français savent signer leur acte de mariage (moyenne hommes-femmes, 1786-1790).</div>
+     <p>L'écart est béant : 47 % des hommes, mais 27 % des femmes. L'instruction est un privilège, pas un droit.</p>
+     <div class="src">Source : enquête Maggiolo (signatures au mariage).</div>`},
+  {chap:"Évolution",render:()=>`
+     <span class="chap"><span class="n">5</span>Évolution des chiffres</span>
+     <h2>Un siècle d'alphabétisation</h2>
+     <div class="chartbox">${CHART}</div>
+     <div class="legend">Part sachant signer son acte de mariage · moyenne H/F · 1788 → 1900</div>
+     <p>De 37 % à la veille de 1789 à la quasi-totalité vers 1900 : l'école républicaine a fait reculer l'analphabétisme jusqu'à le faire presque disparaître.</p>
+     <div class="src">Source : enquête Maggiolo ; séries longues de l'alphabétisation.</div>`},
+  {chap:"État des lieux",render:()=>`
+     <span class="chap"><span class="n">6</span>État des lieux · aujourd'hui</span>
+     <h2>Une génération massivement diplômée</h2>
+     <div class="big"><span data-count="80">0</span><span class="u"> %</span></div>
+     <div class="cap">d'une génération est désormais bachelière (2023).</div>
+     <div class="duo">
+       <div class="c"><div class="v" data-count="84">0</div><div class="k">% des filles</div></div>
+       <div class="c"><div class="v" data-count="75">0</div><div class="k">% des garçons</div></div>
+     </div>
+     <p>Renversement historique : les filles, exclues hier, dépassent aujourd'hui les garçons.</p>
+     <div class="src">Source : DEPP, proportion de bacheliers dans une génération, 2023.</div>`},
+  {chap:"Limites",render:()=>`
+     <span class="chap" style="background:var(--rouge)"><span class="n" style="background:#fff;color:var(--rouge)">7</span>Les limites</span>
+     <h2>Massifier n'est pas égaliser</h2>
+     <p><span class="tag lim">Inégalités sociales persistantes</span></p>
+     <p>Le diplôme s'est généralisé, mais l'origine sociale pèse toujours : le baccalauréat général reste largement réservé aux enfants de cadres, le bac professionnel à ceux d'ouvriers et d'employés. La massification a déplacé l'inégalité plus qu'elle ne l'a abolie.</p>
+     <p class="q">Le regard de Scope X : documenté, rationnel et honnête — la réussite est réelle, la promesse d'égalité, inachevée.</p>
+     <div class="src">Lecture à l'aune de Condorcet (instruire pour émanciper) et de Buisson (faire des citoyens libres).</div>`}
+ ];
+}
+
+/* ---------- Graphe SVG (animé) ---------- */
+const PTS=[{a:"1788",v:37},{a:"1818",v:44},{a:"1873",v:72},{a:"1900",v:95}];
+const CHART=(()=>{
+ const W=320,H=170,pl=30,pr=10,pt=12,pb=26;
+ const x=i=>pl+i*((W-pl-pr)/(PTS.length-1));
+ const y=v=>pt+(100-v)/100*(H-pt-pb);
+ let grid="";[0,50,100].forEach(g=>{const yy=y(g);grid+=`<line x1="${pl}" y1="${yy}" x2="${W-pr}" y2="${yy}" stroke="#e7ded0"/><text x="4" y="${yy+3}" font-size="9" fill="#6b6560">${g}</text>`;});
+ let pathd="";PTS.forEach((p,i)=>{pathd+=(i?" L":"M")+x(i)+" "+y(p.v);});
+ let dots="",lab="";PTS.forEach((p,i)=>{dots+=`<circle cx="${x(i)}" cy="${y(p.v)}" r="4" fill="#c0392b"/><text x="${x(i)}" y="${y(p.v)-9}" font-size="10" fill="#1a2e4a" font-weight="700" text-anchor="middle">${p.v}%</text>`;lab+=`<text x="${x(i)}" y="${H-8}" font-size="9" fill="#6b6560" text-anchor="middle">${p.a}</text>`;});
+ return `<svg viewBox="0 0 ${W} ${H}" id="lit">${grid}<path id="litline" d="${pathd}" fill="none" stroke="#c0392b" stroke-width="2.5" stroke-linejoin="round"/>${dots}${lab}</svg>`;
+})();
+
+/* ---------- Logique ---------- */
+let curFig=0,curStep=0,steps=buildSteps(FOUNDERS[0]);
+const stage=document.getElementById('stage'),dots=document.getElementById('dots');
+
+function renderFigs(){
+ const c=document.getElementById('figs');c.innerHTML="";
+ FOUNDERS.forEach((f,i)=>{
+   const d=document.createElement('div');d.className='fig'+(i===curFig?' sel':'');
+   d.innerHTML=`<div class="med" style="background:${f.col}">${f.ini}</div><div class="nm">${f.nom}</div><div class="dt">${f.dt}</div>`;
+   d.onclick=()=>{curFig=i;steps=buildSteps(FOUNDERS[i]);curStep=0;renderFigs();renderStep();};
+   c.appendChild(d);
+ });
+}
+function renderDots(){
+ dots.innerHTML="";steps.forEach((s,i)=>{const d=document.createElement('div');d.className='dot'+(i===curStep?' on':'');dots.appendChild(d);});
+}
+function animateCounts(){
+ stage.querySelectorAll('[data-count]').forEach(el=>{
+   const tgt=+el.dataset.count;let n=0;const step=Math.max(1,Math.round(tgt/28));
+   const t=setInterval(()=>{n+=step;if(n>=tgt){n=tgt;clearInterval(t);}el.textContent=n;},22);
+ });
+}
+function animateChart(){
+ const ln=stage.querySelector('#litline');if(!ln)return;
+ const len=ln.getTotalLength();ln.style.strokeDasharray=len;ln.style.strokeDashoffset=len;
+ ln.getBoundingClientRect();ln.style.transition='stroke-dashoffset 1.3s ease';ln.style.strokeDashoffset=0;
+}
+function renderStep(){
+ stage.innerHTML=`<div class="step show">${steps[curStep].render()}</div>`;
+ stage.scrollTop=0;
+ document.getElementById('prev').disabled=(curStep===0);
+ document.getElementById('next').disabled=(curStep===steps.length-1);
+ document.getElementById('next').textContent=(curStep===steps.length-1)?'Fin':'Suivant ›';
+ renderDots();animateCounts();animateChart();
+}
+document.getElementById('next').onclick=()=>{if(curStep<steps.length-1){curStep++;renderStep();}};
+document.getElementById('prev').onclick=()=>{if(curStep>0){curStep--;renderStep();}};
+
+/* swipe */
+let sx=0;
+stage.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+stage.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;
+ if(dx<-45&&curStep<steps.length-1){curStep++;renderStep();}
+ if(dx>45&&curStep>0){curStep--;renderStep();}});
+
+/* branches */
+document.querySelectorAll('.tab').forEach(t=>{
+ t.onclick=()=>{
+   if(t.dataset.branch==='sciences'){document.getElementById('veil').classList.add('show');return;}
+ };
+});
+document.getElementById('veilx').onclick=()=>document.getElementById('veil').classList.remove('show');
+
+renderFigs();renderStep();
+</script>
+</body>
+</html>

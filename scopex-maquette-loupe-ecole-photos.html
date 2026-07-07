@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'école sous la loupe · maquette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bleu-rf: #1a2e4a;
+    --bleu-nuit-profond: #101f38;
+    --creme: #f5f0e8;
+    --creme-sombre: #ede5d4;
+    --or: #b8963e;
+    --or-clair: #d4b25e;
+    --rouge: #c0392b;
+    --encre: #1a1714;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--encre);
+    background: var(--creme);
+  }
+
+  /* ---------- entête ---------- */
+  header {
+    background: var(--bleu-rf);
+    color: var(--creme);
+    text-align: center;
+    padding: 4.5rem 1.5rem 4rem;
+    position: relative;
+  }
+  .badge-maquette {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    border: 1px solid var(--or);
+    color: var(--or);
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.7rem;
+    border-radius: 3px;
+  }
+  .wordmark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.18em;
+  }
+  .wordmark .x { color: var(--or); }
+  .surtitre {
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-top: 0.5rem;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    margin: 1.6rem 0 0.9rem;
+  }
+  header p {
+    max-width: 36em;
+    margin: 0 auto;
+    line-height: 1.6;
+    color: #d8d2c4;
+    font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  }
+
+  /* ---------- tableaux ---------- */
+  .tableau {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 4.5rem 1.5rem 3rem;
+  }
+  .tableau + .tableau { border-top: 1px solid #d9d0bd; }
+  .tableau h2 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  }
+  .tableau .legende-photo {
+    color: #6b6357;
+    font-size: 0.92rem;
+    margin: 0.4rem 0 1.6rem;
+  }
+  .atelier {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr);
+    gap: 1.6rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .atelier { grid-template-columns: 1fr; }
+  }
+
+  /* ---------- cadre photo + loupe ---------- */
+  .cadre {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 12px 40px rgba(16, 23, 20, 0.35);
+    background: var(--bleu-nuit-profond);
+    cursor: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .cadre img {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+  }
+  /* couche radiographie révélée par la loupe */
+  .couche-radio {
+    position: absolute;
+    inset: 0;
+    filter: grayscale(1) invert(0.88) sepia(0.5) hue-rotate(170deg) saturate(2.4) contrast(1.05);
+    clip-path: circle(0px at 50% 50%);
+    will-change: clip-path;
+  }
+  /* anneau de la loupe */
+  .anneau {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border: 2px solid var(--or-clair);
+    border-radius: 50%;
+    box-shadow: 0 0 22px rgba(212, 178, 94, 0.55), inset 0 0 18px rgba(212, 178, 94, 0.25);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+  .anneau::after {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 6px; height: 6px;
+    background: var(--or-clair);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ---------- zones sensibles ---------- */
+  .zone {
+    position: absolute;
+    border-radius: 50%;
+    cursor: none;
+  }
+  .zone .pastille {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 15px; height: 15px;
+    margin: -7.5px 0 0 -7.5px;
+    background: var(--or-clair);
+    border: 2px solid #fffbe8;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(212, 178, 94, 0.7);
+    animation: pulse 2.2s infinite;
+    pointer-events: none;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(212, 178, 94, 0.7); }
+    70% { box-shadow: 0 0 0 16px rgba(212, 178, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(212, 178, 94, 0); }
+  }
+  .zone .halo {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(212, 178, 94, 0.42) 0%, rgba(212, 178, 94, 0.16) 55%, transparent 75%);
+    border: 1.5px solid rgba(212, 178, 94, 0.9);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+  .zone.active .halo { opacity: 1; }
+  .zone.active .pastille { animation: none; opacity: 0; }
+
+  /* ---------- panneau de lecture ---------- */
+  .panneau {
+    background: #fffdf8;
+    border-left: 4px solid var(--or);
+    border-radius: 4px;
+    box-shadow: 0 8px 28px rgba(16, 23, 20, 0.16);
+    padding: 1.6rem 1.7rem;
+    min-height: 340px;
+    position: sticky;
+    top: 1.2rem;
+  }
+  .panneau .etiquette {
+    display: inline-block;
+    font-size: 0.66rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--or);
+    margin-bottom: 0.55rem;
+  }
+  .panneau h3 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 0.7rem;
+  }
+  .panneau p { line-height: 1.65; font-size: 0.99rem; }
+  .panneau p + p { margin-top: 0.7rem; }
+  .panneau .noms {
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed #d9cba4;
+    font-size: 0.92rem;
+    color: #5a4f3a;
+    line-height: 1.6;
+  }
+  .panneau .consigne {
+    color: #6b6357;
+    font-style: italic;
+    line-height: 1.7;
+  }
+
+  /* ---------- suite & pied ---------- */
+  .suite {
+    background: var(--creme-sombre);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+  .suite h2 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3.6vw, 2.2rem);
+    max-width: 26em;
+    margin: 0 auto 1.1rem;
+  }
+  .suite p { max-width: 38em; margin: 0 auto; line-height: 1.7; }
+  footer {
+    background: var(--bleu-rf);
+    color: #b9b3a5;
+    text-align: center;
+    padding: 2.2rem 1.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+  }
+  footer .x { color: var(--or); }
+  footer a { color: #d4b25e; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="badge-maquette">Maquette de travail</span>
+  <div class="wordmark">SCOPE <span class="x">X</span></div>
+  <div class="surtitre">La France aux rayons X</div>
+  <h1>L'école sous la loupe</h1>
+  <p>Voici de vraies cartes postales, photographiées il y a plus d'un siècle.
+  Promène ta loupe sur chaque image : des points dorés signalent les endroits qui ont une histoire à raconter.</p>
+</header>
+
+<!-- ================= TABLEAU 1 : le village ================= -->
+<section class="tableau">
+  <h2>Un village de la Somme</h2>
+  <p class="legende-photo">Blangy-Tronville, la mairie et l'école, vers 1910.</p>
+
+  <div class="atelier">
+    <div class="cadre" id="cadre1">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Blangy-Tronville_Carte_postale_10.jpg" alt="Carte postale de la mairie-école de Blangy-Tronville vers 1910, avec une ronde d'enfants devant les bâtiments">
+      <div class="couche-radio" style="background-image:url('https://commons.wikimedia.org/wiki/Special:FilePath/Blangy-Tronville_Carte_postale_10.jpg'); background-size:100% 100%;"></div>
+
+      <div class="zone" data-panneau="p1" data-cible="fronton" style="left:26%; top:33%; width:16%; height:17%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="zone" data-panneau="p1" data-cible="mairie" style="left:63%; top:42%; width:26%; height:22%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="zone" data-panneau="p1" data-cible="filles" style="left:49%; top:66%; width:31%; height:22%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="zone" data-panneau="p1" data-cible="garcons" style="left:81%; top:64%; width:18%; height:23%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="anneau"></div>
+    </div>
+
+    <aside class="panneau" id="p1" aria-live="polite">
+      <div data-fiche="defaut">
+        <span class="etiquette">À toi de chercher</span>
+        <h3>Quatre points dorés</h3>
+        <p class="consigne">Promène ta loupe sur la photographie. Quand tu trouves un point doré, arrête-toi : la carte postale se met à parler.</p>
+        <p class="consigne">Regarde le fronton, les bâtiments, et surtout les enfants.</p>
+      </div>
+      <div data-fiche="fronton" hidden>
+        <span class="etiquette">République</span>
+        <h3>« ÉCOLE », gravé dans la pierre</h3>
+        <p>Le mot est inscrit au fronton, comme une déclaration. En 1881, la loi Ferry rend l'école gratuite ; en 1882, obligatoire et laïque. Dans les années qui suivent, des milliers de communes construisent ou agrandissent leur école.</p>
+        <p>Ce bâtiment n'est pas un décor : c'est la loi devenue briques et mortier.</p>
+        <p class="noms">Jules Ferry, lois de 1881-1882 · Ferdinand Buisson, qui organisa l'enseignement primaire pendant dix-sept ans.</p>
+      </div>
+      <div data-fiche="mairie" hidden>
+        <span class="etiquette">La commune</span>
+        <h3>La mairie, juste à côté</h3>
+        <p>École et mairie se touchent, et c'est voulu : la commune a payé les murs, et le même bâtiment abrite souvent la salle du conseil et la salle de classe.</p>
+        <p>L'histoire est plus ancienne que la République : dès 1833, la loi Guizot obligeait chaque commune à entretenir une école de garçons. La République a hérité de ces murs, puis les a ouverts à tous, gratuitement.</p>
+        <p class="noms">François Guizot, loi de 1833 · loi municipale de 1884, qui fait élire les maires.</p>
+      </div>
+      <div data-fiche="filles" hidden>
+        <span class="etiquette">Les filles</span>
+        <h3>La ronde des filles</h3>
+        <p>Regarde-les : tabliers clairs, mains jointes, sous l'œil de l'institutrice. Leur présence ici n'allait pas de soi. Longtemps, l'école des filles fut la moins pressée : la loi Falloux (1850) puis la loi Duruy (1867) obligent peu à peu les communes à en ouvrir une.</p>
+        <p>En 1861, Julie-Victoire Daubié devient la première bachelière de France ; en 1880, la loi Camille Sée crée un enseignement secondaire pour les jeunes filles. Marche après marche.</p>
+        <p class="noms">Victor Duruy · Julie-Victoire Daubié · Camille Sée · et les institutrices, formées dans les écoles normales créées par la loi Paul Bert (1879).</p>
+      </div>
+      <div data-fiche="garcons" hidden>
+        <span class="etiquette">Les garçons et le maître</span>
+        <h3>Alignés devant le maître</h3>
+        <p>À droite, les garçons en culottes courtes, et l'instituteur en habit sombre. Depuis 1882, la loi les oblige tous à s'instruire, garçons et filles, riches et pauvres : c'est la même règle pour tout le monde.</p>
+        <p>L'instituteur est souvent aussi le secrétaire de mairie : l'homme qui écrit, lit et compte pour tout le village.</p>
+        <p class="noms">Loi Paul Bert (1879) : une école normale d'instituteurs et une d'institutrices par département.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ================= TABLEAU 2 : la ville et les petits ================= -->
+<section class="tableau">
+  <h2>Une rue de Boulogne, près de Paris</h2>
+  <p class="legende-photo">Boulogne-sur-Seine, « École des Filles et École Maternelle », vers 1900.</p>
+
+  <div class="atelier">
+    <div class="cadre" id="cadre2">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Carte_postale_-_Boulogne-Billancourt_-_Ecole_des_Filles_et_Ecole_Maternelle_-_9FI-BOU_157.jpg" alt="Carte postale de Boulogne-sur-Seine vers 1900 : un groupe d'enfants devant l'école des filles et l'école maternelle">
+      <div class="couche-radio" style="background-image:url('https://commons.wikimedia.org/wiki/Special:FilePath/Carte_postale_-_Boulogne-Billancourt_-_Ecole_des_Filles_et_Ecole_Maternelle_-_9FI-BOU_157.jpg'); background-size:100% 100%;"></div>
+
+      <div class="zone" data-panneau="p2" data-cible="petits" style="left:59%; top:54%; width:19%; height:26%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="zone" data-panneau="p2" data-cible="groupe" style="left:36%; top:56%; width:21%; height:24%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="zone" data-panneau="p2" data-cible="facade" style="left:55%; top:12%; width:38%; height:34%;">
+        <span class="halo"></span><span class="pastille"></span>
+      </div>
+      <div class="anneau"></div>
+    </div>
+
+    <aside class="panneau" id="p2" aria-live="polite">
+      <div data-fiche="defaut">
+        <span class="etiquette">À toi de chercher</span>
+        <h3>Trois points dorés</h3>
+        <p class="consigne">Même jeu : promène ta loupe. Ici, l'école n'est plus au village mais en ville, et certains écoliers sont bien petits.</p>
+      </div>
+      <div data-fiche="petits" hidden>
+        <span class="etiquette">Les tout-petits</span>
+        <h3>Trop jeunes pour l'école ?</h3>
+        <p>Regarde les plus petits du groupe : deux, trois, quatre ans à peine. Pour eux existe l'école maternelle, et c'est une invention française.</p>
+        <p>Avant elle, les « salles d'asile » gardaient les enfants des mères qui travaillaient. Marie Pape-Carpantier puis Pauline Kergomard en firent tout autre chose : en 1881, la salle d'asile devient « école maternelle », un lieu où l'on grandit par le jeu, et non une petite caserne où l'on dresse.</p>
+        <p class="noms">Marie Pape-Carpantier · Pauline Kergomard, première femme inspectrice générale de l'instruction publique (1879).</p>
+      </div>
+      <div data-fiche="groupe" hidden>
+        <span class="etiquette">Les enfants de la ville</span>
+        <h3>Enfants d'ouvriers</h3>
+        <p>Boulogne, vers 1900 : blanchisseries, ateliers, premières usines. Les parents de ces enfants travaillent de longues journées.</p>
+        <p>L'école obligatoire et gratuite change leur destin possible : sans elle, beaucoup seraient déjà au travail. La loi de 1882 fixe l'école avant l'atelier ; celles qui limitent le travail des enfants (1874, 1892) avancent du même pas.</p>
+      </div>
+      <div data-fiche="facade" hidden>
+        <span class="etiquette">Le bâtiment</span>
+        <h3>« École des Filles et École Maternelle »</h3>
+        <p>C'est écrit sur la carte : ce long bâtiment abrite deux écoles, celle des filles et celle des tout-petits. En ville comme au village, la République bâtit, et elle bâtit grand.</p>
+        <p>Compare avec la mairie-école du village : mêmes lois, mais des murs très différents. L'école de la République prend la forme du lieu où elle pousse.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="suite">
+  <h2>Ces photographies ont plus de cent ans.<br>Que proclamait la loi, et qu'ont vraiment vécu ces enfants ?</h2>
+  <p>La gratuité date de 1881, l'obligation de 1882. Mais combien d'années entre la loi votée et le dernier enfant réellement assis sur un banc d'école ? Mesurer cet écart entre l'intention et l'effectivité, ce sera la prochaine enquête.</p>
+</section>
+
+<footer>
+  SCOPE <span class="x">X</span> · Sous le regard de Marianne · maquette de travail, juillet 2026<br>
+  Photographies : <a href="https://commons.wikimedia.org/wiki/File:Blangy-Tronville_Carte_postale_10.jpg">Blangy-Tronville, vers 1910</a> (Wikimedia Commons, CC BY-SA 4.0) ·
+  <a href="https://commons.wikimedia.org/wiki/File:Carte_postale_-_Boulogne-Billancourt_-_Ecole_des_Filles_et_Ecole_Maternelle_-_9FI-BOU_157.jpg">Boulogne-sur-Seine, vers 1900</a> (Archives, Licence Ouverte)
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  // ---------- la loupe-révélateur ----------
+  document.querySelectorAll('.cadre').forEach(function (cadre) {
+    var radio = cadre.querySelector('.couche-radio');
+    var anneau = cadre.querySelector('.anneau');
+    var rayon = 110;
+
+    var pose = { x: 0.5, y: 0.5 };
+    var doux = gsap.quickTo(pose, 'x', { duration: 0.18, ease: 'power2.out', onUpdate: applique });
+    var douy = gsap.quickTo(pose, 'y', { duration: 0.18, ease: 'power2.out', onUpdate: applique });
+
+    function applique() {
+      var r = cadre.getBoundingClientRect();
+      var px = pose.x * r.width;
+      var py = pose.y * r.height;
+      radio.style.clipPath = 'circle(' + rayon + 'px at ' + px + 'px ' + py + 'px)';
+      anneau.style.left = px + 'px';
+      anneau.style.top = py + 'px';
+      anneau.style.width = (rayon * 2) + 'px';
+      anneau.style.height = (rayon * 2) + 'px';
+    }
+
+    function bouge(clientX, clientY) {
+      var r = cadre.getBoundingClientRect();
+      doux((clientX - r.left) / r.width);
+      douy((clientY - r.top) / r.height);
+    }
+
+    cadre.addEventListener('pointerenter', function (e) {
+      gsap.to(anneau, { opacity: 1, duration: 0.3 });
+      pose.x = (e.clientX - cadre.getBoundingClientRect().left) / cadre.getBoundingClientRect().width;
+      pose.y = (e.clientY - cadre.getBoundingClientRect().top) / cadre.getBoundingClientRect().height;
+      applique();
+    });
+    cadre.addEventListener('pointermove', function (e) { bouge(e.clientX, e.clientY); });
+    cadre.addEventListener('pointerleave', function () {
+      gsap.to(anneau, { opacity: 0, duration: 0.3 });
+      radio.style.clipPath = 'circle(0px at 50% 50%)';
+    });
+  });
+
+  // ---------- zones et panneau de lecture ----------
+  function montreFiche(panneauId, cible) {
+    var panneau = document.getElementById(panneauId);
+    panneau.querySelectorAll('[data-fiche]').forEach(function (f) { f.hidden = true; });
+    var fiche = panneau.querySelector('[data-fiche="' + cible + '"]');
+    if (fiche) {
+      fiche.hidden = false;
+      gsap.fromTo(fiche, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' });
+    }
+  }
+
+  document.querySelectorAll('.zone').forEach(function (zone) {
+    function active() {
+      var cadre = zone.closest('.cadre');
+      cadre.querySelectorAll('.zone').forEach(function (z) { z.classList.remove('active'); });
+      zone.classList.add('active');
+      montreFiche(zone.dataset.panneau, zone.dataset.cible);
+    }
+    zone.addEventListener('pointerenter', active);
+    zone.addEventListener('click', active);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scope X — Frise des fondateurs (par moment clé)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bleu-rf:#1a2e4a; --rouge-rf:#c0392b; --or-rf:#b8963e;
+  --creme:#f5f0e8; --creme-dark:#ede5d4; --gris-mid:#6b6560;
+  --gris-clair:#d4cec4; --noir:#1a1714;
+  --rev:#8b1a1a; --rep:#1a2e4a; --soc:#c0392b; --nat:#b8963e; --autre:#6f5091;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--creme);color:var(--noir);font-family:'DM Sans',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1500px;margin:0 auto;padding:0 1rem 4rem}
+
+header{background:var(--bleu-rf);color:#fff;padding:2.2rem 1rem 1.8rem;text-align:center;position:relative;overflow:hidden}
+header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;
+  background:repeating-linear-gradient(90deg,var(--bleu-rf) 0 33.3%,#fff 33.3% 66.6%,var(--rouge-rf) 66.6% 100%);}
+.kicker{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--or-rf);font-weight:700;margin-bottom:.5rem}
+header h1{font-family:'DM Serif Display',serif;font-size:1.9rem;margin:.1rem 0 .5rem;font-weight:400;line-height:1.15}
+header p.sub{max-width:760px;margin:.3rem auto 0;color:#d8e0ec;font-weight:300;font-size:.98rem}
+
+.chapo{background:#fff;border:1px solid var(--gris-clair);border-left:4px solid var(--or-rf);
+  padding:1.1rem 1.3rem;margin:1.8rem 0 1rem;border-radius:3px;font-weight:300;color:#3a352e;font-size:.92rem}
+.chapo b{font-weight:700;color:var(--bleu-rf)}
+
+.legend{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 1.6rem}
+.leg{display:inline-flex;align-items:center;gap:.45rem;background:#fff;border:1.5px solid var(--gris-clair);
+  border-radius:30px;padding:.35rem .8rem;font-size:.78rem;font-weight:500}
+.leg .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
+
+.timeline{position:relative;margin:0 auto;max-width:820px;padding:.5rem 0 1rem}
+.axis{position:absolute;top:0;bottom:0;left:28px;width:3px;background:var(--gris-clair)}
+.axis::before,.axis::after{content:"";position:absolute;left:-4px;width:11px;height:11px;border-radius:50%;background:var(--bleu-rf)}
+.axis::before{top:-2px}
+.axis::after{bottom:-2px}
+
+.year-mark{position:relative;padding-left:64px;margin:1.8rem 0 .3rem;font-family:'DM Serif Display',serif;
+  font-size:.78rem;color:var(--gris-mid);letter-spacing:.06em}
+.year-mark::before{content:"";position:absolute;left:22px;top:50%;width:13px;height:1px;background:var(--gris-clair)}
+
+.row{position:relative;padding-left:64px;margin-bottom:1.5rem}
+.pt{position:absolute;left:22px;top:.35rem;width:15px;height:15px;border-radius:50%;border:2.5px solid var(--creme);
+  box-shadow:0 0 0 1.5px var(--gris-clair);z-index:3}
+
+.card{background:#fff;border:1px solid var(--gris-clair);border-left:4px solid var(--gris-clair);
+  border-radius:4px;padding:.7rem .9rem;font-size:.82rem;line-height:1.4}
+.card .yr{font-family:'DM Serif Display',serif;font-size:1.05rem;font-weight:400;display:inline-block;margin-right:.5rem}
+.card .nm{font-weight:700;display:inline}
+.card .fam{font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;font-weight:700;margin:.2rem 0 .3rem}
+.card .dt{font-weight:300;color:#3a352e}
+
+@media (max-width:480px){
+  .axis{left:20px}
+  .year-mark{padding-left:50px}
+  .year-mark::before{left:15px;width:11px}
+  .row{padding-left:50px}
+  .pt{left:14px}
+}
+
+.note{background:#fff;border:1px solid var(--gris-clair);border-left:4px solid var(--rev);border-radius:3px;
+  padding:1rem 1.2rem;margin-top:1.2rem;font-size:.86rem;font-weight:300}
+.note b{font-weight:700}
+footer{margin-top:2.2rem;font-size:.74rem;color:var(--gris-mid);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Scope X · Sous le regard de Marianne</div>
+  <h1>Frise des fondateurs, positionnés par moment clé</h1>
+  <p class="sub">Chaque figure est placée non à sa date de naissance, mais à l'année de son apport concret — texte, loi, doctrine ou réalisation — à la République, au socialisme français, à l'idée de Nation, ou aux courants extérieurs qui les ont nourris.</p>
+</header>
+
+<div class="chapo">
+  Source : <b>ScopeX_Cartographie_Concepts_Réalisations</b> (les cinq familles : Révolution française, République, Socialisme, Nation, Autre / catholicisme social). Le <b>Radicalisme</b> n'apparaît pas comme famille distincte dans la cartographie source : ses figures (Waldeck-Rousseau, Combes, Briand) sont ici rattachées à la famille République, d'où elles agissent historiquement. Survolez ou touchez un point pour son détail complet.
+</div>
+
+<div class="legend" id="legend"></div>
+
+<div class="timeline" id="timeline">
+  <div class="axis"></div>
+</div>
+
+<div class="note">
+  <b>Cas Saint-Simon.</b> Mort en 1825, il n'a lui-même rien réalisé d'institutionnel : sa doctrine est mise en œuvre après lui par ses disciples ingénieurs et banquiers. Le point le positionne en 1852, année de la fondation du Crédit Mobilier par les frères Pereire (saint-simoniens), première traduction bancaire concrète de la doctrine ; l'assèchement des Landes (loi du 19 juin 1857) et le percement du canal de Suez (achevé en 1869, sous l'impulsion de Prosper Enfantin dès 1833) sont mentionnés dans le détail du point comme prolongements de ce même moment fondateur.
+</div>
+
+<footer>Frise générée à partir de la cartographie Scope X — à vérifier et enrichir au fil de la lecture du corpus fondateur.</footer>
+
+</div>
+
+<script>
+const FAMILIES = {
+  rev:  { label: "Révolution française", color: "#8b1a1a" },
+  rep:  { label: "République",           color: "#1a2e4a" },
+  soc:  { label: "Socialisme",           color: "#c0392b" },
+  nat:  { label: "Nation",               color: "#b8963e" },
+  autre:{ label: "Autre (apports externes / cath. social)", color: "#6f5091" }
+};
+
+// { year, name, fam, detail }
+const POINTS = [
+  {year:1748, name:"Montesquieu", fam:"rev", detail:"De l'esprit des lois (1748) — matrice de la séparation des pouvoirs."},
+  {year:1751, name:"Diderot & d'Alembert", fam:"rep", detail:"Lancement de l'Encyclopédie (1751–1772) — armer la raison publique."},
+  {year:1762, name:"Rousseau", fam:"rep", detail:"Du contrat social (1762) — fonde la souveraineté du peuple ; source commune République/Socialisme."},
+  {year:1763, name:"Voltaire", fam:"rev", detail:"Traité sur la tolérance (1763) — les droits précèdent l'État."},
+  {year:1789, name:"Sieyès", fam:"nat", detail:"Qu'est-ce que le Tiers État ? (1789) — théorise la souveraineté nationale."},
+  {year:1791, name:"Condorcet", fam:"rep", detail:"Cinq mémoires (1791) et Rapport à l'Assemblée (1792) — plan d'instruction publique : universalité, gratuité, égalité des sexes."},
+  {year:1791, name:"Olympe de Gouges", fam:"rev", detail:"Déclaration des droits de la femme et de la citoyenne (1791). Guillotinée en 1793."},
+  {year:1791, name:"Abbé Grégoire", fam:"rev", detail:"Décret d'émancipation des Juifs de France (27 septembre 1791) ; soutient l'abolition de l'esclavage (1794)."},
+  {year:1793, name:"Robespierre", fam:"rev", detail:"La République de la vertu — et la Terreur (1793–1794)."},
+  {year:1796, name:"Babeuf", fam:"soc", detail:"Manifeste des Égaux (1796), avec Sylvain Maréchal — premier communisme moderne."},
+  {year:1833, name:"Frédéric Ozanam", fam:"autre", detail:"Fonde la Société de Saint-Vincent-de-Paul (1833) — charité organisée, aux racines du catholicisme social."},
+  {year:1834, name:"Lamennais", fam:"autre", detail:"Paroles d'un croyant (1834) — bascule du catholicisme intransigeant vers la démocratie chrétienne."},
+  {year:1840, name:"Proudhon", fam:"soc", detail:"« La propriété, c'est le vol » (1840) — fil mutualiste/anarchiste du socialisme français."},
+  {year:1848, name:"Marx & Engels", fam:"soc", detail:"Manifeste du Parti communiste (1848) — apport extérieur au socialisme français."},
+  {year:1848, name:"Louis Blanc", fam:"soc", detail:"Commission du Luxembourg (1848), après Organisation du travail (1839) — socialisme d'État."},
+  {year:1848, name:"Ledru-Rollin", fam:"rep", detail:"Suffrage universel masculin — gouvernement provisoire de 1848."},
+  {year:1848, name:"Victor Schœlcher", fam:"rep", detail:"Décret d'abolition de l'esclavage, 27 avril 1848."},
+  {year:1852, name:"Saint-Simon (doctrine)", fam:"autre", detail:"Fondation du Crédit Mobilier par les frères Pereire, saint-simoniens (1852) — 1ʳᵉ traduction concrète de la doctrine, sous le Second Empire. Voir aussi : loi d'assèchement des Landes (1857), canal de Suez (achevé 1869, initié par Enfantin dès 1833). Reclassé hors du Socialisme : ni hostilité à la propriété, ni lutte des classes — un apport extérieur, comme le catholicisme social."},
+  {year:1871, name:"Louise Michel", fam:"soc", detail:"Communarde, institutrice — Commune de Paris, 1871 : la limite critique du projet républicain."},
+  {year:1877, name:"Gambetta", fam:"rep", detail:"« Le cléricalisme, voilà l'ennemi » (1877) — enracine la République, lie suffrage et alphabétisation."},
+  {year:1880, name:"Camille Sée", fam:"rep", detail:"Loi sur l'enseignement secondaire des filles (1880)."},
+  {year:1881, name:"Jules Ferry", fam:"rep", detail:"Loi du 16 juin 1881 — gratuité de l'école primaire (puis obligation et laïcité, loi du 28 mars 1882)."},
+  {year:1882, name:"Jules Guesde", fam:"soc", detail:"Fonde le Parti ouvrier français (1882) — guesdisme, socialisme marxiste organisé."},
+  {year:1884, name:"Waldeck-Rousseau", fam:"rep", detail:"Loi sur les syndicats professionnels (1884), puis loi sur les associations (1901)."},
+  {year:1887, name:"Ferdinand Buisson", fam:"rep", detail:"Article « Laïcité » du Dictionnaire de pédagogie (1887) — théorise le concept."},
+  {year:1891, name:"Léon XIII", fam:"autre", detail:"Encyclique Rerum Novarum (1891) — naissance de la doctrine sociale de l'Église."},
+  {year:1894, name:"Marc Sangnier", fam:"autre", detail:"Fonde Le Sillon (1894) — démocratie chrétienne."},
+  {year:1904, name:"Émile Combes", fam:"rep", detail:"Président du Conseil (1902–1905) — application radicale de la laïcité, fermeture des écoles congréganistes."},
+  {year:1905, name:"Aristide Briand", fam:"rep", detail:"Rapporteur de la loi de séparation des Églises et de l'État (9 décembre 1905). Plus tard : SDN, pacte Briand-Kellogg (1928), prix Nobel de la paix (1926)."},
+  {year:1905, name:"Jean Jaurès", fam:"soc", detail:"Porte l'unification socialiste (SFIO, 1905) — synthèse du républicanisme et de la justice sociale. Assassiné le 31 juillet 1914."},
+  {year:1930, name:"Maurice Thorez", fam:"soc", detail:"Devient secrétaire général du PCF (1930), né du Congrès de Tours (1920)."},
+  {year:1936, name:"Léon Blum", fam:"soc", detail:"Président du Conseil du Front populaire (1936) — congés payés, semaine de 40 heures, conventions collectives."},
+  {year:1936, name:"Jean Zay", fam:"rep", detail:"Ministre de l'Éducation nationale du Front populaire (1936–1939)."}
+];
+
+const legend = document.getElementById('legend');
+Object.values(FAMILIES).forEach(f=>{
+  const el = document.createElement('div');
+  el.className = 'leg';
+  el.innerHTML = `<span class="dot" style="background:${f.color}"></span>${f.label}`;
+  legend.appendChild(el);
+});
+
+const timeline = document.getElementById('timeline');
+const sorted = [...POINTS].sort((a,b)=>a.year-b.year);
+
+let lastDecade = null;
+sorted.forEach(p => {
+  const decade = Math.floor(p.year / 10) * 10;
+  if(decade !== lastDecade){
+    const mark = document.createElement('div');
+    mark.className = 'year-mark';
+    mark.textContent = decade + 's';
+    timeline.appendChild(mark);
+    lastDecade = decade;
+  }
+
+  const color = FAMILIES[p.fam].color;
+
+  const row = document.createElement('div');
+  row.className = 'row';
+
+  const dot = document.createElement('div');
+  dot.className = 'pt';
+  dot.style.background = color;
+  row.appendChild(dot);
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.style.borderLeftColor = color;
+  card.innerHTML = `<span class="yr" style="color:${color}">${p.year}</span><span class="nm">${p.name}</span>
+    <div class="fam" style="color:${color}">${FAMILIES[p.fam].label}</div>
+    <div class="dt">${p.detail}</div>`;
+  row.appendChild(card);
+
+  timeline.appendChild(row);
+});
+</script>
+</body>
+</html>
